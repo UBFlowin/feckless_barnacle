@@ -31,3 +31,6 @@ def get_dep_name(info):
     info2 = re.sub("'\\|\d(.*)$", "", info2)
     return info2
 
+print get_info(given_url)
+
+
