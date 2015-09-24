@@ -1,12 +1,16 @@
-from flask import Flask, request, jsonify, render_template
-from flask_bootstrap import Bootstrap
+from flask import Flask, request, jsonify, render_template, abort, make_response
 from flask.ext.sqlalchemy import SQLAlchemy
 
-app = Flask(__name__)
-Bootstrap(app)
-db = SQLAlchemy(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://ubflow@localhost/ubflowdb'
+from flask.ext.httpauth import HTTPBasicAuth
+from passlib.apps import custom_app_context as pwd_context
+from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
 
+
+app = Flask(__name__)
+db = SQLAlchemy(app)
+auth = HTTPBasicAuth()
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://ubflow@localhost/ubflowdb'
+app.config['SECRET_KEY'] = 'The arsonist had oddly shaped feet'
 
 
 '''-----------------------------------------------
@@ -79,14 +83,40 @@ class User(db.Model):
     __tablename__ = 'user'
 
     ID = db.Column(db.Integer, primary_key=True)
-    USERNAME = db.Column(db.String(50), nullable=False)
-    FIRST_NAME = db.Column(db.String(50), nullable=False)
-    LAST_NAME = db.Column(db.String(50), nullable=False)
-    DEGREE = db.Column(db.String(50),nullable=True)
+    USERNAME = db.Column(db.String(50))
+    PASS_HASH = db.Column(db.String(128))
+    FIRST_NAME = db.Column(db.String(50))
+    LAST_NAME = db.Column(db.String(50))
+    DEGREE = db.Column(db.String(50))
 
-    def __init__(self, id, username, first_name, last_name, degree):
-        self.ID = id
+
+    def hash_password(self, password):
+        self.PASS_HASH = pwd_context.encrypt(password)
+
+    def verify_password(self, password):
+        return pwd_context.verify(password, self.PASS_HASH)
+
+    def generate_auth_token(self, expiration=600):
+        s = Serializer(app.config['SECRET_KEY'], expires_in=expiration)
+        return s.dumps({'id': self.ID})
+
+    @staticmethod
+    def verify_auth_token(token):
+        s = Serializer(app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except SignatureExpired:
+            return None  # valid token, but expired
+        except BadSignature:
+            return None  # invalid token
+        user = User.query.get(data['ID'])
+        return
+
+
+
+    def __init__(self, username, pass_hash, first_name, last_name, degree):
         self.USERNAME = username
+        self.PASS_HASH = pass_hash
         self.FIRST_NAME = first_name
         self.LAST_NAME = last_name
         self.DEGREE = degree
@@ -107,12 +137,62 @@ class Schedule(db.Model):
 
 
 
+@app.route('/index.html', methods=['POST'])
+@app.route('/index', methods=['POST'])
+@app.route('/index/<name>', methods=['POST'])
+def index(name=None):
+    return render_template('index.html', name=name)
 
-@app.route('/hello/')
-@app.route('/hello/<name>')
-def hello(name=None):
-    return render_template('hello.html', name=name)
 
+
+@app.route('/api/token')
+@auth.login_required
+def get_auth_token():
+    """Generate Authentication Token to send instead of username and password"""
+    token = g.user.generate_auth_token()
+    return jsonify({'token': token.decode('ascii')})
+
+
+@app.route('/api/resource')
+@auth.login_required
+def get_resource():
+    """FOR AUTHENTICATION TESTING"""
+    return jsonify({'data': 'Hello, %s!' % g.user.username})
+
+
+@auth.verify_password
+def verify_password(username_or_token, password):
+    # first try to authenticate by token
+    user = User.verify_auth_token(username_or_token)
+    if not user:
+        # try to authenticate with username/password
+        user = User.query.filter_by(USERNAME=username_or_token).first()
+        if not user or not user.verify_password(password):
+            return False
+    g.user = user
+    return True
+
+'''-----------------------------------------------
+       Register a New USer
+-----------------------------------------------'''
+@app.route('/api/users', methods=['POST'])
+def new_user():
+    if request.method=='POST':
+        username = request.form['USERNAME']
+        password = request.form['PASSWORD']
+        first_name = request.form['FIRST_NAME']
+        last_name = request.form['LAST_NAME']
+        degree = request.form['DEGREE']
+
+        if username is None or password is None:
+            abort(400)  # missing arguments
+        if User.query.filter_by(USERNAME=username).first() is not None:
+            abort(400)  # existing user
+        temp_user = User(username,password,first_name,last_name,degree)
+        temp_user.hash_password(password)
+        db.session.add(temp_user)
+        db.session.commit()
+        return render_template('index.html', name=username)
 
 
 @app.route('/professor', methods=['GET'])
@@ -140,7 +220,7 @@ def getProfessor(professor_id):
         d = {'ID': result.ID,
              'FIRST_NAME': result.FIRST_NAME}
     return jsonify(professor=d)
- #   return render_template('hello.html', name=result.FIRST_NAME)
+ #   return render_template('index.html', name=result.FIRST_NAME)
 
 
 @app.route('/classes', methods=['GET'])
@@ -169,6 +249,19 @@ def getClasses():
     return jsonify(classes=json_results)
 
 
+@app.route('/')
+@app.route('/login')
+def login():
+    return render_template('register.html')
+
+
+# ERROR HANDLING
+@app.errorhandler(400)
+def bad_request(error):
+    return make_response(jsonify({'error': 'BAD REQUEST:Invalid format.'}), 400)
+
+
+
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
