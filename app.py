@@ -8,9 +8,9 @@ from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSign
 app = Flask(__name__)
 db = SQLAlchemy(app)
 auth = HTTPBasicAuth()
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://ubflow@localhost/ubflowdb'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://ubflow:ubflow@localhost/ubflowdb'
 app.config['SECRET_KEY'] = 'The arsonist had oddly shaped feet'
-
+db.create_all()
 
 '''-----------------------------------------------
         User Class
@@ -171,7 +171,7 @@ def new_user():
         temp_user.hash_password(password)
         db.session.add(temp_user)
         db.session.commit()
-        return render_template('index.html', name=username)
+        return render_template('profile.html', username=username)
 
 
 '''-----------------------------------------------
@@ -201,7 +201,32 @@ def login_user():
 -----------------------------------------------'''
 @app.route('/profile')
 def profile():
-    return render_template("profile.html", username="sethkara")
+    class_slot_1 = 'empty'
+    class_slot_2 = 'empty'
+    class_slot_3 = 'empty'
+    result = UBClasses.query.filter_by(ID=1).first()
+    if result.DAYS == 'MWF':
+        class_slot_1 = 'Mon'
+        class_slot_2 = 'Wed'
+        class_slot_3 = 'Fri'
+    elif result.DAYS == 'TR':
+        class_slot_1 = 'Tue'
+        class_slot_2 = 'Thu'
+    elif result.DAYS =="M":
+        class_slot_1 = "Mon"
+    elif result.DAYS =="T":
+        class_slot_1 = "Tue"
+    elif result.DAYS =="R":
+        class_slot_1 = "Thu"
+
+    return render_template("profile.html",
+                           username="sethkara",
+                           Class_Option_1=result.UBCLASS,
+                           Class_Option_1_Days=result.DAYS,
+                           Class_Option_1_Time=result.TIME,
+                           slot1=class_slot_1,
+                           slot2=class_slot_2,
+                           slot3=class_slot_3)
 
 
 '''-----------------------------------------------

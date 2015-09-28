@@ -1,43 +1,47 @@
 {% extends "layout.html" %}
 {% block layout %}
-<html lang="en">
+<script language="JavaScript">
+<!--
+function setBgColorOfCell(id,sColor) {
+ var elem;
+ if (document.getElementById) {
+  if (elem=document.getElementById(id)) {
+   if (elem.style) {
+    elem.style.backgroundColor=sColor;
+    return 1;  // success
+   }
+  }
+ }
+ return 0;  // failure
+}
 
-<head>
+function getBgColorOfCell(id) {
+ var elem;
+ if (document.getElementById) {
+  if (elem=document.getElementById(id)) {
+   if (elem.style) return ''+elem.style.backgroundColor;
+  }
+ }
+ return 'undefined';
+}
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+function setColorOfCell(id,sColor) {
+ var elem;
+ if (document.getElementById) {
+  if (elem=document.getElementById(id)) {
+   if (elem.style) {
+    elem.style.color=sColor;
+    return 1;  // success
+   }
+  }
+ }
+ return 0;  // failure
+}
 
-    <title>UBFlowin</title>
+var slot10 = '{{ slot1 }}';
 
-    <!-- Bootstrap Core CSS -->
-    <!--link href="../static/startbootstrap-sb-admin-2-1.0.7/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"-->
-
-    <!-- MetisMenu CSS -->
-    <!--link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet"-->
-
-    <!-- Timeline CSS -->
-    <!--link href="../dist/css/timeline.css" rel="stylesheet"-->
-
-    <!-- Custom CSS -->
-    <!--link href="../dist/css/sb-admin-2.css" rel="stylesheet"-->
-
-    <!-- Morris Charts CSS -->
-    <link href="../bower_components/morrisjs/morris.css" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <!--link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"-->
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-</head>
+//-->
+</script>
 
 <body>
 
@@ -65,7 +69,7 @@
                         <li>
                             <a href="#">
                                 <div>
-                                    <strong>{{name}}</strong>
+                                    <strong>NAME</strong>
                                     <span class="pull-right text-muted">
                                         <em>Yesterday</em>
                                     </span>
@@ -117,7 +121,7 @@
                             <a href="#">
                                 <div>
                                     <p>
-                                        <strong>Task 1</strong>
+                                        <strong>Next Semester Schedule</strong>
                                         <span class="pull-right text-muted">40% Complete</span>
                                     </p>
                                     <div class="progress progress-striped active">
@@ -133,7 +137,7 @@
                             <a href="#">
                                 <div>
                                     <p>
-                                        <strong>Task 2</strong>
+                                        <strong>Gen Eds Complete</strong>
                                         <span class="pull-right text-muted">20% Complete</span>
                                     </p>
                                     <div class="progress progress-striped active">
@@ -149,28 +153,12 @@
                             <a href="#">
                                 <div>
                                     <p>
-                                        <strong>Task 3</strong>
+                                        <strong>Degree Progress</strong>
                                         <span class="pull-right text-muted">60% Complete</span>
                                     </p>
                                     <div class="progress progress-striped active">
                                         <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
                                             <span class="sr-only">60% Complete (warning)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 4</strong>
-                                        <span class="pull-right text-muted">80% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                            <span class="sr-only">80% Complete (danger)</span>
                                         </div>
                                     </div>
                                 </div>
@@ -191,7 +179,7 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
-                    <ul class="dropdown-menu dropdown-alerts">
+                    <!--ul class="dropdown-menu dropdown-alerts">
                         <li>
                             <a href="#">
                                 <div>
@@ -287,10 +275,10 @@
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="flot.html">Flot Charts</a>
+                                    <a href="#">Something</a>
                                 </li>
                                 <li>
-                                    <a href="morris.html">Morris.js Charts</a>
+                                    <a href="#">Something</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -299,28 +287,28 @@
                             <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>
                         </li>
                         <li>
-                            <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Forms</a>
+                            <a href="#"><i class="fa fa-edit fa-fw"></i> Forms</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="panels-wells.html">Panels and Wells</a>
+                                    <a href="#">Panels and Wells</a>
                                 </li>
                                 <li>
-                                    <a href="buttons.html">Buttons</a>
+                                    <a href="#">Buttons</a>
                                 </li>
                                 <li>
-                                    <a href="notifications.html">Notifications</a>
+                                    <a href="#">Notifications</a>
                                 </li>
                                 <li>
-                                    <a href="typography.html">Typography</a>
+                                    <a href="#">Typography</a>
                                 </li>
                                 <li>
-                                    <a href="icons.html"> Icons</a>
+                                    <a href="#"> Icons</a>
                                 </li>
                                 <li>
-                                    <a href="grid.html">Grid</a>
+                                    <a href="#">Grid</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -377,7 +365,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Dashboard</h1>
+                    <h1 class="page-header">Welcome Back {{ username }}</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -392,51 +380,7 @@
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div class="huge">26</div>
-                                    <div>New Comments!</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="panel panel-green">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-tasks fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">12</div>
-                                    <div>New Tasks!</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="panel panel-yellow">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-shopping-cart fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">124</div>
-                                    <div>New Orders!</div>
+                                    <div>New Notifcations</div>
                                 </div>
                             </div>
                         </div>
@@ -458,7 +402,7 @@
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div class="huge">13</div>
-                                    <div>Support Tickets!</div>
+                                    <div>New Features</div>
                                 </div>
                             </div>
                         </div>
@@ -475,9 +419,10 @@
             <!-- /.row -->
             <div class="row">
                 <div class="col-lg-8">
+                   <!-- /.panel -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Area Chart Example
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Projected Weekly Schedule
                             <div class="pull-right">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -487,42 +432,9 @@
                                     <ul class="dropdown-menu pull-right" role="menu">
                                         <li><a href="#">Action</a>
                                         </li>
-                                        <li><a href="#">Another action</a>
+                                        <li><a href="#">View Current Semester</a>
                                         </li>
-                                        <li><a href="#">Something else here</a>
-                                        </li>
-                                        <li class="divider"></li>
-                                        <li><a href="#">Separated link</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div id="morris-area-chart"></div>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Bar Chart Example
-                            <div class="pull-right">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                        Actions
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a href="#">Action</a>
-                                        </li>
-                                        <li><a href="#">Another action</a>
-                                        </li>
-                                        <li><a href="#">Something else here</a>
-                                        </li>
-                                        <li class="divider"></li>
-                                        <li><a href="#">Separated link</a>
+                                        <li><a href="#">View Next Semester</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -531,65 +443,88 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-lg-4">
+                                <div class="col-lg-12">
                                     <div class="table-responsive">
                                         <table class="table table-bordered table-hover table-striped">
                                             <thead>
                                                 <tr>
-                                                    <th>#</th>
-                                                    <th>Date</th>
-                                                    <th>Time</th>
-                                                    <th>Amount</th>
+                                                    <th>Mon</th>
+                                                    <th>Tue</th>
+                                                    <th>Wed</th>
+                                                    <th>Thu</th>
+                                                    <th>Fri</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>3326</td>
-                                                    <td>10/21/2013</td>
-                                                    <td>3:29 PM</td>
-                                                    <td>$321.33</td>
+                                                <tr style="height:75px;">
+                                                    <td id="Monday_8">M_8</td >
+                                                    <td>T_8</td>
+                                                    <td>W_8</td>
+                                                    <td>R_8</td>
+                                                    <td>F_8</td>
                                                 </tr>
-                                                <tr>
-                                                    <td>3325</td>
-                                                    <td>10/21/2013</td>
-                                                    <td>3:20 PM</td>
-                                                    <td>$234.34</td>
+                                                <tr style="height:75px;">
+                                                    <td>M_9</td>
+                                                    <td>T_9</td>
+                                                    <td>W_9</td>
+                                                    <td>R_9</td>
+                                                    <td>F_9</td>
                                                 </tr>
-                                                <tr>
-                                                    <td>3324</td>
-                                                    <td>10/21/2013</td>
-                                                    <td>3:03 PM</td>
-                                                    <td>$724.17</td>
+                                                <tr style="height:75px;">
+                                                    <td id="Monday_10">M_10</td>
+                                                    <td>T_10</td>
+                                                    <td>W_10</td>
+                                                    <td>R_10</td>
+                                                    <td>F_10</td>
                                                 </tr>
-                                                <tr>
-                                                    <td>3323</td>
-                                                    <td>10/21/2013</td>
-                                                    <td>3:00 PM</td>
-                                                    <td>$23.71</td>
+                                                <tr style="height:75px;">
+                                                    <td>M_11</td>
+                                                    <td>T_11</td>
+                                                    <td>W_11</td>
+                                                    <td>R_11</td>
+                                                    <td>F_11</td>
                                                 </tr>
-                                                <tr>
-                                                    <td>3322</td>
-                                                    <td>10/21/2013</td>
-                                                    <td>2:49 PM</td>
-                                                    <td>$8345.23</td>
+                                                <tr style="height:75px;">
+                                                    <td>M_12</td>
+                                                    <td>T_12</td>
+                                                    <td>W_12</td>
+                                                    <td>R_12</td>
+                                                    <td>F_12</td>
                                                 </tr>
-                                                <tr>
-                                                    <td>3321</td>
-                                                    <td>10/21/2013</td>
-                                                    <td>2:23 PM</td>
-                                                    <td>$245.12</td>
+                                                <tr style="height:75px;">
+                                                    <td>M_13</td>
+                                                    <td>T_13</td>
+                                                    <td>W_13</td>
+                                                    <td>R_13</td>
+                                                    <td>F_13</td>
                                                 </tr>
-                                                <tr>
-                                                    <td>3320</td>
-                                                    <td>10/21/2013</td>
-                                                    <td>2:15 PM</td>
-                                                    <td>$5663.54</td>
+                                                <tr style="height:75px;">
+                                                    <td>M_14</td>
+                                                    <td>T_14</td>
+                                                    <td>W_14</td>
+                                                    <td>R_14</td>
+                                                    <td>F_14</td>
                                                 </tr>
-                                                <tr>
-                                                    <td>3319</td>
-                                                    <td>10/21/2013</td>
-                                                    <td>2:13 PM</td>
-                                                    <td>$943.45</td>
+                                                <tr style="height:75px;">
+                                                    <td>M_15</td>
+                                                    <td>T_15</td>
+                                                    <td>W_15</td>
+                                                    <td>R_15</td>
+                                                    <td>F_15</td>
+                                                </tr>
+                                                <tr style="height:75px;">
+                                                    <td>M_16</td>
+                                                    <td>T_16</td>
+                                                    <td>W_16</td>
+                                                    <td>R_16</td>
+                                                    <td>F_16</td>
+                                                </tr>
+                                                <tr style="height:75px;">
+                                                    <td>M_17</td>
+                                                    <td>T_17</td>
+                                                    <td>W_17</td>
+                                                    <td>R_17</td>
+                                                    <td>F_17</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -597,10 +532,7 @@
                                     <!-- /.table-responsive -->
                                 </div>
                                 <!-- /.col-lg-4 (nested) -->
-                                <div class="col-lg-8">
-                                    <div id="morris-bar-chart"></div>
-                                </div>
-                                <!-- /.col-lg-8 (nested) -->
+
                             </div>
                             <!-- /.row -->
                         </div>
@@ -666,7 +598,7 @@
                                 <li>
                                     <div class="timeline-badge info"><i class="fa fa-save"></i>
                                     </div>
-                                    <div class="timeline-panel">
+                                    <div class="timeline-panel">Bar Chart
                                         <div class="timeline-heading">
                                             <h4 class="timeline-title">Lorem ipsum dolor</h4>
                                         </div>
@@ -724,54 +656,54 @@
                 <div class="col-lg-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bell fa-fw"></i> Notifications Panel
+                            <i class="fa fa-bell fa-fw"></i> Class Schedule Options
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="list-group">
-                                <a href="#" class="list-group-item">
-                                    <i class="fa fa-comment fa-fw"></i> New Comment
-                                    <span class="pull-right text-muted small"><em>4 minutes ago</em>
+                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(slot10,'blue');return false;">
+                                    <i class="fa fa-comment fa-fw"></i> {{ Class_Option_1 }}
+                                    <span class="pull-right text-muted small"><em>{{ Class_Option_1_Days }} : {{ Class_Option_1_Time }}</em>
                                     </span>
                                 </a>
                                 <a href="#" class="list-group-item">
-                                    <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                    <span class="pull-right text-muted small"><em>12 minutes ago</em>
+                                    <i class="fa fa-twitter fa-fw"></i> Class_Option_2
+                                    <span class="pull-right text-muted small"><em>Class_Op.Class_Name</em>
                                     </span>
                                 </a>
                                 <a href="#" class="list-group-item">
-                                    <i class="fa fa-envelope fa-fw"></i> Message Sent
-                                    <span class="pull-right text-muted small"><em>27 minutes ago</em>
+                                    <i class="fa fa-envelope fa-fw"></i> Class_Option_3
+                                    <span class="pull-right text-muted small"><em>Class_Op.Class_Name</em>
                                     </span>
                                 </a>
                                 <a href="#" class="list-group-item">
-                                    <i class="fa fa-tasks fa-fw"></i> New Task
-                                    <span class="pull-right text-muted small"><em>43 minutes ago</em>
+                                    <i class="fa fa-tasks fa-fw"></i> Class_Option_4
+                                    <span class="pull-right text-muted small"><em>Class_Op.Class_Name</em>
                                     </span>
                                 </a>
                                 <a href="#" class="list-group-item">
-                                    <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                    <span class="pull-right text-muted small"><em>11:32 AM</em>
+                                    <i class="fa fa-upload fa-fw"></i> Class_Option_5
+                                    <span class="pull-right text-muted small"><em>Class_Op.Class_Name</em>
                                     </span>
                                 </a>
                                 <a href="#" class="list-group-item">
-                                    <i class="fa fa-bolt fa-fw"></i> Server Crashed!
-                                    <span class="pull-right text-muted small"><em>11:13 AM</em>
+                                    <i class="fa fa-bolt fa-fw"></i> Class_Option_6
+                                    <span class="pull-right text-muted small"><em>Class_Op.Class_Name</em>
                                     </span>
                                 </a>
                                 <a href="#" class="list-group-item">
-                                    <i class="fa fa-warning fa-fw"></i> Server Not Responding
-                                    <span class="pull-right text-muted small"><em>10:57 AM</em>
+                                    <i class="fa fa-warning fa-fw"></i> Class_Option_7
+                                    <span class="pull-right text-muted small"><em>Class_Op.Class_Name</em>
                                     </span>
                                 </a>
                                 <a href="#" class="list-group-item">
-                                    <i class="fa fa-shopping-cart fa-fw"></i> New Order Placed
-                                    <span class="pull-right text-muted small"><em>9:49 AM</em>
+                                    <i class="fa fa-shopping-cart fa-fw"></i> Class_Option_8
+                                    <span class="pull-right text-muted small"><em>Class_Op.Class_Name</em>
                                     </span>
                                 </a>
                                 <a href="#" class="list-group-item">
-                                    <i class="fa fa-money fa-fw"></i> Payment Received
-                                    <span class="pull-right text-muted small"><em>Yesterday</em>
+                                    <i class="fa fa-money fa-fw"></i> Class_Option_9
+                                    <span class="pull-right text-muted small"><em>Class_Op.Class_Name</em>
                                     </span>
                                 </a>
                             </div>
@@ -921,23 +853,15 @@
     <!-- /#wrapper -->
 
     <!-- jQuery -->
-    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-
+    <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap-sb-admin-2-1.0.7/bower_components/jquery/dist/jquery.min.js') }}"></script>
     <!-- Metis Menu Plugin JavaScript -->
-    <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
-
+    <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap-sb-admin-2-1.0.7/bower_components/metisMenu/dist/metisMenu.min.js') }}"></script>
     <!-- Morris Charts JavaScript -->
-    <script src="../bower_components/raphael/raphael-min.js"></script>
-    <script src="../bower_components/morrisjs/morris.min.js"></script>
-    <script src="../js/morris-data.js"></script>
-
-    <!-- Custom Theme JavaScript -->
-    <script src="../dist/js/sb-admin-2.js"></script>
-
+    <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap-sb-admin-2-1.0.7/bower_components/raphael/raphael-min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap-sb-admin-2-1.0.7/bower_components/morrisjs/morris.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap-sb-admin-2-1.0.7/js/morris-data.js') }}"></script>
+    <!--bootstrap and custom bootstrap js files-->
+    <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap-sb-admin-2-1.0.7/dist/js/sb-admin-2.js') }}"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </body>
-
-</html>
-{% end block %}
+{% endblock %}
