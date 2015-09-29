@@ -1,20 +1,28 @@
 {% extends "layout.html" %}
-{% block layout %}
+{% block body %}
 <script language="JavaScript">
 <!--
-function setBgColorOfCell(id,sColor) {
- var elem;
- if (document.getElementById) {
-  if (elem=document.getElementById(id)) {
-   if (elem.style) {
-    elem.style.backgroundColor=sColor;
-    return 1;  // success
-   }
-  }
- }
- return 0;  // failure
+function setBgColorOfCell(id1,id2,id3,sColor) {
+    var elem;
+    if (document.getElementById) {
+        if (elem = document.getElementById(id1)) {
+            if (elem.style) {
+                elem.style.backgroundColor = sColor;
+            }
+        }
+        if (elem = document.getElementById(id2)) {
+            if (elem.style) {
+                elem.style.backgroundColor = sColor;
+            }
+        }
+        if (elem = document.getElementById(id3)) {
+            if (elem.style) {
+                elem.style.backgroundColor = sColor;
+            }
+        }
+        return 1;  // success
+    }
 }
-
 function getBgColorOfCell(id) {
  var elem;
  if (document.getElementById) {
@@ -38,8 +46,12 @@ function setColorOfCell(id,sColor) {
  return 0;  // failure
 }
 
-var slot10 = '{{ slot1 }}';
-
+var slot11 = '{{ slot11 }}';
+var slot12 = '{{ slot12 }}';
+var slot13 = '{{ slot13 }}';
+var slot21 = '{{ slot21 }}';
+var slot22 = '{{ slot22 }}';
+var slot23 = '{{ slot23 }}';
 //-->
 </script>
 
@@ -365,58 +377,12 @@ var slot10 = '{{ slot1 }}';
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Welcome Back {{ username }}</h1>
+                    <h1 class="page-header">Welcome back {{ username }}</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-            <div class="row">
-                <div class="col-lg-3 col-md-6">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-comments fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">26</div>
-                                    <div>New Notifcations</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="panel panel-red">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-support fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">13</div>
-                                    <div>New Features</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <!-- /.row -->
+
             <div class="row">
                 <div class="col-lg-8">
                    <!-- /.panel -->
@@ -448,6 +414,7 @@ var slot10 = '{{ slot1 }}';
                                         <table class="table table-bordered table-hover table-striped">
                                             <thead>
                                                 <tr>
+                                                    <th style="width:50px;">Time</th>
                                                     <th>Mon</th>
                                                     <th>Tue</th>
                                                     <th>Wed</th>
@@ -456,75 +423,149 @@ var slot10 = '{{ slot1 }}';
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr style="height:75px;">
-                                                    <td id="Monday_8">M_8</td >
-                                                    <td>T_8</td>
-                                                    <td>W_8</td>
-                                                    <td>R_8</td>
-                                                    <td>F_8</td>
+                                                <tr style="height:60px;">
+                                                    <td>8:00</td>
+                                                    <td id="Mon_8AM"></td>
+                                                    <td id="Tue_8AM"></td>
+                                                    <td id="Wed_8AM"></td>
+                                                    <td id="Thu_8AM"></td>
+                                                    <td id="Fri_8AM"></td>
                                                 </tr>
-                                                <tr style="height:75px;">
-                                                    <td>M_9</td>
-                                                    <td>T_9</td>
-                                                    <td>W_9</td>
-                                                    <td>R_9</td>
-                                                    <td>F_9</td>
+                                                <tr style="height:60px;">
+                                                    <td>8:30</td>
+                                                    <td id="Mon_8:30AM"></td>
+                                                    <td id="Tue_8:30AM"></td>
+                                                    <td id="Wed_8:30AM"></td>
+                                                    <td id="Thu_8:30AM"></td>
+                                                    <td id="Fri_8:30AM"></td>
                                                 </tr>
-                                                <tr style="height:75px;">
-                                                    <td id="Monday_10">M_10</td>
-                                                    <td>T_10</td>
-                                                    <td>W_10</td>
-                                                    <td>R_10</td>
-                                                    <td>F_10</td>
+                                                <tr style="height:60px;">
+                                                    <td>9:00</td>
+                                                    <td id="Mon_9AM"></td>
+                                                    <td id="Tue_9AM"></td>
+                                                    <td id="Wed_9AM"></td>
+                                                    <td id="Thu_9AM"></td>
+                                                    <td id="Fri_9AM"></td>
                                                 </tr>
-                                                <tr style="height:75px;">
-                                                    <td>M_11</td>
-                                                    <td>T_11</td>
-                                                    <td>W_11</td>
-                                                    <td>R_11</td>
-                                                    <td>F_11</td>
+                                                <tr style="height:60px;">
+                                                    <td>9:30</td>
+                                                    <td id="Mon_9:30AM"></td>
+                                                    <td id="Tue_9:30AM"></td>
+                                                    <td id="Wed_9:30AM"></td>
+                                                    <td id="Thu_9:30AM"></td>
+                                                    <td id="Fri_9:30AM"></td>
                                                 </tr>
-                                                <tr style="height:75px;">
-                                                    <td>M_12</td>
-                                                    <td>T_12</td>
-                                                    <td>W_12</td>
-                                                    <td>R_12</td>
-                                                    <td>F_12</td>
+                                                <tr style="height:60px;">
+                                                    <td>10:00</td>
+                                                    <td id="Mon_10AM"></td>
+                                                    <td id="Tue_10AM"></td>
+                                                    <td id="Wed_10AM"></td>
+                                                    <td id="Thu_10AM"></td>
+                                                    <td id="Fri_10AM"></td>
                                                 </tr>
-                                                <tr style="height:75px;">
-                                                    <td>M_13</td>
-                                                    <td>T_13</td>
-                                                    <td>W_13</td>
-                                                    <td>R_13</td>
-                                                    <td>F_13</td>
+                                                <tr style="height:60px;">
+                                                    <td>10:30</td>
+                                                    <td id="Mon_10:30AM"></td>
+                                                    <td id="Tue_10:30AM"></td>
+                                                    <td id="Wed_10:30AM"></td>
+                                                    <td id="Thu_10:30AM"></td>
+                                                    <td id="Fri_10:30AM"></td>
                                                 </tr>
-                                                <tr style="height:75px;">
-                                                    <td>M_14</td>
-                                                    <td>T_14</td>
-                                                    <td>W_14</td>
-                                                    <td>R_14</td>
-                                                    <td>F_14</td>
+                                                <tr style="height:60px;">
+                                                    <td>11:00</td>
+                                                    <td id="Mon_11AM"></td>
+                                                    <td id="Tue_11AM"></td>
+                                                    <td id="Wed_11AM"></td>
+                                                    <td id="Thu_11AM"></td>
+                                                    <td id="Fri_11AM"></td>
                                                 </tr>
-                                                <tr style="height:75px;">
-                                                    <td>M_15</td>
-                                                    <td>T_15</td>
-                                                    <td>W_15</td>
-                                                    <td>R_15</td>
-                                                    <td>F_15</td>
+                                                <tr style="height:60px;">
+                                                   <td>11:30</td>
+                                                    <td id="Mon_11:30AM"></td>
+                                                    <td id="Tue_11:30AM"></td>
+                                                    <td id="Wed_11:30AM"></td>
+                                                    <td id="Thu_11:30AM"></td>
+                                                    <td id="Fri_11:30AM"></td>
                                                 </tr>
-                                                <tr style="height:75px;">
-                                                    <td>M_16</td>
-                                                    <td>T_16</td>
-                                                    <td>W_16</td>
-                                                    <td>R_16</td>
-                                                    <td>F_16</td>
+                                                <tr style="height:60px;">
+                                                    <td>12:00</td>
+                                                    <td id="Mon_12PM"></td>
+                                                    <td id="Tue_12PM"></td>
+                                                    <td id="Wed_12PM"></td>
+                                                    <td id="Thu_12PM"></td>
+                                                    <td id="Fri_12PM"></td>
                                                 </tr>
-                                                <tr style="height:75px;">
-                                                    <td>M_17</td>
-                                                    <td>T_17</td>
-                                                    <td>W_17</td>
-                                                    <td>R_17</td>
-                                                    <td>F_17</td>
+                                                <tr style="height:60px;">
+                                                    <td>12:30</td>
+                                                    <td id="Mon_12:30PM"></td>
+                                                    <td id="Tue_12:30PM"></td>
+                                                    <td id="Wed_12:30PM"></td>
+                                                    <td id="Thu_12:30PM"></td>
+                                                    <td id="Fri_12:30PM"></td>
+                                                </tr>
+                                                <tr style="height:60px;">
+                                                    <td>1:00</td>
+                                                    <td id="Mon_1PM"></td>
+                                                    <td id="Tue_1PM"></td>
+                                                    <td id="Wed_1PM"></td>
+                                                    <td id="Thu_1PM"></td>
+                                                    <td id="Fri_1PM"></td>
+                                                </tr>
+                                                <tr style="height:60px;">
+                                                    <td>1:30</td>
+                                                    <td id="Mon_1:30PM"></td>
+                                                    <td id="Tue_1:30PM"></td>
+                                                    <td id="Wed_1:30PM"></td>
+                                                    <td id="Thu_1:30PM"></td>
+                                                    <td id="Fri_1:30PM"></td>
+                                                </tr>
+                                                 <tr style="height:60px;">
+                                                    <td>2:00</td>
+                                                    <td id="Mon_2PM"></td>
+                                                    <td id="Tue_2PM"></td>
+                                                    <td id="Wed_2PM"></td>
+                                                    <td id="Thu_2PM"></td>
+                                                    <td id="Fri_2PM"></td>
+                                                </tr>
+                                                <tr style="height:60px;">
+                                                    <td>2:30</td>
+                                                    <td id="Mon_2:30PM"></td>
+                                                    <td id="Tue_2:30PM"></td>
+                                                    <td id="Wed_2:30PM"></td>
+                                                    <td id="Thu_2:30PM"></td>
+                                                    <td id="Fri_2:30PM"></td>
+                                                </tr>
+                                                <tr style="height:60px;">
+                                                    <td>3:00</td>
+                                                    <td id="Mon_3PM"></td>
+                                                    <td id="Tue_3PM"></td>
+                                                    <td id="Wed_3PM"></td>
+                                                    <td id="Thu_3PM"></td>
+                                                    <td id="Fri_3PM"></td>
+                                                </tr>
+                                                 <tr style="height:60px;">
+                                                    <td>3:30</td>
+                                                    <td id="Mon_3:30PM"></td>
+                                                    <td id="Tue_3:30PM"></td>
+                                                    <td id="Wed_3:30PM"></td>
+                                                    <td id="Thu_3:30PM"></td>
+                                                    <td id="Fri_3:30PM"></td>
+                                                </tr>
+                                                <tr style="height:60px;">
+                                                    <td>4:00</td>
+                                                    <td id="Mon_4PM"></td>
+                                                    <td id="Tue_4PM"></td>
+                                                    <td id="Wed_4PM"></td>
+                                                    <td id="Thu_4PM"></td>
+                                                    <td id="Fri_4PM"></td>
+                                                </tr>
+                                                <tr style="height:60px;">
+                                                    <td>4:30</td>
+                                                    <td id="Mon_4:30PM"></td>
+                                                    <td id="Tue_4:30PM"></td>
+                                                    <td id="Wed_4:30PM"></td>
+                                                    <td id="Thu_4:30PM"></td>
+                                                    <td id="Fri_4:30PM"></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -539,118 +580,6 @@ var slot10 = '{{ slot1 }}';
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-clock-o fa-fw"></i> Responsive Timeline
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <ul class="timeline">
-                                <li>
-                                    <div class="timeline-badge"><i class="fa fa-check"></i>
-                                    </div>
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                            <p><small class="text-muted"><i class="fa fa-clock-o"></i> 11 hours ago via Twitter</small>
-                                            </p>
-                                        </div>
-                                        <div class="timeline-body">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero laboriosam dolor perspiciatis omnis exercitationem. Beatae, officia pariatur? Est cum veniam excepturi. Maiores praesentium, porro voluptas suscipit facere rem dicta, debitis.</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="timeline-inverted">
-                                    <div class="timeline-badge warning"><i class="fa fa-credit-card"></i>
-                                    </div>
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                        </div>
-                                        <div class="timeline-body">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem dolorem quibusdam, tenetur commodi provident cumque magni voluptatem libero, quis rerum. Fugiat esse debitis optio, tempore. Animi officiis alias, officia repellendus.</p>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium maiores odit qui est tempora eos, nostrum provident explicabo dignissimos debitis vel! Adipisci eius voluptates, ad aut recusandae minus eaque facere.</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="timeline-badge danger"><i class="fa fa-bomb"></i>
-                                    </div>
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                        </div>
-                                        <div class="timeline-body">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus numquam facilis enim eaque, tenetur nam id qui vel velit similique nihil iure molestias aliquam, voluptatem totam quaerat, magni commodi quisquam.</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="timeline-inverted">
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                        </div>
-                                        <div class="timeline-body">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates est quaerat asperiores sapiente, eligendi, nihil. Itaque quos, alias sapiente rerum quas odit! Aperiam officiis quidem delectus libero, omnis ut debitis!</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="timeline-badge info"><i class="fa fa-save"></i>
-                                    </div>
-                                    <div class="timeline-panel">Bar Chart
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                        </div>
-                                        <div class="timeline-body">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis minus modi quam ipsum alias at est molestiae excepturi delectus nesciunt, quibusdam debitis amet, beatae consequuntur impedit nulla qui! Laborum, atque.</p>
-                                            <hr>
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                    <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Action</a>
-                                                    </li>
-                                                    <li><a href="#">Another action</a>
-                                                    </li>
-                                                    <li><a href="#">Something else here</a>
-                                                    </li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#">Separated link</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                        </div>
-                                        <div class="timeline-body">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi fuga odio quibusdam. Iure expedita, incidunt unde quis nam! Quod, quisquam. Officia quam qui adipisci quas consequuntur nostrum sequi. Consequuntur, commodi.</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="timeline-inverted">
-                                    <div class="timeline-badge success"><i class="fa fa-graduation-cap"></i>
-                                    </div>
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                        </div>
-                                        <div class="timeline-body">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt obcaecati, quaerat tempore officia voluptas debitis consectetur culpa amet, accusamus dolorum fugiat, animi dicta aperiam, enim incidunt quisquam maxime neque eaque.</p>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
                 </div>
                 <!-- /.col-lg-8 -->
                 <div class="col-lg-4">
@@ -661,47 +590,47 @@ var slot10 = '{{ slot1 }}';
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="list-group">
-                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(slot10,'blue');return false;">
+                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(slot11,slot12,slot13,'blue');return false;">
                                     <i class="fa fa-comment fa-fw"></i> {{ Class_Option_1 }}
                                     <span class="pull-right text-muted small"><em>{{ Class_Option_1_Days }} : {{ Class_Option_1_Time }}</em>
                                     </span>
                                 </a>
-                                <a href="#" class="list-group-item">
-                                    <i class="fa fa-twitter fa-fw"></i> Class_Option_2
-                                    <span class="pull-right text-muted small"><em>Class_Op.Class_Name</em>
+                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(slot21,slot22,slot23,'blue');return false;">
+                                    <i class="fa fa-twitter fa-fw"></i> {{ Class_Option_2 }}
+                                    <span class="pull-right text-muted small"><em>{{ Class_Option_2_Days }} : {{ Class_Option_2_Time }}</em>
                                     </span>
                                 </a>
-                                <a href="#" class="list-group-item">
+                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(slot1,slot2,slot3,'blue');return false;">
                                     <i class="fa fa-envelope fa-fw"></i> Class_Option_3
                                     <span class="pull-right text-muted small"><em>Class_Op.Class_Name</em>
                                     </span>
                                 </a>
-                                <a href="#" class="list-group-item">
+                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(slot1,slot2,slot3,'blue');return false;">
                                     <i class="fa fa-tasks fa-fw"></i> Class_Option_4
                                     <span class="pull-right text-muted small"><em>Class_Op.Class_Name</em>
                                     </span>
                                 </a>
-                                <a href="#" class="list-group-item">
+                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(slot1,slot2,slot3,'blue');return false;">
                                     <i class="fa fa-upload fa-fw"></i> Class_Option_5
                                     <span class="pull-right text-muted small"><em>Class_Op.Class_Name</em>
                                     </span>
                                 </a>
-                                <a href="#" class="list-group-item">
+                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(slot1,slot2,slot3,'blue');return false;">
                                     <i class="fa fa-bolt fa-fw"></i> Class_Option_6
                                     <span class="pull-right text-muted small"><em>Class_Op.Class_Name</em>
                                     </span>
                                 </a>
-                                <a href="#" class="list-group-item">
+                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(slot1,slot2,slot3,'blue');return false;">
                                     <i class="fa fa-warning fa-fw"></i> Class_Option_7
                                     <span class="pull-right text-muted small"><em>Class_Op.Class_Name</em>
                                     </span>
                                 </a>
-                                <a href="#" class="list-group-item">
+                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(slot1,slot2,slot3,'blue');return false;">
                                     <i class="fa fa-shopping-cart fa-fw"></i> Class_Option_8
                                     <span class="pull-right text-muted small"><em>Class_Op.Class_Name</em>
                                     </span>
                                 </a>
-                                <a href="#" class="list-group-item">
+                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(slot1,slot2,slot3,'blue');return false;">
                                     <i class="fa fa-money fa-fw"></i> Class_Option_9
                                     <span class="pull-right text-muted small"><em>Class_Op.Class_Name</em>
                                     </span>

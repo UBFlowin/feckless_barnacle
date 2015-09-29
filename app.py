@@ -122,6 +122,43 @@ class UBClasses(db.Model):
 
 
 '''-----------------------------------------------
+        Classes Class
+-----------------------------------------------'''
+class UBRecitation(db.Model):
+    __tablename__ = "ubrecitations"
+
+    ID = db.Column(db.Integer, primary_key=True)
+    RECITATION_ID = db.Column(db.Integer, db.ForeignKey('ubclasses.ID'))
+    SECTION = db.Column(db.String(50), nullable=False)
+    TYPE = db.Column(db.String(50), nullable=False)
+    DAYS = db.Column(db.String(50), nullable=False)
+    TIME = db.Column(db.String(50), nullable=False)
+    BUILDING = db.Column(db.String(50), nullable=False)
+    ROOM_NUMBER = db.Column(db.String(50), nullable=False)
+    LOCATION = db.Column(db.String(50), nullable=False)
+    STATUS = db.Column(db.String(50), nullable=False)
+    RESERVED = db.Column(db.String(50), nullable=False)
+
+
+    def __init__(self, id, recitation, section, type, days, time, building, room_number, location, status, reserved, semester):
+        self.ID = id
+        self.RECITATION_ID = ubclass
+        self.SECTION = section
+        self.TYPE = type
+        self.DAYS = days
+        self.TIME = time
+        self.BUILDING = building
+        self.ROOM_NUMBER = room_number
+        self.LOCATION = location
+        self.STATUS = status
+        self.RESERVED = reserved
+        self.SEMESTER = semester
+
+    def __repr__(self):
+        return '<recitation {}'.format(self.RECITATION_ID)
+
+
+'''-----------------------------------------------
         Schedule Class
 -----------------------------------------------'''
 class Schedule(db.Model):
@@ -201,32 +238,71 @@ def login_user():
 -----------------------------------------------'''
 @app.route('/profile')
 def profile():
-    class_slot_1 = 'empty'
-    class_slot_2 = 'empty'
-    class_slot_3 = 'empty'
-    result = UBClasses.query.filter_by(ID=1).first()
-    if result.DAYS == 'MWF':
-        class_slot_1 = 'Mon'
-        class_slot_2 = 'Wed'
-        class_slot_3 = 'Fri'
-    elif result.DAYS == 'TR':
-        class_slot_1 = 'Tue'
-        class_slot_2 = 'Thu'
-    elif result.DAYS =="M":
-        class_slot_1 = "Mon"
-    elif result.DAYS =="T":
-        class_slot_1 = "Tue"
-    elif result.DAYS =="R":
-        class_slot_1 = "Thu"
+    class1_slot_1 = 'empty'
+    class1_slot_2 = 'empty'
+    class1_slot_3 = 'empty'
+    result = UBClasses.query.filter_by(DEPARTMENT="CSE").all()
+    if result[0].DAYS == 'MWF':
+        class1_slot_1 = 'Mon'
+        class1_slot_2 = 'Wed'
+        class1_slot_3 = 'Fri'
+    elif result[0].DAYS == 'TR':
+        class1_slot_1 = 'Tue'
+        class1_slot_2 = 'Thu'
+    elif result[0].DAYS == "M":
+        class1_slot_1 = "Mon"
+    elif result[0].DAYS == "T":
+        class1_slot_1 = "Tue"
+    elif result[0].DAYS == "R":
+        class1_slot_1 = "Thu"
+
+
+    class1_slot_1 = class1_slot_1 + '_' + result[0].TIME
+    class1_slot_2 = class1_slot_2 + '_' + result[0].TIME
+    class1_slot_3 = class1_slot_3 + '_' + result[0].TIME
+
+    class2_slot_1 = 'empty'
+    class2_slot_2 = 'empty'
+    class2_slot_3 = 'empty'
+
+
+    if result[1].DAYS == 'MWF':
+        class2_slot_1 = 'Mon'
+        class2_slot_2 = 'Wed'
+        class2_slot_3 = 'Fri'
+    elif result[1].DAYS == 'TR':
+        class2_slot_1 = 'Tue'
+        class2_slot_2 = 'Thu'
+    elif result[1].DAYS == "M":
+        class2_slot_1 = "Mon"
+    elif result[1].DAYS == "T":
+        class2_slot_1 = "Tue"
+    elif result[1].DAYS == "R":
+        class2_slot_1 = "Thu"
+
+    class2_slot_1 = class2_slot_1 + '_' + result[1].TIME
+    class2_slot_2 = class2_slot_2 + '_' + result[1].TIME
+    class2_slot_3 = class2_slot_3 + '_' + result[1].TIME
+
 
     return render_template("profile.html",
                            username="sethkara",
-                           Class_Option_1=result.UBCLASS,
-                           Class_Option_1_Days=result.DAYS,
-                           Class_Option_1_Time=result.TIME,
-                           slot1=class_slot_1,
-                           slot2=class_slot_2,
-                           slot3=class_slot_3)
+                           Class_Option_1=result[0].UBCLASS,
+                           Class_Option_1_Days=result[0].DAYS,
+                           Class_Option_1_Time=result[0].TIME,
+                           slot11=class1_slot_1,
+                           slot12=class1_slot_2,
+                           slot13=class1_slot_3,
+
+                           Class_Option_2=result[1].UBCLASS,
+                           Class_Option_2_Days=result[1].DAYS,
+                           Class_Option_2_Time=result[1].TIME,
+                           slot21=class2_slot_1,
+                           slot22=class2_slot_2,
+                           slot23=class2_slot_3)
+
+
+#TODO:   Turn into a loop and check for first null entry.  This is a proof of concept
 
 
 '''-----------------------------------------------
