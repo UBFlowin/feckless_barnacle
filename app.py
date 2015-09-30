@@ -326,7 +326,7 @@ def getClassGroup():
              'RESERVED': result.RESERVED,
              'SEMESTER': result.SEMESTER}
         json_results.append(d)
-    return jsonify(classes=json_results)
+    return jsonify(json_results)
 
 
 
