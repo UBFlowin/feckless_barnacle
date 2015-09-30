@@ -142,7 +142,7 @@ class UBRecitation(db.Model):
 
     def __init__(self, id, recitation, section, type, days, time, building, room_number, location, status, reserved, semester):
         self.ID = id
-        self.RECITATION_ID = ubclass
+        self.RECITATION_ID = id
         self.SECTION = section
         self.TYPE = type
         self.DAYS = days
@@ -302,6 +302,31 @@ def profile():
                            Class_Option_0_Days=result[0].DAYS,Class_Option_0_Time=result[0].TIME,
                            Class_Option_1_Days=result[1].DAYS,Class_Option_1_Time=result[1].TIME)
 
+
+@app.route('/getnextclassgroup', methods=['GET'])
+def getClassGroup():
+    if request.method == 'GET':
+        results = UBClasses.query.limit(10).offset(0).all()
+
+    json_results = []
+    for result in results:
+        d = {'ID': result.ID,
+             'CLASS': result.UBCLASS,
+             'DEPARTMENT': result.DEPARTMENT,
+             'SECTION': result.SECTION,
+             'TYPE': result.TYPE,
+             'DAYS': result.DAYS,
+             'TIME': result.TIME,
+             'BUILDING': result.BUILDING,
+             'ROOM_NUMBER': result.ROOM_NUMBER,
+             'LOCATION': result.LOCATION,
+             'PROFESSOR_ID': result.PROFESSOR_ID,
+             'PROFESSOR': result.PROFESSOR,
+             'STATUS': result.STATUS,
+             'RESERVED': result.RESERVED,
+             'SEMESTER': result.SEMESTER}
+        json_results.append(d)
+    return jsonify(classes=json_results)
 
 
 

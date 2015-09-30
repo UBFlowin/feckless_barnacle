@@ -1,5 +1,16 @@
 {% extends "layout.html" %}
 {% block body %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        $("SearchButton").click(function() {
+            $.getJSON('/getnextclassgroup', function(dat) {
+                console.log("Ajax received data!");
+                console.dir(dat);
+            });
+        });
+    });
+</script>
 
 <script language="JavaScript">
 <!--
@@ -643,7 +654,7 @@ var c11_slot_3 = '{{ session[35] }}';
                                 </a>
                             </div>
                             <!-- /.list-group -->
-                            <a href="#" class="btn btn-default btn-block">Search Other Classes</a>
+                            <a href="/getnextclassgroup" id="SearchButton" class="btn btn-default btn-block">Search Other Classes</a>
                         </div>
                         <!-- /.panel-body -->
                     </div>
