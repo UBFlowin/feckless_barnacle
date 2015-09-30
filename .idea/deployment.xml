@@ -5,7 +5,7 @@
       <paths name="Server">
         <serverdata>
           <mappings>
-            <mapping deploy="/ubflow_project" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/ubflow_project/feckless_barnacle" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
