@@ -1,0 +1,474 @@
+{% extends "layout.html" %}
+{% block body %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        $("#SearchButton").click(function() {
+            $.getJSON('/getnextclassgroup', function(dat) {
+                console.log("Ajax received data!");
+                console.dir(dat);
+            });
+        });
+    });
+</script>
+
+
+<script language="JavaScript">
+<!--
+
+function changeText(id1,id2,id3,text) {
+    if (elem = document.getElementById(id1)){
+        elem.innerHTML = text;
+    }
+    if (elem = document.getElementById(id2)){
+        elem.innerHTML = text;
+    }
+    if (elem = document.getElementById(id3)){
+        elem.innerHTML = text;
+    }
+}
+
+function setBgColorOfCell(id1,id2,id3,sColor,cOption) {
+    var elem;
+    var currText = document.getElementById(id1).innerText;
+    if(currText == cOption) {
+        sColor = 'White';
+        cOption = " ";
+    }
+    else {
+        sColor = 'CornflowerBlue';
+    }
+    if (elem = document.getElementById(id1)) {
+        if (elem.style) {
+            elem.style.backgroundColor = sColor;
+        }
+    }
+    if (elem = document.getElementById(id2)) {
+        if (elem.style) {
+            elem.style.backgroundColor = sColor;
+        }
+    }
+    if (elem = document.getElementById(id3)) {
+        if (elem.style) {
+            elem.style.backgroundColor = sColor;
+        }
+    }
+    changeText(id1,id2,id3,cOption);
+    return 1;  // success
+}
+function getBgColorOfCell(id) {
+ var elem;
+ if (document.getElementById) {
+  if (elem=document.getElementById(id)) {
+   if (elem.style) return ''+elem.style.backgroundColor;
+  }
+ }
+ return 'undefined';
+}
+
+var cOption0 = '{{ Class_Option_0 }}';
+var cOption1 = '{{ Class_Option_1 }}';
+var cOption2 = '{{ Class_Option_2 }}';
+var cOption3 = '{{ Class_Option_3 }}';
+var cOption4 = '{{ Class_Option_4 }}';
+var cOption5 = '{{ Class_Option_5 }}';
+var cOption6 = '{{ Class_Option_6 }}';
+var cOption7 = '{{ Class_Option_7 }}';
+var cOption8 = '{{ Class_Option_8 }}';
+var cOption9 = '{{ Class_Option_9 }}';
+var cOption10 = '{{ Class_Option_10 }}';
+var cOption11 = '{{ Class_Option_11 }}';
+
+
+var c0_slot_1 = '{{ session[0] }}';
+var c0_slot_2 = '{{ session[1] }}';
+var c0_slot_3 = '{{ session[2] }}';
+var c1_slot_1 = '{{ session[3] }}';
+var c1_slot_2 = '{{ session[4] }}';
+var c1_slot_3 = '{{ session[5] }}';
+var c2_slot_1 = '{{ session[6] }}';
+var c2_slot_2 = '{{ session[7] }}';
+var c2_slot_3 = '{{ session[8] }}';
+var c3_slot_1 = '{{ session[9] }}';
+var c3_slot_2 = '{{ session[10] }}';
+var c3_slot_3 = '{{ session[11] }}';
+var c4_slot_1 = '{{ session[12] }}';
+var c4_slot_2 = '{{ session[13] }}';
+var c4_slot_3 = '{{ session[14] }}';
+var c5_slot_1 = '{{ session[15] }}';
+var c5_slot_2 = '{{ session[16] }}';
+var c5_slot_3 = '{{ session[17] }}';
+var c6_slot_1 = '{{ session[18] }}';
+var c6_slot_2 = '{{ session[19] }}';
+var c6_slot_3 = '{{ session[20] }}';
+var c7_slot_1 = '{{ session[21] }}';
+var c7_slot_2 = '{{ session[22] }}';
+var c7_slot_3 = '{{ session[23] }}';
+var c8_slot_1 = '{{ session[24] }}';
+var c8_slot_2 = '{{ session[25] }}';
+var c8_slot_3 = '{{ session[26] }}';
+var c9_slot_1 = '{{ session[27] }}';
+var c9_slot_2 = '{{ session[28] }}';
+var c9_slot_3 = '{{ session[29] }}';
+var c10_slot_1 = '{{ session[30] }}';
+var c10_slot_2 = '{{ session[31] }}';
+var c10_slot_3 = '{{ session[32] }}';
+var c11_slot_1 = '{{ session[33] }}';
+var c11_slot_2 = '{{ session[34] }}';
+var c11_slot_3 = '{{ session[35] }}';
+//-->
+</script>
+
+<body>
+    <div id="wrapper">
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Welcome back {{ username }}</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bell fa-fw"></i> Choose a course you'd like to take...
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="list-group">
+                                <a href="#" class="list-group-item">
+                                    <i class="fa fa-question-circle"></i> {{ Class_Option_0 }}
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <i class="fa fa-question-circle"></i> {{ Class_Option_1 }}
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <i class="fa fa-question-circle"></i> {{ Class_Option_2 }}
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <i class="fa fa-question-circle"></i> {{ Class_Option_3 }}
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <i class="fa fa-question-circle"></i> {{ Class_Option_4 }}
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <i class="fa fa-question-circle"></i> {{ Class_Option_5 }}
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <i class="fa fa-question-circle"></i> {{ Class_Option_6 }}
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <i class="fa fa-question-circle"></i> {{ Class_Option_7 }}
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <i class="fa fa-question-circle"></i> {{ Class_Option_8 }}
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <i class="fa fa-question-circle"></i> {{ Class_Option_9 }}
+                                </a>
+                            </div>
+                            <!-- /.list-group -->
+                            <a href="#" id="SearchButton" class="btn btn-default btn-block">Search Other Classes</a>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+                <div class="col-lg-6">
+                   <!-- /.panel -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Projected Weekly Schedule
+                            <div class="pull-right">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                        Actions
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu pull-right" role="menu">
+                                        <li><a href="#">Action</a>
+                                        </li>
+                                        <li><a href="#">View Current Semester</a>
+                                        </li>
+                                        <li><a href="#">View Next Semester</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width:50px;">Time</th>
+                                                    <th>Mon</th>
+                                                    <th>Tue</th>
+                                                    <th>Wed</th>
+                                                    <th>Thu</th>
+                                                    <th>Fri</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr style="height:40px;">
+                                                    <td>8:00</td>
+                                                    <td id="Mon_8AM"></td>
+                                                    <td id="Tue_8AM"></td>
+                                                    <td id="Wed_8AM"></td>
+                                                    <td id="Thu_8AM"></td>
+                                                    <td id="Fri_8AM"></td>
+                                                </tr>
+                                                <tr style="height:40px;">
+                                                    <td>8:30</td>
+                                                    <td id="Mon_8:30AM"></td>
+                                                    <td id="Tue_8:30AM"></td>
+                                                    <td id="Wed_8:30AM"></td>
+                                                    <td id="Thu_8:30AM"></td>
+                                                    <td id="Fri_8:30AM"></td>
+                                                </tr>
+                                                <tr style="height:40px;">
+                                                    <td>9:00</td>
+                                                    <td id="Mon_9AM"></td>
+                                                    <td id="Tue_9AM"></td>
+                                                    <td id="Wed_9AM"></td>
+                                                    <td id="Thu_9AM"></td>
+                                                    <td id="Fri_9AM"></td>
+                                                </tr>
+                                                <tr style="height:40px;">
+                                                    <td>9:30</td>
+                                                    <td id="Mon_9:30AM"></td>
+                                                    <td id="Tue_9:30AM"></td>
+                                                    <td id="Wed_9:30AM"></td>
+                                                    <td id="Thu_9:30AM"></td>
+                                                    <td id="Fri_9:30AM"></td>
+                                                </tr>
+                                                <tr style="height:40px;">
+                                                    <td>10:00</td>
+                                                    <td id="Mon_10AM"></td>
+                                                    <td id="Tue_10AM"></td>
+                                                    <td id="Wed_10AM"></td>
+                                                    <td id="Thu_10AM"></td>
+                                                    <td id="Fri_10AM"></td>
+                                                </tr>
+                                                <tr style="height:40px;">
+                                                    <td>10:30</td>
+                                                    <td id="Mon_10:30AM"></td>
+                                                    <td id="Tue_10:30AM"></td>
+                                                    <td id="Wed_10:30AM"></td>
+                                                    <td id="Thu_10:30AM"></td>
+                                                    <td id="Fri_10:30AM"></td>
+                                                </tr>
+                                                <tr style="height:40px;">
+                                                    <td>11:00</td>
+                                                    <td id="Mon_11AM"></td>
+                                                    <td id="Tue_11AM"></td>
+                                                    <td id="Wed_11AM"></td>
+                                                    <td id="Thu_11AM"></td>
+                                                    <td id="Fri_11AM"></td>
+                                                </tr>
+                                                <tr style="height:40px;">
+                                                   <td>11:30</td>
+                                                    <td id="Mon_11:30AM"></td>
+                                                    <td id="Tue_11:30AM"></td>
+                                                    <td id="Wed_11:30AM"></td>
+                                                    <td id="Thu_11:30AM"></td>
+                                                    <td id="Fri_11:30AM"></td>
+                                                </tr>
+                                                <tr style="height:40px;">
+                                                    <td>12:00</td>
+                                                    <td id="Mon_12PM"></td>
+                                                    <td id="Tue_12PM"></td>
+                                                    <td id="Wed_12PM"></td>
+                                                    <td id="Thu_12PM"></td>
+                                                    <td id="Fri_12PM"></td>
+                                                </tr>
+                                                <tr style="height:40px;">
+                                                    <td>12:30</td>
+                                                    <td id="Mon_12:30PM"></td>
+                                                    <td id="Tue_12:30PM"></td>
+                                                    <td id="Wed_12:30PM"></td>
+                                                    <td id="Thu_12:30PM"></td>
+                                                    <td id="Fri_12:30PM"></td>
+                                                </tr>
+                                                <tr style="height:40px;">
+                                                    <td>1:00</td>
+                                                    <td id="Mon_1PM"></td>
+                                                    <td id="Tue_1PM"></td>
+                                                    <td id="Wed_1PM"></td>
+                                                    <td id="Thu_1PM"></td>
+                                                    <td id="Fri_1PM"></td>
+                                                </tr>
+                                                <tr style="height:40px;">
+                                                    <td>1:30</td>
+                                                    <td id="Mon_1:30PM"></td>
+                                                    <td id="Tue_1:30PM"></td>
+                                                    <td id="Wed_1:30PM"></td>
+                                                    <td id="Thu_1:30PM"></td>
+                                                    <td id="Fri_1:30PM"></td>
+                                                </tr>
+                                                <tr style="height:40px;">
+                                                    <td>2:00</td>
+                                                    <td id="Mon_2PM"></td>
+                                                    <td id="Tue_2PM"></td>
+                                                    <td id="Wed_2PM"></td>
+                                                    <td id="Thu_2PM"></td>
+                                                    <td id="Fri_2PM"></td>
+                                                </tr>
+                                                <tr style="height:40px;">
+                                                    <td>2:30</td>
+                                                    <td id="Mon_2:30PM"></td>
+                                                    <td id="Tue_2:30PM"></td>
+                                                    <td id="Wed_2:30PM"></td>
+                                                    <td id="Thu_2:30PM"></td>
+                                                    <td id="Fri_2:30PM"></td>
+                                                </tr>
+                                                <tr style="height:40px;">
+                                                    <td>3:00</td>
+                                                    <td id="Mon_3PM"></td>
+                                                    <td id="Tue_3PM"></td>
+                                                    <td id="Wed_3PM"></td>
+                                                    <td id="Thu_3PM"></td>
+                                                    <td id="Fri_3PM"></td>
+                                                </tr>
+                                                 <tr style="height:40px;">
+                                                    <td>3:30</td>
+                                                    <td id="Mon_3:30PM"></td>
+                                                    <td id="Tue_3:30PM"></td>
+                                                    <td id="Wed_3:30PM"></td>
+                                                    <td id="Thu_3:30PM"></td>
+                                                    <td id="Fri_3:30PM"></td>
+                                                </tr>
+                                                <tr style="height:40px;">
+                                                    <td>4:00</td>
+                                                    <td id="Mon_4PM"></td>
+                                                    <td id="Tue_4PM"></td>
+                                                    <td id="Wed_4PM"></td>
+                                                    <td id="Thu_4PM"></td>
+                                                    <td id="Fri_4PM"></td>
+                                                </tr>
+                                                <tr style="height:40px;">
+                                                    <td>4:30</td>
+                                                    <td id="Mon_4:30PM"></td>
+                                                    <td id="Tue_4:30PM"></td>
+                                                    <td id="Wed_4:30PM"></td>
+                                                    <td id="Thu_4:30PM"></td>
+                                                    <td id="Fri_4:30PM"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.table-responsive -->
+                                </div>
+                                <!-- /.col-lg-4 (nested) -->
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-9 -->
+                <div class="col-lg-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bell fa-fw"></i> Class Schedule Options
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="list-group">
+                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(c0_slot_1,c0_slot_2,c0_slot_3,'CornflowerBlue', cOption0);return false;">
+                                    <i class="fa fa-cog fa-spin"></i> {{ Class_Option_0 }}
+                                    <span class="pull-right text-muted small"><em>{{ Class_Option_0_Days }} : {{ Class_Option_0_Time }}</em>
+                                    </span>
+                                </a>
+                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(c1_slot_1,c1_slot_2,c1_slot_3,'CornflowerBlue',cOption1);return false;">
+                                    <i class="fa fa-cog fa-spin"></i> {{ Class_Option_1 }}
+                                    <span class="pull-right text-muted small"><em>{{ Class_Option_1_Days }} : {{ Class_Option_1_Time }}</em>
+                                    </span>
+                                </a>
+                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(c2_slot_1,c2_slot_2,c2_slot_3,'CornflowerBlue',cOption2);return false;">
+                                    <i class="fa fa-cog fa-spin"></i> {{ Class_Option_2 }}
+                                    <span class="pull-right text-muted small"><em>{{ Class_Option_2_Days }} : {{ Class_Option_2_Time }}</em>
+                                    </span>
+                                </a>
+                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(c3_slot_1,c3_slot_2,c3_slot_3,'CornflowerBlue',cOption3);return false;">
+                                    <i class="fa fa-cog fa-spin"></i> {{ Class_Option_3 }}
+                                    <span class="pull-right text-muted small"><em>{{ Class_Option_3_Days }} : {{ Class_Option_3_Time }}</em>
+                                    </span>
+                                </a>
+                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(c4_slot_1,c4_slot_2,c4_slot_3,'CornflowerBlue',cOption4);return false;">
+                                    <i class="fa fa-cog fa-spin"></i> {{ Class_Option_4 }}
+                                    <span class="pull-right text-muted small"><em>{{ Class_Option_4_Days }} : {{ Class_Option_4_Time }}</em>
+                                    </span>
+                                </a>
+                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(c5_slot_1,c5_slot_2,c5_slot_3,'CornflowerBlue',cOption5);return false;">
+                                    <i class="fa fa-cog fa-spin"></i> {{ Class_Option_5 }}
+                                    <span class="pull-right text-muted small"><em>{{ Class_Option_5_Days }} : {{ Class_Option_5_Time }}</em>
+                                    </span>
+                                </a>
+                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(c6_slot_1,c6_slot_2,c6_slot_3,'CornflowerBlue',cOption6);return false;">
+                                    <i class="fa fa-cog fa-spin"></i> {{ Class_Option_6 }}
+                                    <span class="pull-right text-muted small"><em>{{ Class_Option_6_Days }} : {{ Class_Option_6_Time }}</em>
+                                    </span>
+                                </a>
+                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(c7_slot_1,c7_slot_2,c7_slot_3,'CornflowerBlue',cOption7);return false;">
+                                    <i class="fa fa-cog fa-spin"></i> {{ Class_Option_7 }}
+                                    <span class="pull-right text-muted small"><em>{{ Class_Option_7_Days }} : {{ Class_Option_7_Time }}</em>
+                                    </span>
+                                </a>
+                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(c8_slot_1,c8_slot_2,c8_slot_3,'CornflowerBlue',cOption8);return false;">
+                                    <i class="fa fa-cog fa-spin"></i> {{ Class_Option_8 }}
+                                    <span class="pull-right text-muted small"><em>{{ Class_Option_8_Days }} : {{ Class_Option_8_Time }}</em>
+                                    </span>
+                                </a>
+                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(c9_slot_1,c9_slot_2,c9_slot_3,'CornflowerBlue',cOption9);return false;">
+                                    <i class="fa fa-cog fa-spin"></i> {{ Class_Option_9 }}
+                                    <span class="pull-right text-muted small"><em>{{ Class_Option_9_Days }} : {{ Class_Option_9_Time }}</em>
+                                    </span>
+                                </a>
+                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(c10_slot_1,c10_slot_2,c10_slot_3,'CornflowerBlue',cOption10);return false;">
+                                    <i class="fa fa-cog fa-spin"></i> {{ Class_Option_10 }}
+                                    <span class="pull-right text-muted small"><em>{{ Class_Option_10_Days }} : {{ Class_Option_10_Time }}</em>
+                                    </span>
+                                </a>
+                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(c11_slot_1,c11_slot_2,c11_slot_3,'CornflowerBlue',cOption11);return false;">
+                                    <i class="fa fa-cog fa-spin"></i> {{ Class_Option_11 }}
+                                    <span class="pull-right text-muted small"><em>{{ Class_Option_11_Days }} : {{ Class_Option_11_Time }}</em>
+                                    </span>
+                                </a>
+                            </div>
+                            <!-- /.list-group -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-3 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap-sb-admin-2-1.0.7/bower_components/jquery/dist/jquery.min.js') }}"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap-sb-admin-2-1.0.7/bower_components/metisMenu/dist/metisMenu.min.js') }}"></script>
+    <!-- Morris Charts JavaScript -->
+    <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap-sb-admin-2-1.0.7/bower_components/raphael/raphael-min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap-sb-admin-2-1.0.7/bower_components/morrisjs/morris.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap-sb-admin-2-1.0.7/js/morris-data.js') }}"></script>
+    <!--bootstrap and custom bootstrap js files-->
+    <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap-sb-admin-2-1.0.7/dist/js/sb-admin-2.js') }}"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</body>
+{% endblock %}
