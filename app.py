@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, abort, make_response, g
+from flask import Flask, request, jsonify, render_template, abort, make_response, g, session
 from flask.ext.sqlalchemy import SQLAlchemy
 
 from flask.ext.httpauth import HTTPBasicAuth
@@ -241,7 +241,10 @@ def profile():
     class1_slot_1 = 'empty'
     class1_slot_2 = 'empty'
     class1_slot_3 = 'empty'
-    result = UBClasses.query.filter_by(DEPARTMENT="CSE").all()
+    result = UBClasses.query.filter_by(TYPE="LEC").all()
+
+
+
     if result[0].DAYS == 'MWF':
         class1_slot_1 = 'Mon'
         class1_slot_2 = 'Wed'
@@ -257,52 +260,50 @@ def profile():
         class1_slot_1 = "Thu"
 
 
-    class1_slot_1 = class1_slot_1 + '_' + result[0].TIME
-    class1_slot_2 = class1_slot_2 + '_' + result[0].TIME
-    class1_slot_3 = class1_slot_3 + '_' + result[0].TIME
+    session[0] = class1_slot_1 + '_' + result[0].TIME
+    session[1] = class1_slot_2 + '_' + result[0].TIME
+    session[2] = class1_slot_3 + '_' + result[0].TIME
 
-    class2_slot_1 = 'empty'
-    class2_slot_2 = 'empty'
-    class2_slot_3 = 'empty'
+    class1_slot_1 = 'empty'
+    class1_slot_2 = 'empty'
+    class1_slot_3 = 'empty'
 
 
     if result[1].DAYS == 'MWF':
-        class2_slot_1 = 'Mon'
-        class2_slot_2 = 'Wed'
-        class2_slot_3 = 'Fri'
+        class1_slot_1 = 'Mon'
+        class1_slot_2 = 'Wed'
+        class1_slot_3 = 'Fri'
     elif result[1].DAYS == 'TR':
-        class2_slot_1 = 'Tue'
-        class2_slot_2 = 'Thu'
+        class1_slot_1 = 'Tue'
+        class1_slot_2 = 'Thu'
     elif result[1].DAYS == "M":
-        class2_slot_1 = "Mon"
+        class1_slot_1 = "Mon"
     elif result[1].DAYS == "T":
-        class2_slot_1 = "Tue"
+        class1_slot_1 = "Tue"
     elif result[1].DAYS == "R":
-        class2_slot_1 = "Thu"
-
-    class2_slot_1 = class2_slot_1 + '_' + result[1].TIME
-    class2_slot_2 = class2_slot_2 + '_' + result[1].TIME
-    class2_slot_3 = class2_slot_3 + '_' + result[1].TIME
-
-
-    return render_template("profile.html",
-                           username="sethkara",
-                           Class_Option_1=result[0].UBCLASS,
-                           Class_Option_1_Days=result[0].DAYS,
-                           Class_Option_1_Time=result[0].TIME,
-                           slot11=class1_slot_1,
-                           slot12=class1_slot_2,
-                           slot13=class1_slot_3,
-
-                           Class_Option_2=result[1].UBCLASS,
-                           Class_Option_2_Days=result[1].DAYS,
-                           Class_Option_2_Time=result[1].TIME,
-                           slot21=class2_slot_1,
-                           slot22=class2_slot_2,
-                           slot23=class2_slot_3)
-
-
+        class1_slot_1 = "Thu"
+    session[3] = class1_slot_1 + '_' + result[1].TIME
+    session[4] = class1_slot_2 + '_' + result[1].TIME
+    session[5] = class1_slot_3 + '_' + result[1].TIME
 #TODO:   Turn into a loop and check for first null entry.  This is a proof of concept
+
+
+    ClassOps = [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ']
+    x = len(result)
+    for i in range(0,x):
+        ClassOps[i] = result[i].UBCLASS
+
+    return render_template("profile.html",username="sethkara",
+                           Class_Option_0=ClassOps[0],Class_Option_1=ClassOps[1],Class_Option_2=ClassOps[2],
+                           Class_Option_3=ClassOps[3],Class_Option_4=ClassOps[4],Class_Option_5=ClassOps[5],
+                           Class_Option_6=ClassOps[6],Class_Option_7=ClassOps[7],Class_Option_8=ClassOps[8],
+                           Class_Option_9=ClassOps[9],Class_Option_10=ClassOps[10],Class_Option_11=ClassOps[11],
+
+                           Class_Option_0_Days=result[0].DAYS,Class_Option_0_Time=result[0].TIME,
+                           Class_Option_1_Days=result[1].DAYS,Class_Option_1_Time=result[1].TIME)
+
+
+
 
 
 '''-----------------------------------------------
