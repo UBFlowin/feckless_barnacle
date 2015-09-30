@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, abort, make_response, g
+from flask import Flask, request, jsonify, render_template, abort, make_response, g, session
 from flask.ext.sqlalchemy import SQLAlchemy
 
 from flask.ext.httpauth import HTTPBasicAuth
@@ -122,6 +122,43 @@ class UBClasses(db.Model):
 
 
 '''-----------------------------------------------
+        Classes Class
+-----------------------------------------------'''
+class UBRecitation(db.Model):
+    __tablename__ = "ubrecitations"
+
+    ID = db.Column(db.Integer, primary_key=True)
+    RECITATION_ID = db.Column(db.Integer, db.ForeignKey('ubclasses.ID'))
+    SECTION = db.Column(db.String(50), nullable=False)
+    TYPE = db.Column(db.String(50), nullable=False)
+    DAYS = db.Column(db.String(50), nullable=False)
+    TIME = db.Column(db.String(50), nullable=False)
+    BUILDING = db.Column(db.String(50), nullable=False)
+    ROOM_NUMBER = db.Column(db.String(50), nullable=False)
+    LOCATION = db.Column(db.String(50), nullable=False)
+    STATUS = db.Column(db.String(50), nullable=False)
+    RESERVED = db.Column(db.String(50), nullable=False)
+
+
+    def __init__(self, id, recitation, section, type, days, time, building, room_number, location, status, reserved, semester):
+        self.ID = id
+        self.RECITATION_ID = ubclass
+        self.SECTION = section
+        self.TYPE = type
+        self.DAYS = days
+        self.TIME = time
+        self.BUILDING = building
+        self.ROOM_NUMBER = room_number
+        self.LOCATION = location
+        self.STATUS = status
+        self.RESERVED = reserved
+        self.SEMESTER = semester
+
+    def __repr__(self):
+        return '<recitation {}'.format(self.RECITATION_ID)
+
+
+'''-----------------------------------------------
         Schedule Class
 -----------------------------------------------'''
 class Schedule(db.Model):
@@ -201,32 +238,72 @@ def login_user():
 -----------------------------------------------'''
 @app.route('/profile')
 def profile():
-    class_slot_1 = 'empty'
-    class_slot_2 = 'empty'
-    class_slot_3 = 'empty'
-    result = UBClasses.query.filter_by(ID=1).first()
-    if result.DAYS == 'MWF':
-        class_slot_1 = 'Mon'
-        class_slot_2 = 'Wed'
-        class_slot_3 = 'Fri'
-    elif result.DAYS == 'TR':
-        class_slot_1 = 'Tue'
-        class_slot_2 = 'Thu'
-    elif result.DAYS =="M":
-        class_slot_1 = "Mon"
-    elif result.DAYS =="T":
-        class_slot_1 = "Tue"
-    elif result.DAYS =="R":
-        class_slot_1 = "Thu"
+    class1_slot_1 = 'empty'
+    class1_slot_2 = 'empty'
+    class1_slot_3 = 'empty'
+    result = UBClasses.query.filter_by(TYPE="LEC").all()
 
-    return render_template("profile.html",
-                           username="sethkara",
-                           Class_Option_1=result.UBCLASS,
-                           Class_Option_1_Days=result.DAYS,
-                           Class_Option_1_Time=result.TIME,
-                           slot1=class_slot_1,
-                           slot2=class_slot_2,
-                           slot3=class_slot_3)
+
+
+    if result[0].DAYS == 'MWF':
+        class1_slot_1 = 'Mon'
+        class1_slot_2 = 'Wed'
+        class1_slot_3 = 'Fri'
+    elif result[0].DAYS == 'TR':
+        class1_slot_1 = 'Tue'
+        class1_slot_2 = 'Thu'
+    elif result[0].DAYS == "M":
+        class1_slot_1 = "Mon"
+    elif result[0].DAYS == "T":
+        class1_slot_1 = "Tue"
+    elif result[0].DAYS == "R":
+        class1_slot_1 = "Thu"
+
+
+    session[0] = class1_slot_1 + '_' + result[0].TIME
+    session[1] = class1_slot_2 + '_' + result[0].TIME
+    session[2] = class1_slot_3 + '_' + result[0].TIME
+
+    class1_slot_1 = 'empty'
+    class1_slot_2 = 'empty'
+    class1_slot_3 = 'empty'
+
+
+    if result[1].DAYS == 'MWF':
+        class1_slot_1 = 'Mon'
+        class1_slot_2 = 'Wed'
+        class1_slot_3 = 'Fri'
+    elif result[1].DAYS == 'TR':
+        class1_slot_1 = 'Tue'
+        class1_slot_2 = 'Thu'
+    elif result[1].DAYS == "M":
+        class1_slot_1 = "Mon"
+    elif result[1].DAYS == "T":
+        class1_slot_1 = "Tue"
+    elif result[1].DAYS == "R":
+        class1_slot_1 = "Thu"
+    session[3] = class1_slot_1 + '_' + result[1].TIME
+    session[4] = class1_slot_2 + '_' + result[1].TIME
+    session[5] = class1_slot_3 + '_' + result[1].TIME
+#TODO:   Turn into a loop and check for first null entry.  This is a proof of concept
+
+
+    ClassOps = [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ']
+    x = len(result)
+    for i in range(0,x):
+        ClassOps[i] = result[i].UBCLASS
+
+    return render_template("profile.html",username="sethkara",
+                           Class_Option_0=ClassOps[0],Class_Option_1=ClassOps[1],Class_Option_2=ClassOps[2],
+                           Class_Option_3=ClassOps[3],Class_Option_4=ClassOps[4],Class_Option_5=ClassOps[5],
+                           Class_Option_6=ClassOps[6],Class_Option_7=ClassOps[7],Class_Option_8=ClassOps[8],
+                           Class_Option_9=ClassOps[9],Class_Option_10=ClassOps[10],Class_Option_11=ClassOps[11],
+
+                           Class_Option_0_Days=result[0].DAYS,Class_Option_0_Time=result[0].TIME,
+                           Class_Option_1_Days=result[1].DAYS,Class_Option_1_Time=result[1].TIME)
+
+
+
 
 
 '''-----------------------------------------------
