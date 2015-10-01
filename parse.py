@@ -13,7 +13,7 @@ type = []
 days = []
 time = []
 room = []
-location = []
+campus = []
 instructor = []
 status = []
 
@@ -40,13 +40,58 @@ def isolate_data(info):
     data = re.sub("'(.*)'(.*)'(.*)'~\d+ Courses~", '', data)
     data = re.sub('Class~Course~Title~Section~Type~Days~Time~Room~Location~Instructor \(\*\) additional instructors~Status', '', data)
     data = re.sub('~~', '~', data)
+    data = re.sub('~-~', ' - ', data)
+    position = 0
+    time_unknown = 0
+    curr_data = ''
+    for i in range(len(data)):
+        if(data[i] == '~'):
+            if(position == 1):
+                course_id.append(curr_data)
+            elif(position == 2):
+                course_num.append(curr_data)
+            elif(position == 3):
+                course_name.append(curr_data)
+            elif(position == 4):
+                section.append(curr_data)
+            elif(position == 5):
+                type.append(curr_data)
+            elif(position == 6):
+                days.append(curr_data)
+            elif(position == 7):
+                time.append(curr_data)
+                if(curr_data == 'TBA'):
+                    time_unknown = 1
+            elif(position == 8):
+                if(time_unknown == 0):
+                    room.append(curr_data)
+                else:
+                    if(curr_data == 'ARR'):
+                        room.append(curr_data)
+                    else:
+                        campus.append(curr_data)
+                        position += 1
+                time_unknown = 0
+            elif(position == 9):
+                campus.append(curr_data)
+            elif(position == 10):
+                instructor.append(curr_data)
+            elif(position == 11):
+                status.append(curr_data)
+            if(position >= 11):
+                position = 1
+            else:
+                position += 1
+            curr_data = ''
+        else:
+            curr_data += data[i]
+    print instructor
     return data
 
 
-#def get_cell(data, location):
- #   curr = 0
- #   iter = 0
- #   while curr < location:
+def get_course_id(data):
+
+    return
 
 
 def get_course_num(info):
@@ -57,4 +102,5 @@ def get_course_num(info):
     return course_num
 
 stuff = get_info(given_url)
-get_course_num(stuff)
+print stuff
+isolate_data(stuff)
