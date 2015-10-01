@@ -4,17 +4,40 @@
 <script type="text/javascript">
     $(function() {
         $("#SearchButton").click(function() {
+            //var array =
             $.getJSON('/getnextclassgroup', function(dat) {
                 console.log("Ajax received data!");
                 console.dir(dat);
+                //resetText()
             });
         });
+        $.ajax({
+            type: "GET",
+            dataType: "text",
+            url: "/getnextclassgroup",
+            success: function (data) {
+                $('#result').html(data);
+            },
+            error: function () {
+                alert("Not Found File");
+            }
+        });
     });
+
 </script>
 
 
 <script language="JavaScript">
 <!--
+
+function resetText(){
+//    if (elem = document.getElementById("Class1")){
+ //       elem.innerHTML = Class1 + " : " + Class1_Days+":"+Class1_Time;
+  //  }
+    if (elem = document.getElementById("Class2")){
+        elem.innerHTML = " : " + Class2_Days+":"+Class2_Time;
+    }
+}
 
 function changeText(id1,id2,id3,text) {
     if (elem = document.getElementById(id1)){
@@ -30,10 +53,12 @@ function changeText(id1,id2,id3,text) {
 
 function setBgColorOfCell(id1,id2,id3,sColor,cOption) {
     var elem;
-    var currText = document.getElementById(id1).innerText;
-    if(currText == cOption) {
-        sColor = 'White';
-        cOption = " ";
+    var currText;
+    if(currText = document.getElementById(id1).innerText) {
+        if (currText == cOption) {
+            sColor = 'White';
+            cOption = " ";
+        }
     }
     else {
         sColor = 'CornflowerBlue';
@@ -80,51 +105,95 @@ var cOption10 = '{{ Class_Option_10 }}';
 var cOption11 = '{{ Class_Option_11 }}';
 
 
-var c0_slot_1 = '{{ session[0] }}';
-var c0_slot_2 = '{{ session[1] }}';
-var c0_slot_3 = '{{ session[2] }}';
-var c1_slot_1 = '{{ session[3] }}';
-var c1_slot_2 = '{{ session[4] }}';
-var c1_slot_3 = '{{ session[5] }}';
-var c2_slot_1 = '{{ session[6] }}';
-var c2_slot_2 = '{{ session[7] }}';
-var c2_slot_3 = '{{ session[8] }}';
-var c3_slot_1 = '{{ session[9] }}';
-var c3_slot_2 = '{{ session[10] }}';
-var c3_slot_3 = '{{ session[11] }}';
-var c4_slot_1 = '{{ session[12] }}';
-var c4_slot_2 = '{{ session[13] }}';
-var c4_slot_3 = '{{ session[14] }}';
-var c5_slot_1 = '{{ session[15] }}';
-var c5_slot_2 = '{{ session[16] }}';
-var c5_slot_3 = '{{ session[17] }}';
-var c6_slot_1 = '{{ session[18] }}';
-var c6_slot_2 = '{{ session[19] }}';
-var c6_slot_3 = '{{ session[20] }}';
-var c7_slot_1 = '{{ session[21] }}';
-var c7_slot_2 = '{{ session[22] }}';
-var c7_slot_3 = '{{ session[23] }}';
-var c8_slot_1 = '{{ session[24] }}';
-var c8_slot_2 = '{{ session[25] }}';
-var c8_slot_3 = '{{ session[26] }}';
-var c9_slot_1 = '{{ session[27] }}';
-var c9_slot_2 = '{{ session[28] }}';
-var c9_slot_3 = '{{ session[29] }}';
-var c10_slot_1 = '{{ session[30] }}';
-var c10_slot_2 = '{{ session[31] }}';
-var c10_slot_3 = '{{ session[32] }}';
-var c11_slot_1 = '{{ session[33] }}';
-var c11_slot_2 = '{{ session[34] }}';
-var c11_slot_3 = '{{ session[35] }}';
+var Class1 = '{{ session[0] }}';
+var Class1_Days = '{{ session[1] }}';
+var Class1_Time = '{{ session[2] }}';
+var Class1_Type = '{{ session[3] }}';
+var Class1_Dept = '{{ session[4] }}';
+var Class1_Section = '{{ session[5] }}';
+var Class1_Location = '{{ session[6] }}';
+var Class1_Building = '{{ session[7] }}';
+var Class1_Room = '{{ session[8] }}';
+var Class1_Professor = '{{ session[9] }}';
+var Class1_Status = '{{ session[10] }}';
+var Class1_Reserved = '{{ session[11] }}';
+var Class1_blank1 = '{{ session[12] }}';
+var Class1_blank2 = '{{ session[13] }}';
+var Class1_slot1 = '{{ session[14] }}';
+var Class1_slot2 = '{{ session[15] }}';
+var Class1_slot3 = '{{ session[16] }}';
+var Class1_slot4 = '{{ session[17] }}';
+var Class1_slot5 = '{{ session[18] }}';
+var Class1_slot6 = '{{ session[19] }}';
+var Class2 = '{{ session[20] }}';
+var Class2_Days = '{{ session[21] }}';
+var Class2_Time = '{{ session[22] }}';
+var Class2_Type = '{{ session[23] }}';
+var Class2_Dept = '{{ session[24] }}';
+var Class2_Section = '{{ session[25] }}';
+var Class2_Location = '{{ session[26] }}';
+var Class2_Building = '{{ session[27] }}';
+var Class2_Room = '{{ session[28] }}';
+var Class2_Professor = '{{ session[29] }}';
+var Class2_Status = '{{ session[30] }}';
+var Class2_Reserved = '{{ session[31] }}';
+var Class2_blank1 = '{{ session[32] }}';
+var Class2_blank2 = '{{ session[33] }}';
+var Class2_slot1 = '{{ session[34] }}';
+var Class2_slot2 = '{{ session[35] }}';
+var Class2_slot3 = '{{ session[36] }}';
+var Class2_slot4 = '{{ session[37] }}';
+var Class2_slot5 = '{{ session[38] }}';
+var Class2_slot6 = '{{ session[39] }}';
+var Class3 = '{{ session[40] }}';
+var Class3_Days = '{{ session[41] }}';
+var Class3_Time = '{{ session[42] }}';
+var Class3_Type = '{{ session[43] }}';
+var Class3_Dept = '{{ session[44] }}';
+var Class3_Section = '{{ session[45] }}';
+var Class3_Location = '{{ session[46] }}';
+var Class3_Building = '{{ session[47] }}';
+var Class3_Room = '{{ session[48] }}';
+var Class3_Professor = '{{ session[49] }}';
+var Class3_Status = '{{ session[50] }}';
+var Class3_Reserved = '{{ session[51] }}';
+var Class3_blank1 = '{{ session[52] }}';
+var Class3_blank2 = '{{ session[53] }}';
+var Class3_slot1 = '{{ session[54] }}';
+var Class3_slot2 = '{{ session[55] }}';
+var Class3_slot3 = '{{ session[56] }}';
+var Class3_slot4 = '{{ session[57] }}';
+var Class3_slot5 = '{{ session[58] }}';
+var Class3_slot6 = '{{ session[59] }}';
+var Class4 = '{{ session[60] }}';
+var Class4_Days = '{{ session[61] }}';
+var Class4_Time = '{{ session[62] }}';
+var Class4_Type = '{{ session[63] }}';
+var Class4_Dept = '{{ session[64] }}';
+var Class4_Section = '{{ session[65] }}';
+var Class4_Location = '{{ session[66] }}';
+var Class4_Building = '{{ session[67] }}';
+var Class4_Room = '{{ session[68] }}';
+var Class4_Professor = '{{ session[69] }}';
+var Class4_Status = '{{ session[70] }}';
+var Class4_Reserved = '{{ session[71] }}';
+var Class4_blank1 = '{{ session[72] }}';
+var Class4_blank2 = '{{ session[73] }}';
+var Class4_slot1 = '{{ session[74] }}';
+var Class4_slot2 = '{{ session[75] }}';
+var Class4_slot3 = '{{ session[76] }}';
+var Class4_slot4 = '{{ session[77] }}';
+var Class4_slot5 = '{{ session[78] }}';
+var Class4_slot6 = '{{ session[79] }}';
+
 //-->
 </script>
-
 <body>
     <div id="wrapper">
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Welcome back {{ username }}</h1>
+                    <h1 class="page-header">Welcome</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -383,24 +452,27 @@ var c11_slot_3 = '{{ session[35] }}';
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="list-group">
-                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(c0_slot_1,c0_slot_2,c0_slot_3,'CornflowerBlue', cOption0);return false;">
-                                    <i class="fa fa-cog fa-spin"></i> {{ Class_Option_0 }}
-                                    <span class="pull-right text-muted small"><em>{{ Class_Option_0_Days }} : {{ Class_Option_0_Time }}</em>
+                                <a href="#" id="Class1" class="list-group-item" onclick="setBgColorOfCell(Class1_slot1,Class1_slot2,Class1_slot3,'CornflowerBlue', Class1);return false;">
+                                    <i class="fa fa-cog fa-spin"></i>
+                                        <script>
+                                            document.write(Class1);
+                                        </script>
+                                    <span class="pull-right text-muted small"><em>{{ session[1] }} : {{ session[2] }}</em>
                                     </span>
                                 </a>
-                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(c1_slot_1,c1_slot_2,c1_slot_3,'CornflowerBlue',cOption1);return false;">
-                                    <i class="fa fa-cog fa-spin"></i> {{ Class_Option_1 }}
-                                    <span class="pull-right text-muted small"><em>{{ Class_Option_1_Days }} : {{ Class_Option_1_Time }}</em>
+                                <a href="#" id="Class2" class="list-group-item" onclick="setBgColorOfCell(Class2_slot1,Class2_slot2,Class2_slot3,'CornflowerBlue',Class2);return false;">
+                                    <i class="fa fa-cog fa-spin"></i> {{ session[20] }}
+                                    <span class="pull-right text-muted small"><em>{{ session[21] }} : {{ session[22] }}</em>
                                     </span>
                                 </a>
-                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(c2_slot_1,c2_slot_2,c2_slot_3,'CornflowerBlue',cOption2);return false;">
-                                    <i class="fa fa-cog fa-spin"></i> {{ Class_Option_2 }}
-                                    <span class="pull-right text-muted small"><em>{{ Class_Option_2_Days }} : {{ Class_Option_2_Time }}</em>
+                                <a href="#" id="Class3" class="list-group-item" onclick="setBgColorOfCell(Class3_slot1,Class3_slot2,Class3_slot3,'CornflowerBlue',Class3);return false;">
+                                    <i class="fa fa-cog fa-spin"></i> {{ session[40] }}
+                                    <span class="pull-right text-muted small"><em>{{ session[41] }} : {{ session[42] }}</em>
                                     </span>
                                 </a>
-                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(c3_slot_1,c3_slot_2,c3_slot_3,'CornflowerBlue',cOption3);return false;">
-                                    <i class="fa fa-cog fa-spin"></i> {{ Class_Option_3 }}
-                                    <span class="pull-right text-muted small"><em>{{ Class_Option_3_Days }} : {{ Class_Option_3_Time }}</em>
+                                <a href="#" id="Class4" class="list-group-item" onclick="setBgColorOfCell(Class4_slot1,Class4_slot2,Class4_slot2,'CornflowerBlue',Class4);return false;">
+                                    <i class="fa fa-cog fa-spin"></i> {{ session[60] }}
+                                    <span class="pull-right text-muted small"><em>{{ session[61] }} : {{ session[62] }}</em>
                                     </span>
                                 </a>
                                 <a href="#" class="list-group-item" onclick="setBgColorOfCell(c4_slot_1,c4_slot_2,c4_slot_3,'CornflowerBlue',cOption4);return false;">
@@ -455,10 +527,8 @@ var c11_slot_3 = '{{ session[35] }}';
             <!-- /.row -->
         </div>
         <!-- /#page-wrapper -->
-
     </div>
     <!-- /#wrapper -->
-
     <!-- jQuery -->
     <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap-sb-admin-2-1.0.7/bower_components/jquery/dist/jquery.min.js') }}"></script>
     <!-- Metis Menu Plugin JavaScript -->

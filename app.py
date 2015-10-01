@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, abort, make_response, g, session
+from flask import Flask, request, jsonify, render_template, abort, make_response, g, session, redirect
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.httpauth import HTTPBasicAuth
 from passlib.apps import custom_app_context as pwd_context
@@ -167,31 +167,14 @@ class Schedule(db.Model):
     USER_ID = db.Column(db.Integer, db.ForeignKey('user.ID'))
 
 
-
-'''-----------------------------------------------
-      ROUTE: Index Page
------------------------------------------------'''
-@app.route('/index.html', methods=['POST'])
-@app.route('/index', methods=['POST'])
-@app.route('/index/<name>', methods=['POST'])
-def index(name=None):
-    return render_template('index.html', name=name)
-
-
-
-'''-----------------------------------------------
-      ROUTE: Register
------------------------------------------------'''
-@app.route('/')
-@app.route('/register')
-def register():
-    return render_template('register.html')
-
 '''-----------------------------------------------
        Register a New User
 -----------------------------------------------'''
-@app.route('/api/users/register', methods=['POST'])
+@app.route('/register', methods=['GET','POST'])
 def new_user():
+    if request.method=='GET':
+        return render_template("register.html")
+
     if request.method=='POST':
         username = request.form['USERNAME']
         password = request.form['PASSWORD']
@@ -203,90 +186,46 @@ def new_user():
             abort(400)  # missing arguments
         if User.query.filter_by(USERNAME=username).first() is not None:
             abort(400)  # existing user
+
         temp_user = User(username,password,first_name,last_name,degree)
         temp_user.hash_password(password)
         db.session.add(temp_user)
         db.session.commit()
+        profile()
+        #return redirect(url_for('profile'))
         return render_template('profile.html', username=username)
 
 
 '''-----------------------------------------------
-      ROUTE: Login
------------------------------------------------'''
-@app.route('/login')
-def login():
-    return render_template('login.html')
-
-'''-----------------------------------------------
       Login
 -----------------------------------------------'''
-@app.route('/api/users/login', methods=['GET', 'POST'])
+@app.route('/')
+@app.route('/login', methods=['GET', 'POST'])
 def login_user():
+    error = ""
+    if request.method=='GET':
+        return render_template("login.html",input_error=error)
+
     if request.method=='POST':
         username = request.form['USERNAME']
         password = request.form['PASSWORD']
         if username is None or password is None:
             abort(400)  # missing arguments
-        #if User.query.filter_by(USERNAME=username).first() is not None:
-        #    abort(400)  # not a user
-        return render_template("profile.html", name=username)
+        user = User.query.filter_by(USERNAME=username).first()
+        if not user or not user.verify_password(password):
+            error = "Sorry, who are you again?"
+            return render_template("login.html", input_error=error)
+    return profile()
 
 
 '''-----------------------------------------------
       ROUTE: Profile
 -----------------------------------------------'''
-@app.route('/profile')
+
+@app.route('/profile', methods=['GET'])
 def profile():
-    class1_slot_1 = 'empty'
-    class1_slot_2 = 'empty'
-    class1_slot_3 = 'empty'
     result = UBClasses.query.filter_by(TYPE="LEC").all()
-
-
-
-    if result[0].DAYS == 'MWF':
-        class1_slot_1 = 'Mon'
-        class1_slot_2 = 'Wed'
-        class1_slot_3 = 'Fri'
-    elif result[0].DAYS == 'TR':
-        class1_slot_1 = 'Tue'
-        class1_slot_2 = 'Thu'
-    elif result[0].DAYS == "M":
-        class1_slot_1 = "Mon"
-    elif result[0].DAYS == "T":
-        class1_slot_1 = "Tue"
-    elif result[0].DAYS == "R":
-        class1_slot_1 = "Thu"
-
-
-    session[0] = class1_slot_1 + '_' + result[0].TIME
-    session[1] = class1_slot_2 + '_' + result[0].TIME
-    session[2] = class1_slot_3 + '_' + result[0].TIME
-
-    class1_slot_1 = 'empty'
-    class1_slot_2 = 'empty'
-    class1_slot_3 = 'empty'
-
-
-    if result[1].DAYS == 'MWF':
-        class1_slot_1 = 'Mon'
-        class1_slot_2 = 'Wed'
-        class1_slot_3 = 'Fri'
-    elif result[1].DAYS == 'TR':
-        class1_slot_1 = 'Tue'
-        class1_slot_2 = 'Thu'
-    elif result[1].DAYS == "M":
-        class1_slot_1 = "Mon"
-    elif result[1].DAYS == "T":
-        class1_slot_1 = "Tue"
-    elif result[1].DAYS == "R":
-        class1_slot_1 = "Thu"
-    session[3] = class1_slot_1 + '_' + result[1].TIME
-    session[4] = class1_slot_2 + '_' + result[1].TIME
-    session[5] = class1_slot_3 + '_' + result[1].TIME
-#TODO:   Turn into a loop and check for first null entry.  This is a proof of concept
-
-
+    populate_session(result)
     ClassOps = [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ']
     x = len(result)
     for i in range(0,x):
@@ -297,16 +236,15 @@ def profile():
                            Class_Option_3=ClassOps[3],Class_Option_4=ClassOps[4],Class_Option_5=ClassOps[5],
                            Class_Option_6=ClassOps[6],Class_Option_7=ClassOps[7],Class_Option_8=ClassOps[8],
                            Class_Option_9=ClassOps[9],Class_Option_10=ClassOps[10],Class_Option_11=ClassOps[11],
-
                            Class_Option_0_Days=result[0].DAYS,Class_Option_0_Time=result[0].TIME,
-                           Class_Option_1_Days=result[1].DAYS,Class_Option_1_Time=result[1].TIME)
-
+                           Class_Option_1_Days=result[1].DAYS,Class_Option_1_Time=result[1].TIME,
+                           Class_Option_2_Days=result[2].DAYS,Class_Option_2_Time=result[2].TIME,
+                           Class_Option_3_Days=result[3].DAYS,Class_Option_3_Time=result[3].TIME)
 
 @app.route('/getnextclassgroup', methods=['GET'])
 def getClassGroup():
     if request.method == 'GET':
-        results = UBClasses.query.limit(10).offset(0).all()
-
+        results = UBClasses.query.filter_by(DEPARTMENT="EAS").all()
     json_results = []
     for result in results:
         d = {'ID': result.ID,
@@ -325,9 +263,68 @@ def getClassGroup():
              'RESERVED': result.RESERVED,
              'SEMESTER': result.SEMESTER}
         json_results.append(d)
-    return jsonify(json_results)
+        session[0] = result.UBCLASS
+        #populate_session(result)
+    return jsonify(classes=json_results)
+
+    #results = []
+    #if request.method == 'GET':
+    #    results = UBClasses.query.filter_by(DEPARTMENT='CSE').all()
+
+        #populate_session(results)
+    #return jsonify(classes=results)
 
 
+def populate_session(array):
+    x=0
+    for result in array:
+        slots = gen_time_slots(result.DAYS, result.TIME)
+        session[x]=result.UBCLASS
+        session[x+1]=result.DAYS
+        session[x+2]=result.TIME
+        session[x+3]=result.TYPE
+        session[x+4]=result.DEPARTMENT
+        session[x+5]=result.SECTION
+        session[x+6]=result.LOCATION
+        session[x+7]=result.BUILDING
+        session[x+8]=result.ROOM_NUMBER
+        session[x+9]=result.PROFESSOR
+        session[x+10]=result.STATUS
+        session[x+11]=result.RESERVED
+        session[x+12]=' '
+        session[x+13]=' '
+        session[x+14]=slots[0]
+        session[x+15]=slots[1]
+        session[x+16]=slots[2]
+        session[x+17]=slots[3]
+        session[x+18]=slots[4]
+        session[x+19]=slots[5]
+        x+=20
+    return None
+
+
+def gen_time_slots(days, times):
+    slots = [' ', ' ', ' ', ' ', ' ', ' ']
+    if days == 'M W F':
+        slots[0] = 'Mon'
+        slots[1] = 'Wed'
+        slots[2] = 'Fri'
+    elif days == 'T R':
+        slots[0] = 'Tue'
+        slots[1] = 'Thu'
+    elif days == "M":
+        slots[0] = "Mon"
+    elif days == "T":
+        slots[0] = "Tue"
+    elif days == "R":
+        slots[0] = "Thu"
+    slots[0] = slots[0] + '_' + times
+    slots[1] = slots[1] + '_' + times
+    slots[2] = slots[2] + '_' + times
+    slots[3] = slots[3] + '_' + times
+    slots[4] = slots[4] + '_' + times
+    slots[5] = slots[5] + '_' + times
+    return slots
 
 
 '''-----------------------------------------------
