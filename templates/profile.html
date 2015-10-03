@@ -203,44 +203,90 @@ var Class4_slot6 = '{{ session[79] }}';
                 <div class="col-lg-3">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bell fa-fw"></i> Choose a course you'd like to take...
+                            <i class="fa fa-book"></i> Choose a course you'd like to take...
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="list-group">
-                                <a href="#" class="list-group-item">
-                                    <i class="fa fa-question-circle"></i> {{ Class_Option_0 }}
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <i class="fa fa-question-circle"></i> {{ Class_Option_1 }}
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <i class="fa fa-question-circle"></i> {{ Class_Option_2 }}
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <i class="fa fa-question-circle"></i> {{ Class_Option_3 }}
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <i class="fa fa-question-circle"></i> {{ Class_Option_4 }}
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <i class="fa fa-question-circle"></i> {{ Class_Option_5 }}
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <i class="fa fa-question-circle"></i> {{ Class_Option_6 }}
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <i class="fa fa-question-circle"></i> {{ Class_Option_7 }}
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <i class="fa fa-question-circle"></i> {{ Class_Option_8 }}
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <i class="fa fa-question-circle"></i> {{ Class_Option_9 }}
-                                </a>
+                                <h6>*Required:</h6>
+                                <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">*Department
+                                    <span class="caret"></span>
+                                </button>
+                                    <!-- Need some space here, but want to do it in .css file -->
+                                    <ul class="dropdown-menu scrollable-menu" role="menu">
+                                        <li><a href="#">CIE</a></li>
+                                        <li><a href="#">CSE</a></li>
+                                        <li><a href="#">EAS</a></li>
+                                        <li><a href="#">EE</a></li>
+                                        <li><a href="#">MAE</a></li>
+                                    </ul>
+                                    <form class="form-horizontal" role="form">
+                                        <div class="form-group">
+                                            <label for="courseNo" class="col-sm-4 control-label">*Course #</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" id="courseNo" placeholder="###">
+                                            </div>
+                                        </div>
+                                        <div class="form-horizontal" role="form">
+                                            <h6>Optional: filter by day/time:</h6>
+                                            <div class="checkbox-inline">
+                                                <label><input type="checkbox" value="">MWF</label>
+                                            </div>
+                                            <div class="checkbox-inline">
+                                                <label><input type="checkbox" value="">TR</label>
+                                            </div>
+                                            <div class="checkbox-inline">
+                                                <label><input type="checkbox" value="">MW</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-horizontal" role="form">
+                                            <div class="checkbox-inline">
+                                                <label><input type="checkbox" value="">8am</label>
+                                            </div>
+                                            <div class="checkbox-inline">
+                                                <label><input type="checkbox" value="">9am</label>
+                                            </div>
+                                            <div class="checkbox-inline">
+                                                <label><input type="checkbox" value="">10am</label>
+                                            </div>
+                                            <div class="checkbox-inline">
+                                                <label><input type="checkbox" value="">11am</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-horizontal" role="form">
+                                            <div class="checkbox-inline">
+                                                <label><input type="checkbox" value="">12pm</label>
+                                            </div>
+                                            <div class="checkbox-inline">
+                                                <label><input type="checkbox" value="">1pm</label>
+                                            </div>
+                                            <div class="checkbox-inline">
+                                                <label><input type="checkbox" value="">2pm</label>
+                                            </div>
+                                            <div class="checkbox-inline">
+                                                <label><input type="checkbox" value="">3pm</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-horizontal" role="form">
+                                            <div class="checkbox-inline">
+                                                <label><input type="checkbox" value="">4pm</label>
+                                            </div>
+                                            <div class="checkbox-inline">
+                                                <label><input type="checkbox" value="">5pm</label>
+                                            </div>
+                                            <div class="checkbox-inline">
+                                                <label><input type="checkbox" value="">6pm</label>
+                                            </div>
+                                            <div class="checkbox-inline">
+                                                <label><input type="checkbox" value="">7pm</label>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                             <!-- /.list-group -->
-                            <a href="#" id="SearchButton" class="btn btn-default btn-block">Search Other Classes</a>
+                            <a href="#" id="SearchButton" class="btn btn-default btn-block">Search</a>
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -251,7 +297,7 @@ var Class4_slot6 = '{{ session[79] }}';
                    <!-- /.panel -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Projected Weekly Schedule
+                            <i class="fa fa-calendar"></i> Projected Weekly Schedule
                             <div class="pull-right">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
