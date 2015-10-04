@@ -4,26 +4,15 @@
 <script type="text/javascript">
     $(function() {
         $("#SearchButton").click(function() {
-            //var array =
+
             $.getJSON('/getnextclassgroup', function(dat) {
                 console.log("Ajax received data!");
                 console.dir(dat);
+                //alert(dat.classes[0].UBCLASS);
                 //resetText()
             });
         });
-        $.ajax({
-            type: "GET",
-            dataType: "text",
-            url: "/getnextclassgroup",
-            success: function (data) {
-                $('#result').html(data);
-            },
-            error: function () {
-                alert("Not Found File");
-            }
-        });
     });
-
 </script>
 
 
@@ -470,7 +459,7 @@ var Class4_slot6 = '{{ session[79] }}';
                                     <span class="pull-right text-muted small"><em>{{ session[41] }} : {{ session[42] }}</em>
                                     </span>
                                 </a>
-                                <a href="#" id="Class4" class="list-group-item" onclick="setBgColorOfCell(Class4_slot1,Class4_slot2,Class4_slot2,'CornflowerBlue',Class4);return false;">
+                                <a href="#" id="Class4" class="list-group-item" onclick="setBgColorOfCell(Class4_slot1,Class4_slot2,Class4_slot3,'CornflowerBlue',Class4);return false;">
                                     <i class="fa fa-cog fa-spin"></i> {{ session[60] }}
                                     <span class="pull-right text-muted small"><em>{{ session[61] }} : {{ session[62] }}</em>
                                     </span>

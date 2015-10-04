@@ -244,7 +244,7 @@ def profile():
 @app.route('/getnextclassgroup', methods=['GET'])
 def getClassGroup():
     if request.method == 'GET':
-        results = UBClasses.query.filter_by(DEPARTMENT="EAS").all()
+        results = UBClasses.query.filter_by(DEPARTMENT="CSE").all()
     json_results = []
     for result in results:
         d = {'ID': result.ID,
@@ -263,16 +263,10 @@ def getClassGroup():
              'RESERVED': result.RESERVED,
              'SEMESTER': result.SEMESTER}
         json_results.append(d)
-        session[0] = result.UBCLASS
+        #session[0] = result.UBCLASS
         #populate_session(result)
     return jsonify(classes=json_results)
 
-    #results = []
-    #if request.method == 'GET':
-    #    results = UBClasses.query.filter_by(DEPARTMENT='CSE').all()
-
-        #populate_session(results)
-    #return jsonify(classes=results)
 
 
 def populate_session(array):
@@ -325,6 +319,17 @@ def gen_time_slots(days, times):
     slots[4] = slots[4] + '_' + times
     slots[5] = slots[5] + '_' + times
     return slots
+
+
+'''-----------------------------------------------
+      Error Handling Page
+-----------------------------------------------'''
+@app.route('/flowsheet')
+def flowsheet():
+    return render_template("flowsheet.html")
+
+
+
 
 
 '''-----------------------------------------------
