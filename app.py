@@ -174,7 +174,6 @@ class Schedule(db.Model):
 def new_user():
     if request.method=='GET':
         return render_template("register.html")
-
     if request.method=='POST':
         username = request.form['USERNAME']
         password = request.form['PASSWORD']
@@ -225,30 +224,25 @@ def login_user():
 @app.route('/profile', methods=['GET'])
 def profile():
     result = UBClasses.query.filter_by(TYPE="LEC").all()
-    populate_session(result)
+    #populate_session(result)
+
     ClassOps = [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ']
     x = len(result)
     for i in range(0,x):
         ClassOps[i] = result[i].UBCLASS
 
-    return render_template("profile.html",username="sethkara",
-                           Class_Option_0=ClassOps[0],Class_Option_1=ClassOps[1],Class_Option_2=ClassOps[2],
-                           Class_Option_3=ClassOps[3],Class_Option_4=ClassOps[4],Class_Option_5=ClassOps[5],
-                           Class_Option_6=ClassOps[6],Class_Option_7=ClassOps[7],Class_Option_8=ClassOps[8],
-                           Class_Option_9=ClassOps[9],Class_Option_10=ClassOps[10],Class_Option_11=ClassOps[11],
-                           Class_Option_0_Days=result[0].DAYS,Class_Option_0_Time=result[0].TIME,
-                           Class_Option_1_Days=result[1].DAYS,Class_Option_1_Time=result[1].TIME,
-                           Class_Option_2_Days=result[2].DAYS,Class_Option_2_Time=result[2].TIME,
-                           Class_Option_3_Days=result[3].DAYS,Class_Option_3_Time=result[3].TIME)
+
+    #getFirstClassGroup()
+    return render_template("profile.html",username="sethkara",)
 
 @app.route('/getnextclassgroup', methods=['GET'])
 def getClassGroup():
     if request.method == 'GET':
-        results = UBClasses.query.filter_by(DEPARTMENT="CSE").all()
+        results = UBClasses.query.filter_by(RESERVED="YES").all()
     json_results = []
     for result in results:
         d = {'ID': result.ID,
-             'CLASS': result.UBCLASS,
+             'UBCLASS': result.UBCLASS,
              'DEPARTMENT': result.DEPARTMENT,
              'SECTION': result.SECTION,
              'TYPE': result.TYPE,
@@ -263,10 +257,32 @@ def getClassGroup():
              'RESERVED': result.RESERVED,
              'SEMESTER': result.SEMESTER}
         json_results.append(d)
-        #session[0] = result.UBCLASS
-        #populate_session(result)
     return jsonify(classes=json_results)
 
+
+@app.route('/getfirstclassgroup', methods=['GET'])
+def getFirstClassGroup():
+    if request.method == 'GET':
+        results = UBClasses.query.filter_by(TYPE='LEC').all()
+    json_results = []
+    for result in results:
+        d = {'ID': result.ID,
+             'UBCLASS': result.UBCLASS,
+             'DEPARTMENT': result.DEPARTMENT,
+             'SECTION': result.SECTION,
+             'TYPE': result.TYPE,
+             'DAYS': result.DAYS,
+             'TIME': result.TIME,
+             'BUILDING': result.BUILDING,
+             'ROOM_NUMBER': result.ROOM_NUMBER,
+             'LOCATION': result.LOCATION,
+             'PROFESSOR_ID': result.PROFESSOR_ID,
+             'PROFESSOR': result.PROFESSOR,
+             'STATUS': result.STATUS,
+             'RESERVED': result.RESERVED,
+             'SEMESTER': result.SEMESTER}
+        json_results.append(d)
+    return jsonify(classes=json_results)
 
 
 def populate_session(array):

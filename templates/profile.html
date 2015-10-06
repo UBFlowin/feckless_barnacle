@@ -1,189 +1,181 @@
 {% extends "layout.html" %}
 {% block body %}
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+
+<!---------------------------------------------------------------
+    - Populate the Class_Info Array at page startup
+    - Populate the Class Options Container
+---------------------------------------------------------------->
+<script>
+    var Class_Info=[];
+    var class_list_ids = ['Class1', 'Class2', 'Class3', 'Class4', 'Class5', 'Class6', 'Class7', 'Class8', 'Class9', 'Class10'];
+    var class_list_times_ids = ['Class1_Days_and_Time', 'Class2_Days_and_Time', 'Class3_Days_and_Time', 'Class4_Days_and_Time',
+        'Class5_Days_and_Time', 'Class6_Days_and_Time', 'Class7_Days_and_Time', 'Class8_Days_and_Time',
+        'Class9_Days_and_Time', 'Class10_Days_and_Time'];
+
+    $.getJSON('/getfirstclassgroup', function(dat) {
+        var x = 0;
+        while(dat.classes[x] != null) {
+            Class_Info[x*20] = dat.classes[x].UBCLASS;
+            Class_Info[x*20 + 1] = dat.classes[x].DEPARTMENT;
+            Class_Info[x*20 + 2] = dat.classes[x].SECTION;
+            Class_Info[x*20 + 3] = dat.classes[x].TYPE;
+            Class_Info[x*20 + 4] = dat.classes[x].DAYS;
+            Class_Info[x*20 + 5] = dat.classes[x].TIME;
+            Class_Info[x*20 + 6] = dat.classes[x].BUILDING;
+            Class_Info[x*20 + 7] = dat.classes[x].ROOM_NUMBER;
+            Class_Info[x*20 + 8] = dat.classes[x].LOCATION;
+            Class_Info[x*20 + 9] = dat.classes[x].PROFESSOR;
+            Class_Info[x*20 + 10] = dat.classes[x].STATUS;
+            Class_Info[x*20 + 11] = dat.classes[x].RESERVED;
+            Class_Info[x*20 + 12] = dat.classes[x].SEMESTER;
+            Class_Info[x*20 + 13] = ' ';
+            Class_Info[x*20 + 14] = ' ';
+            Class_Info[x*20 + 15] = ' ';
+            Class_Info[x*20 + 16] = ' ';
+            Class_Info[x*20 + 17] = ' ';
+            Class_Info[x*20 + 18] = ' ';
+            Class_Info[x*20 + 19] = ' ';
+            x = x + 1;
+        }
+        clearText(x);
+        resetText();
+    });
+</script>
+
+
+<!---------------------------------------------------------------
+    - When Search is Clicked, Query the database
+    - Replace the information in the Class Options container
+---------------------------------------------------------------->
 <script type="text/javascript">
     $(function() {
         $("#SearchButton").click(function() {
+            var x = 0;
+            $.getJSON('/getnextclassgroup', function (dat) {
+                while(dat.classes[x] != null) {
 
-            $.getJSON('/getnextclassgroup', function(dat) {
-                console.log("Ajax received data!");
-                console.dir(dat);
-                //alert(dat.classes[0].UBCLASS);
-                //resetText()
+                    Class_Info[x*20] = dat.classes[x].UBCLASS;
+                    Class_Info[x*20 + 1] = dat.classes[x].DEPARTMENT;
+                    Class_Info[x*20 + 2] = dat.classes[x].SECTION;
+                    Class_Info[x*20 + 3] = dat.classes[x].TYPE;
+                    Class_Info[x*20 + 4] = dat.classes[x].DAYS;
+                    Class_Info[x*20 + 5] = dat.classes[x].TIME;
+                    Class_Info[x*20 + 6] = dat.classes[x].BUILDING;
+                    Class_Info[x*20 + 7] = dat.classes[x].ROOM_NUMBER;
+                    Class_Info[x*20 + 8] = dat.classes[x].LOCATION;
+                    Class_Info[x*20 + 9] = dat.classes[x].PROFESSOR;
+                    Class_Info[x*20 + 10] = dat.classes[x].STATUS;
+                    Class_Info[x*20 + 11] = dat.classes[x].RESERVED;
+                    Class_Info[x*20 + 12] = dat.classes[x].SEMESTER;
+                    Class_Info[x*20 + 13] = ' ';
+                    Class_Info[x*20 + 14] = ' ';
+                    Class_Info[x*20 + 15] = ' ';
+                    Class_Info[x*20 + 16] = ' ';
+                    Class_Info[x*20 + 17] = ' ';
+                    Class_Info[x*20 + 18] = ' ';
+                    Class_Info[x*20 + 19] = ' ';
+                    x = x + 1;
+                }
+                clearText(x);                       //Empty unecessary items from Class_Info
+                resetText();                        //Reset the list-group with blanks
             });
+
         });
     });
 </script>
 
 
+<!---------------------------------------------------------------
+    - Helper Functions
+---------------------------------------------------------------->
 <script language="JavaScript">
-<!--
-
-function resetText(){
-//    if (elem = document.getElementById("Class1")){
- //       elem.innerHTML = Class1 + " : " + Class1_Days+":"+Class1_Time;
-  //  }
-    if (elem = document.getElementById("Class2")){
-        elem.innerHTML = " : " + Class2_Days+":"+Class2_Time;
-    }
-}
-
-function changeText(id1,id2,id3,text) {
-    if (elem = document.getElementById(id1)){
-        elem.innerHTML = text;
-    }
-    if (elem = document.getElementById(id2)){
-        elem.innerHTML = text;
-    }
-    if (elem = document.getElementById(id3)){
-        elem.innerHTML = text;
-    }
-}
-
-function setBgColorOfCell(id1,id2,id3,sColor,cOption) {
-    var elem;
-    var currText;
-    if(currText = document.getElementById(id1).innerText) {
-        if (currText == cOption) {
-            sColor = 'White';
-            cOption = " ";
+    function resetText() {
+        for (var x = 0; x < 10; x++){
+            if (elem = document.getElementById(class_list_ids[x])) {
+                elem.innerText = "  " + Class_Info[x*20];
+            }
+            if (elem = document.getElementById(class_list_times_ids[x])) {
+                elem.innerText = Class_Info[x*20+4] + ":" + Class_Info[x*20+5];
+            }
         }
     }
-    else {
-        sColor = 'CornflowerBlue';
-    }
-    if (elem = document.getElementById(id1)) {
-        if (elem.style) {
-            elem.style.backgroundColor = sColor;
+
+    /* Clear all unnecessary text from Class Options */
+    function clearText(x) {
+        x = x*20;
+        for (x; x < 200; x++){
+            Class_Info[x] = ' ';
         }
     }
-    if (elem = document.getElementById(id2)) {
-        if (elem.style) {
-            elem.style.backgroundColor = sColor;
+
+    /* Change text in cells */
+    function changeText(id1,id2,id3,text) {
+        if (elem = document.getElementById(id1)){
+            elem.innerHTML = text;
+        }
+        if (elem = document.getElementById(id2)){
+            elem.innerHTML = text;
+        }
+        if (elem = document.getElementById(id3)){
+            elem.innerHTML = text;
         }
     }
-    if (elem = document.getElementById(id3)) {
-        if (elem.style) {
-            elem.style.backgroundColor = sColor;
+
+
+    /* Change color of cells based on ids*/
+    function setBgColorOfCell(id1,id2,id3,sColor,cOption) {
+        var elem;
+        var currText;
+        if(currText = document.getElementById(id1).innerText) {
+            if (currText == cOption) {
+                sColor = 'White';
+                cOption = " ";
+            }
         }
+        else {
+            sColor = 'CornflowerBlue';
+        }
+        if (elem = document.getElementById(id1)) {
+            if (elem.style) {
+                elem.style.backgroundColor = sColor;
+            }
+        }
+        if (elem = document.getElementById(id2)) {
+            if (elem.style) {
+                elem.style.backgroundColor = sColor;
+            }
+        }
+        if (elem = document.getElementById(id3)) {
+            if (elem.style) {
+                elem.style.backgroundColor = sColor;
+            }
+        }
+        changeText(id1,id2,id3,cOption);
+        return 1;  // success
     }
-    changeText(id1,id2,id3,cOption);
-    return 1;  // success
-}
-function getBgColorOfCell(id) {
- var elem;
- if (document.getElementById) {
-  if (elem=document.getElementById(id)) {
-   if (elem.style) return ''+elem.style.backgroundColor;
-  }
- }
- return 'undefined';
-}
 
-var cOption0 = '{{ Class_Option_0 }}';
-var cOption1 = '{{ Class_Option_1 }}';
-var cOption2 = '{{ Class_Option_2 }}';
-var cOption3 = '{{ Class_Option_3 }}';
-var cOption4 = '{{ Class_Option_4 }}';
-var cOption5 = '{{ Class_Option_5 }}';
-var cOption6 = '{{ Class_Option_6 }}';
-var cOption7 = '{{ Class_Option_7 }}';
-var cOption8 = '{{ Class_Option_8 }}';
-var cOption9 = '{{ Class_Option_9 }}';
-var cOption10 = '{{ Class_Option_10 }}';
-var cOption11 = '{{ Class_Option_11 }}';
-
-
-var Class1 = '{{ session[0] }}';
-var Class1_Days = '{{ session[1] }}';
-var Class1_Time = '{{ session[2] }}';
-var Class1_Type = '{{ session[3] }}';
-var Class1_Dept = '{{ session[4] }}';
-var Class1_Section = '{{ session[5] }}';
-var Class1_Location = '{{ session[6] }}';
-var Class1_Building = '{{ session[7] }}';
-var Class1_Room = '{{ session[8] }}';
-var Class1_Professor = '{{ session[9] }}';
-var Class1_Status = '{{ session[10] }}';
-var Class1_Reserved = '{{ session[11] }}';
-var Class1_blank1 = '{{ session[12] }}';
-var Class1_blank2 = '{{ session[13] }}';
-var Class1_slot1 = '{{ session[14] }}';
-var Class1_slot2 = '{{ session[15] }}';
-var Class1_slot3 = '{{ session[16] }}';
-var Class1_slot4 = '{{ session[17] }}';
-var Class1_slot5 = '{{ session[18] }}';
-var Class1_slot6 = '{{ session[19] }}';
-var Class2 = '{{ session[20] }}';
-var Class2_Days = '{{ session[21] }}';
-var Class2_Time = '{{ session[22] }}';
-var Class2_Type = '{{ session[23] }}';
-var Class2_Dept = '{{ session[24] }}';
-var Class2_Section = '{{ session[25] }}';
-var Class2_Location = '{{ session[26] }}';
-var Class2_Building = '{{ session[27] }}';
-var Class2_Room = '{{ session[28] }}';
-var Class2_Professor = '{{ session[29] }}';
-var Class2_Status = '{{ session[30] }}';
-var Class2_Reserved = '{{ session[31] }}';
-var Class2_blank1 = '{{ session[32] }}';
-var Class2_blank2 = '{{ session[33] }}';
-var Class2_slot1 = '{{ session[34] }}';
-var Class2_slot2 = '{{ session[35] }}';
-var Class2_slot3 = '{{ session[36] }}';
-var Class2_slot4 = '{{ session[37] }}';
-var Class2_slot5 = '{{ session[38] }}';
-var Class2_slot6 = '{{ session[39] }}';
-var Class3 = '{{ session[40] }}';
-var Class3_Days = '{{ session[41] }}';
-var Class3_Time = '{{ session[42] }}';
-var Class3_Type = '{{ session[43] }}';
-var Class3_Dept = '{{ session[44] }}';
-var Class3_Section = '{{ session[45] }}';
-var Class3_Location = '{{ session[46] }}';
-var Class3_Building = '{{ session[47] }}';
-var Class3_Room = '{{ session[48] }}';
-var Class3_Professor = '{{ session[49] }}';
-var Class3_Status = '{{ session[50] }}';
-var Class3_Reserved = '{{ session[51] }}';
-var Class3_blank1 = '{{ session[52] }}';
-var Class3_blank2 = '{{ session[53] }}';
-var Class3_slot1 = '{{ session[54] }}';
-var Class3_slot2 = '{{ session[55] }}';
-var Class3_slot3 = '{{ session[56] }}';
-var Class3_slot4 = '{{ session[57] }}';
-var Class3_slot5 = '{{ session[58] }}';
-var Class3_slot6 = '{{ session[59] }}';
-var Class4 = '{{ session[60] }}';
-var Class4_Days = '{{ session[61] }}';
-var Class4_Time = '{{ session[62] }}';
-var Class4_Type = '{{ session[63] }}';
-var Class4_Dept = '{{ session[64] }}';
-var Class4_Section = '{{ session[65] }}';
-var Class4_Location = '{{ session[66] }}';
-var Class4_Building = '{{ session[67] }}';
-var Class4_Room = '{{ session[68] }}';
-var Class4_Professor = '{{ session[69] }}';
-var Class4_Status = '{{ session[70] }}';
-var Class4_Reserved = '{{ session[71] }}';
-var Class4_blank1 = '{{ session[72] }}';
-var Class4_blank2 = '{{ session[73] }}';
-var Class4_slot1 = '{{ session[74] }}';
-var Class4_slot2 = '{{ session[75] }}';
-var Class4_slot3 = '{{ session[76] }}';
-var Class4_slot4 = '{{ session[77] }}';
-var Class4_slot5 = '{{ session[78] }}';
-var Class4_slot6 = '{{ session[79] }}';
-
-//-->
+    /* Get color of cells */
+    function getBgColorOfCell(id) {
+     var elem;
+     if (document.getElementById) {
+      if (elem=document.getElementById(id)) {
+       if (elem.style) return ''+elem.style.backgroundColor;
+      }
+     }
+     return 'undefined';
+    }
 </script>
+
+
 <body>
     <div id="wrapper">
         <div id="page-wrapper">
             <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">Welcome</h1>
-                </div>
+                <!--div class="col-lg-12">
+                    <h2 class="page-header">Welcome</h2>
+                </div-->
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
@@ -296,9 +288,9 @@ var Class4_slot6 = '{{ session[79] }}';
                                     <ul class="dropdown-menu pull-right" role="menu">
                                         <li><a href="#">Action</a>
                                         </li>
-                                        <li><a href="#">View Current Semester</a>
+                                        <li><a href="flowsheet">View Current Semester</a>
                                         </li>
-                                        <li><a href="#">View Next Semester</a>
+                                        <li><a href="profile">View Next Semester</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -487,15 +479,62 @@ var Class4_slot6 = '{{ session[79] }}';
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="list-group">
-                                <a href="#" id="Class1" class="list-group-item" onclick="setBgColorOfCell(Class1_slot1,Class1_slot2,Class1_slot3,'CornflowerBlue', Class1);return false;">
-                                    <i class="fa fa-cog fa-spin"></i>
-                                        <script>
-                                            document.write(Class1);
-                                        </script>
-                                    <span class="pull-right text-muted small"><em>{{ session[1] }} : {{ session[2] }}</em>
-                                    </span>
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="setBgColorOfCell(Class_Info[14],Class_Info[15],Class_Info[16],'CornflowerBlue', Class_Info[0]);return false;">
+                                    <div class="col-md-1">
+                                        <i class="fa fa-cog fa-spin"></i>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <p id="Class1"></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p id="Class1_Days_and_Time"></p>
+                                    </div>
                                 </a>
-                                <a href="#" id="Class2" class="list-group-item" onclick="setBgColorOfCell(Class2_slot1,Class2_slot2,Class2_slot3,'CornflowerBlue',Class2);return false;">
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="setBgColorOfCell(Class_Info[34],Class_Info[35],Class_Info[36],'CornflowerBlue', Class_Info[20]);return false;">
+                                    <div class="col-md-1">
+                                        <i class="fa fa-cog fa-spin"></i>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <p id="Class2"></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p id="Class2_Days_and_Time"></p>
+                                    </div>
+                                </a>
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="setBgColorOfCell(Class_Info[54],Class_Info[55],Class_Info[56],'CornflowerBlue', Class_Info[40]);return false;">
+                                    <div class="col-md-1">
+                                        <i class="fa fa-cog fa-spin"></i>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <p id="Class3"></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p id="Class3_Days_and_Time"></p>
+                                    </div>
+                                </a>
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="setBgColorOfCell(Class_Info[34],Class_Info[35],Class_Info[36],'CornflowerBlue', Class_Info[60]);return false;">
+                                    <div class="col-md-1">
+                                        <i class="fa fa-cog fa-spin"></i>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <p id="Class4"></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p id="Class4_Days_and_Time"></p>
+                                    </div>
+                                </a>
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="setBgColorOfCell(Class_Info[34],Class_Info[35],Class_Info[36],'CornflowerBlue', Class_Info[80]);return false;">
+                                    <div class="col-md-1">
+                                        <i class="fa fa-cog fa-spin"></i>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <p id="Class5"></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p id="Class5_Days_and_Time"></p>
+                                    </div>
+                                </a>
+                                <!--a href="#" id="Class2" class="list-group-item" onclick="setBgColorOfCell(Class2_slot1,Class2_slot2,Class2_slot3,'CornflowerBlue',Class2);return false;">
                                     <i class="fa fa-cog fa-spin"></i> {{ session[20] }}
                                     <span class="pull-right text-muted small"><em>{{ session[21] }} : {{ session[22] }}</em>
                                     </span>
@@ -549,7 +588,7 @@ var Class4_slot6 = '{{ session[79] }}';
                                     <i class="fa fa-cog fa-spin"></i> {{ Class_Option_11 }}
                                     <span class="pull-right text-muted small"><em>{{ Class_Option_11_Days }} : {{ Class_Option_11_Time }}</em>
                                     </span>
-                                </a>
+                                </a--
                             </div>
                             <!-- /.list-group -->
                         </div>
