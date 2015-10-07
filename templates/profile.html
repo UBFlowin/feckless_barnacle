@@ -331,18 +331,18 @@
                 setBgColorOfCell(mon_table_cells[x],'CornflowerBlue','CornflowerBlue');
                 text_added_to_table[x] = (class_number/25+1);
             }
-            else if((text_added_to_table[x] == (class_number/25)+1)||(text_added_to_table[x]==class_number+1000)){
+            else if((text_added_to_table[x] == (class_number/25)+1)){
                 setBgColorOfCell(mon_table_cells[x],'White','#ddd');
                 text_added_to_table[x] = 0;
             }
             else{
                 if(text_added_to_table[x]>1000){
                     setBgColorOfCell(mon_table_cells[x],'CornflowerBlue','CornflowerBlue');
-                    text_added_to_table[x] = text_added_to_table[x] - 1000;
+                    text_added_to_table[x] = text_added_to_table[x] - 1000 - ((class_number/25)+1);
                 }
                 else {
                     setBgColorOfCell(mon_table_cells[x], 'Red', 'Red');
-                    text_added_to_table[x] = text_added_to_table[x] + 1000;
+                    text_added_to_table[x] = text_added_to_table[x] + 1000 + ((class_number/25)+1);
                 }
             }
             x++;
@@ -359,18 +359,18 @@
                 setBgColorOfCell(tue_table_cells[x],'CornflowerBlue','CornflowerBlue');
                 text_added_to_table[x+26] = (class_number/25+1);
             }
-            else if((text_added_to_table[x+26] == (class_number/25)+1)||(text_added_to_table[x+26]==class_number+1000)){
+            else if((text_added_to_table[x+26] == (class_number/25)+1)){
                 setBgColorOfCell(tue_table_cells[x],'White','#ddd');
                 text_added_to_table[x+26] = 0;
             }
             else{
                 if(text_added_to_table[x+26]>1000){
                     setBgColorOfCell(tue_table_cells[x],'CornflowerBlue','CornflowerBlue');
-                    text_added_to_table[x+26] = text_added_to_table[x+26] - 1000;
+                    text_added_to_table[x+26] = text_added_to_table[x+26] - 1000 - ((class_number/25)+1);
                 }
                 else {
                     setBgColorOfCell(tue_table_cells[x], 'Red', 'Red');
-                    text_added_to_table[x + 26] = text_added_to_table[x + 26] + 1000;
+                    text_added_to_table[x + 26] = text_added_to_table[x + 26] + 1000 + ((class_number/25)+1);
                 }
             }
             x++;
@@ -387,18 +387,18 @@
                 setBgColorOfCell(wed_table_cells[x],'CornflowerBlue','CornflowerBlue');
                 text_added_to_table[x+52] = (class_number/25+1);
             }
-            else if((text_added_to_table[x+52] == (class_number/25)+1)||(text_added_to_table[x+52]==class_number+1000)){
+            else if((text_added_to_table[x+52] == (class_number/25)+1)){
                 setBgColorOfCell(wed_table_cells[x],'White','#ddd');
                 text_added_to_table[x+52] = 0;
             }
             else{
                 if(text_added_to_table[x+52]>1000){
                     setBgColorOfCell(wed_table_cells[x],'CornflowerBlue','CornflowerBlue');
-                    text_added_to_table[x+52] = text_added_to_table[x+52] - 1000;
+                    text_added_to_table[x+52] = text_added_to_table[x+52] - 1000 - ((class_number/25)+1);
                 }
                 else {
                     setBgColorOfCell(wed_table_cells[x], 'Red', 'Red');
-                    text_added_to_table[x + 52] = text_added_to_table[x + 52] + 1000;
+                    text_added_to_table[x + 52] = text_added_to_table[x + 52] + 1000 + ((class_number/25)+1);
                 }
             }
             x++;
@@ -415,18 +415,18 @@
                 setBgColorOfCell(thurs_table_cells[x],'CornflowerBlue','CornflowerBlue');
                 text_added_to_table[x+78] = (class_number/25+1);
             }
-            else if((text_added_to_table[x+78] == (class_number/25)+1)||(text_added_to_table[x+78]==((class_number/25)+1)+1000)){
+            else if((text_added_to_table[x+78] == (class_number/25)+1)){
                 setBgColorOfCell(thurs_table_cells[x],'White','#ddd');
                 text_added_to_table[x+78] = 0;
             }
             else{
                 if(text_added_to_table[x+78]>1000){
                     setBgColorOfCell(thurs_table_cells[x],'CornflowerBlue','CornflowerBlue');
-                    text_added_to_table[x+78] = text_added_to_table[x+78] - 1000;
+                    text_added_to_table[x+78] = text_added_to_table[x+78] - 1000 - ((class_number/25)+1);
                 }
                 else {
                     setBgColorOfCell(thurs_table_cells[x], 'Red', 'Red');
-                    text_added_to_table[x + 78] = text_added_to_table[x + 78] + 1000;
+                    text_added_to_table[x + 78] = text_added_to_table[x + 78] + 1000 + ((class_number/25)+1);
                 }
             }
             x++;
@@ -443,18 +443,18 @@
                 setBgColorOfCell(fri_table_cells[x],'CornflowerBlue','CornflowerBlue');
                 text_added_to_table[x+104] = (class_number/25+1);
             }
-            else if((text_added_to_table[x+104] == (class_number/25)+1)||(text_added_to_table[x+104]==((class_number/25)+1)+1000)){
+            else if((text_added_to_table[x+104] == (class_number/25)+1)){
                 setBgColorOfCell(fri_table_cells[x],'White','#ddd');
                 text_added_to_table[x+104] = 0;
             }
             else{
                 if(text_added_to_table[x+104]>1000){
                     setBgColorOfCell(fri_table_cells[x],'CornflowerBlue','CornflowerBlue');
-                    text_added_to_table[x+104] = text_added_to_table[x+104] - 1000;
+                    text_added_to_table[x+104] = text_added_to_table[x+104] - 1000 - ((class_number/25)+1);
                 }
                 else {
                     setBgColorOfCell(fri_table_cells[x], 'Red', 'Red');
-                    text_added_to_table[x + 104] = text_added_to_table[x + 104] + 1000;
+                    text_added_to_table[x + 104] = text_added_to_table[x + 104] + 1000 + ((class_number/25)+1);
                 }
             }
             x++;
