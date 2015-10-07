@@ -238,7 +238,7 @@ def profile():
 @app.route('/getnextclassgroup', methods=['GET'])
 def getClassGroup():
     if request.method == 'GET':
-        results = UBClasses.query.filter_by(RESERVED="YES").all()
+        results = UBClasses.query.filter_by(DEPARTMENT="EAS").all()
     json_results = []
     for result in results:
         d = {'ID': result.ID,

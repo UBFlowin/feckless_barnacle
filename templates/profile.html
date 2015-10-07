@@ -9,34 +9,64 @@
 ---------------------------------------------------------------->
 <script>
     var Class_Info=[];
+
+    var place_holder = 0;
+
+    var text_added_to_table = [];
+    for(x=0;x<130;x++){
+        text_added_to_table[x] = 0;
+    }
+
     var class_list_ids = ['Class1', 'Class2', 'Class3', 'Class4', 'Class5', 'Class6', 'Class7', 'Class8', 'Class9', 'Class10'];
+
     var class_list_times_ids = ['Class1_Days_and_Time', 'Class2_Days_and_Time', 'Class3_Days_and_Time', 'Class4_Days_and_Time',
         'Class5_Days_and_Time', 'Class6_Days_and_Time', 'Class7_Days_and_Time', 'Class8_Days_and_Time',
         'Class9_Days_and_Time', 'Class10_Days_and_Time'];
 
+    var mon_table_cells = ['M8:00AM','M8:30AM','M9:00AM','M9:30AM','M10:00AM','M10:30AM','M11:00AM','M11:30AM','M12:00PM',
+                            'M12:30PM','M1:00PM','M1:30PM','M2:00PM','M2:30PM','M3:00PM','M3:30PM','M4:00PM','M4:30PM','M5:00PM',
+                            'M5:30PM','M6:00PM','M6:30PM','M7:00PM','M7:30PM','M8:00PM','M8:30PM','M9:00PM'];
+    var tue_table_cells = ['T8:00AM','T8:30AM','T9:00AM','T9:30AM','T10:00AM','T10:30AM','T11:00AM','T11:30AM','T12:00PM',
+                            'T12:30PM','T1:00PM','T1:30PM','T2:00PM','T2:30PM','T3:00PM','T3:30PM','T4:00PM','T4:30PM','T5:00PM',
+                            'T5:30PM','T6:00PM','T6:30PM','T7:00PM','T7:30PM','T8:00PM','T8:30PM','T9:00PM']
+    var wed_table_cells = ['W8:00AM','W8:30AM','W9:00AM','W9:30AM','W10:00AM','W10:30AM','W11:00AM','W11:30AM','W12:00PM',
+                            'W12:30PM','W1:00PM','W1:30PM','W2:00PM','W2:30PM','W3:00PM','W3:30PM','W4:00PM','W4:30PM','W5:00PM',
+                            'W5:30PM','W6:00PM','W6:30PM','W7:00PM','W7:30PM','W8:00PM','W8:30PM','W9:00PM'];
+    var thurs_table_cells = ['R8:00AM','R8:30AM','R9:00AM','R9:30AM','R10:00AM','R10:30AM','R11:00AM','R11:30AM','R12:00PM',
+                            'R12:30PM','R1:00PM','R1:30PM','R2:00PM','R2:30PM','R3:00PM','R3:30PM','R4:00PM','R4:30PM','R5:00PM',
+                            'R5:30PM','R6:00PM','R6:30PM','R7:00PM','R7:30PM','R8:00PM','R8:30PM','R9:00PM'];
+    var fri_table_cells = ['F8:00AM','F8:30AM','F9:00AM','F9:30AM','F10:00AM','F10:30AM','F11:00AM','F11:30AM','F12:00PM',
+                            'F12:30PM','F1:00PM','F1:30PM','F2:00PM','F2:30PM','F3:00PM','F3:30PM','F4:00PM','F4:30PM','F5:00PM',
+                            'F5:30PM','F6:00PM','F6:30PM','F7:00PM','F7:30PM','F8:00PM','F8:30PM','F9:00PM'];
+
+
     $.getJSON('/getfirstclassgroup', function(dat) {
         var x = 0;
         while(dat.classes[x] != null) {
-            Class_Info[x*20] = dat.classes[x].UBCLASS;
-            Class_Info[x*20 + 1] = dat.classes[x].DEPARTMENT;
-            Class_Info[x*20 + 2] = dat.classes[x].SECTION;
-            Class_Info[x*20 + 3] = dat.classes[x].TYPE;
-            Class_Info[x*20 + 4] = dat.classes[x].DAYS;
-            Class_Info[x*20 + 5] = dat.classes[x].TIME;
-            Class_Info[x*20 + 6] = dat.classes[x].BUILDING;
-            Class_Info[x*20 + 7] = dat.classes[x].ROOM_NUMBER;
-            Class_Info[x*20 + 8] = dat.classes[x].LOCATION;
-            Class_Info[x*20 + 9] = dat.classes[x].PROFESSOR;
-            Class_Info[x*20 + 10] = dat.classes[x].STATUS;
-            Class_Info[x*20 + 11] = dat.classes[x].RESERVED;
-            Class_Info[x*20 + 12] = dat.classes[x].SEMESTER;
-            Class_Info[x*20 + 13] = ' ';
-            Class_Info[x*20 + 14] = ' ';
-            Class_Info[x*20 + 15] = ' ';
-            Class_Info[x*20 + 16] = ' ';
-            Class_Info[x*20 + 17] = ' ';
-            Class_Info[x*20 + 18] = ' ';
-            Class_Info[x*20 + 19] = ' ';
+            Class_Info[x*25] = dat.classes[x].UBCLASS;
+            Class_Info[x*25 + 1] = dat.classes[x].DEPARTMENT;
+            Class_Info[x*25 + 2] = dat.classes[x].SECTION;
+            Class_Info[x*25 + 3] = dat.classes[x].TYPE;
+            Class_Info[x*25 + 4] = dat.classes[x].DAYS;
+            Class_Info[x*25 + 5] = dat.classes[x].TIME;
+            Class_Info[x*25 + 6] = dat.classes[x].BUILDING;
+            Class_Info[x*25 + 7] = dat.classes[x].ROOM_NUMBER;
+            Class_Info[x*25 + 8] = dat.classes[x].LOCATION;
+            Class_Info[x*25 + 9] = dat.classes[x].PROFESSOR;
+            Class_Info[x*25 + 10] = dat.classes[x].STATUS;
+            Class_Info[x*25 + 11] = dat.classes[x].RESERVED;
+            Class_Info[x*25 + 12] = dat.classes[x].SEMESTER;
+            times = convertTimes(dat.classes[x].DAYS,dat.classes[x].TIME);
+            Class_Info[x*25 + 13] = times[0];
+            Class_Info[x*25 + 14] = times[1];
+            Class_Info[x*25 + 15] = times[2];
+            Class_Info[x*25 + 16] = times[3];
+            Class_Info[x*25 + 17] = times[4];
+            Class_Info[x*25 + 18] = times[5];
+            Class_Info[x*25 + 19] = times[6];
+            Class_Info[x*25 + 20] = times[7];
+            Class_Info[x*25 + 21] = times[8];
+            Class_Info[x*25 + 22] = times[9];
             x = x + 1;
         }
         clearText(x);
@@ -53,35 +83,38 @@
     $(function() {
         $("#SearchButton").click(function() {
             var x = 0;
+            var times;
             $.getJSON('/getnextclassgroup', function (dat) {
                 while(dat.classes[x] != null) {
-
-                    Class_Info[x*20] = dat.classes[x].UBCLASS;
-                    Class_Info[x*20 + 1] = dat.classes[x].DEPARTMENT;
-                    Class_Info[x*20 + 2] = dat.classes[x].SECTION;
-                    Class_Info[x*20 + 3] = dat.classes[x].TYPE;
-                    Class_Info[x*20 + 4] = dat.classes[x].DAYS;
-                    Class_Info[x*20 + 5] = dat.classes[x].TIME;
-                    Class_Info[x*20 + 6] = dat.classes[x].BUILDING;
-                    Class_Info[x*20 + 7] = dat.classes[x].ROOM_NUMBER;
-                    Class_Info[x*20 + 8] = dat.classes[x].LOCATION;
-                    Class_Info[x*20 + 9] = dat.classes[x].PROFESSOR;
-                    Class_Info[x*20 + 10] = dat.classes[x].STATUS;
-                    Class_Info[x*20 + 11] = dat.classes[x].RESERVED;
-                    Class_Info[x*20 + 12] = dat.classes[x].SEMESTER;
-                    Class_Info[x*20 + 13] = ' ';
-                    Class_Info[x*20 + 14] = ' ';
-                    Class_Info[x*20 + 15] = ' ';
-                    Class_Info[x*20 + 16] = ' ';
-                    Class_Info[x*20 + 17] = ' ';
-                    Class_Info[x*20 + 18] = ' ';
-                    Class_Info[x*20 + 19] = ' ';
+                    Class_Info[x*25] = dat.classes[x].UBCLASS;
+                    Class_Info[x*25 + 1] = dat.classes[x].DEPARTMENT;
+                    Class_Info[x*25 + 2] = dat.classes[x].SECTION;
+                    Class_Info[x*25 + 3] = dat.classes[x].TYPE;
+                    Class_Info[x*25 + 4] = dat.classes[x].DAYS;
+                    Class_Info[x*25 + 5] = dat.classes[x].TIME;
+                    Class_Info[x*25+ 6] = dat.classes[x].BUILDING;
+                    Class_Info[x*25 + 7] = dat.classes[x].ROOM_NUMBER;
+                    Class_Info[x*25 + 8] = dat.classes[x].LOCATION;
+                    Class_Info[x*25 + 9] = dat.classes[x].PROFESSOR;
+                    Class_Info[x*25 + 10] = dat.classes[x].STATUS;
+                    Class_Info[x*25 + 11] = dat.classes[x].RESERVED;
+                    Class_Info[x*25 + 12] = dat.classes[x].SEMESTER;
+                    times = convertTimes(dat.classes[x].DAYS,dat.classes[x].TIME);
+                    Class_Info[x*25 + 13] = times[0];
+                    Class_Info[x*25 + 14] = times[1];
+                    Class_Info[x*25 + 15] = times[2];
+                    Class_Info[x*25 + 16] = times[3];
+                    Class_Info[x*25 + 17] = times[4];
+                    Class_Info[x*25 + 18] = times[5];
+                    Class_Info[x*25 + 19] = times[6];
+                    Class_Info[x*25 + 20] = times[7];
+                    Class_Info[x*25 + 21] = times[8];
+                    Class_Info[x*25 + 22] = times[9];
                     x = x + 1;
                 }
                 clearText(x);                       //Empty unecessary items from Class_Info
                 resetText();                        //Reset the list-group with blanks
             });
-
         });
     });
 </script>
@@ -94,78 +127,340 @@
     function resetText() {
         for (var x = 0; x < 10; x++){
             if (elem = document.getElementById(class_list_ids[x])) {
-                elem.innerText = "  " + Class_Info[x*20];
+                elem.innerText = "  " + Class_Info[x*25];
             }
             if (elem = document.getElementById(class_list_times_ids[x])) {
-                elem.innerText = Class_Info[x*20+4] + ":" + Class_Info[x*20+5];
+                elem.innerText = Class_Info[x*25+4] + " " + Class_Info[x*25+5];
             }
         }
     }
 
     /* Clear all unnecessary text from Class Options */
     function clearText(x) {
-        x = x*20;
-        for (x; x < 200; x++){
+        x = x*25;
+        for (x; x < 275; x++){
             Class_Info[x] = ' ';
         }
     }
 
     /* Change text in cells */
-    function changeText(id1,id2,id3,text) {
+    function changeText(id1,text) {
         if (elem = document.getElementById(id1)){
-            elem.innerHTML = text;
-        }
-        if (elem = document.getElementById(id2)){
-            elem.innerHTML = text;
-        }
-        if (elem = document.getElementById(id3)){
             elem.innerHTML = text;
         }
     }
 
 
     /* Change color of cells based on ids*/
-    function setBgColorOfCell(id1,id2,id3,sColor,cOption) {
+    function setBgColorOfCell(id1,sColor, border_color) {
+        Color = sColor;
         var elem;
-        var currText;
-        if(currText = document.getElementById(id1).innerText) {
-            if (currText == cOption) {
-                sColor = 'White';
-                cOption = " ";
-            }
-        }
-        else {
-            sColor = 'CornflowerBlue';
-        }
         if (elem = document.getElementById(id1)) {
             if (elem.style) {
-                elem.style.backgroundColor = sColor;
+                elem.style.backgroundColor = Color;
+                elem.style.borderBottomColor = border_color;
             }
         }
-        if (elem = document.getElementById(id2)) {
-            if (elem.style) {
-                elem.style.backgroundColor = sColor;
-            }
-        }
-        if (elem = document.getElementById(id3)) {
-            if (elem.style) {
-                elem.style.backgroundColor = sColor;
-            }
-        }
-        changeText(id1,id2,id3,cOption);
-        return 1;  // success
     }
 
     /* Get color of cells */
     function getBgColorOfCell(id) {
-     var elem;
-     if (document.getElementById) {
-      if (elem=document.getElementById(id)) {
-       if (elem.style) return ''+elem.style.backgroundColor;
-      }
-     }
-     return 'undefined';
+    var elem;
+        if (document.getElementById) {
+            if (elem=document.getElementById(id)) {
+                if(elem.style.backgroundColor=="rgb(100, 149, 237)"){
+                    return "CornflowerBlue";
+                }
+                else{
+                    return "White";
+                }
+            }
+        }
+        return 'undefined';
     }
+
+
+/*---------------------------------------------------------
+/       - Convert Times from
+/                XX:XX AM - XX:XX PM  to
+/                XX:XXAM and XX:XXPM
+/       - Return array of start and end times for each day
+/----------------------------------------------------------*/
+    function convertTimes(db_days,db_time){
+        times = [];
+        var split_time = db_time.split(" ");
+
+        var round = split_time[3].split(":");
+        if((round[1] == '10')||(round[1] == '20')){
+            round[1] = '00';
+        }
+        if((round[1] == '40')||(round[1] == '50')){
+            round[1] = '00';
+            if(round[0] == '1'){round[0]="2";}
+            else if(round[0] == '2'){round[0]="3";}
+            else if(round[0] == '3'){round[0]="4";}
+            else if(round[0] == '4'){round[0]="5";}
+            else if(round[0] == '5'){round[0]="6";}
+            else if(round[0] == '6'){round[0]="7";}
+            else if(round[0] == '7'){round[0]="8";}
+            else if(round[0] == '8'){round[0]="9";}
+            else if(round[0] == '9'){round[0]="10";}
+            else if(round[0] == '10'){round[0]="11";}
+            else if(round[0] == '11'){round[0]="12";}
+        }
+
+        split_time[3] = round[0]+":"+round[1];
+        var start_time = split_time[0]+split_time[1];
+        var end_time = split_time[3]+split_time[4];
+
+        switch(db_days) {
+            case "M W F":
+                times[0] = "M" + start_time;
+                times[1] = "M" + end_time;
+                times[2] = " ";
+                times[3] = " ";
+                times[4] = "W" + start_time;
+                times[5] = "W" + end_time;
+                times[6] = " ";
+                times[7] = " ";
+                times[8] = "F" + start_time;
+                times[9] = "F" + end_time;
+                break;
+            case "M W":
+                times[0] = "M" + start_time;
+                times[1] = "M" + end_time;
+                times[2] = " ";
+                times[3] = " ";
+                times[4] = "W" + start_time;
+                times[5] = "W" + end_time;
+                times[6] = " ";
+                times[7] = " ";
+                times[8] = " ";
+                times[9] = " ";
+                break;
+            case "M":
+                times[0] = "M" + start_time;
+                times[1] = "M" + end_time;
+                times[2] = " ";
+                times[3] = " ";
+                times[4] = " ";
+                times[5] = " ";
+                times[6] = " ";
+                times[7] = " ";
+                times[8] = " ";
+                times[9] = " ";
+                break;
+            case "W":
+                times[0] = " ";
+                times[1] = " ";
+                times[2] = " ";
+                times[3] = " ";
+                times[4] = "W" + start_time;
+                times[5] = "W" + end_time;
+                times[6] = " ";
+                times[7] = " ";
+                times[8] = " ";
+                times[9] = " ";
+                break;
+            case "F":
+                times[0] = " ";
+                times[1] = " ";
+                times[2] = " ";
+                times[3] = " ";
+                times[4] = " ";
+                times[5] = " ";
+                times[6] = " ";
+                times[7] = " ";
+                times[8] = "F" + start_time;
+                times[9] = "F" + end_time;
+                break;
+            case "T R":
+                times[0] = " ";
+                times[1] = " ";
+                times[2] = "T" + start_time;
+                times[3] = "T" + end_time;
+                times[4] = " ";
+                times[5] = " ";
+                times[6] = "R" + start_time;
+                times[7] = "R" + end_time;
+                times[8] = " ";
+                times[9] = " ";
+                break;
+            case "T":
+                times[0] = " ";
+                times[1] = " ";
+                times[2] = "T" + start_time;
+                times[3] = "T" + end_time;
+                times[4] = " ";
+                times[5] = " ";
+                times[6] = " ";
+                times[7] = " ";
+                times[8] = " ";
+                times[9] = " ";
+                break;
+            case "R":
+                times[0] = " ";
+                times[1] = " ";
+                times[2] = " ";
+                times[3] = " ";
+                times[4] = " ";
+                times[5] = " ";
+                times[6] = "R" + start_time;
+                times[7] = "R" + end_time;
+                times[8] = " ";
+                times[9] = " ";
+                break;
+            default:
+                break;
+        }
+        return times;
+    }
+
+
+    function changeTimeColors(class_number){
+        var x=0;
+        class_number = class_number*25;
+
+        //---------Monday------------
+        while((mon_table_cells[x] != Class_Info[class_number+13])&&(x<mon_table_cells.length)){
+            x++;
+        }
+        changeText(mon_table_cells[x],Class_Info[class_number], (class_number/25));
+        while((mon_table_cells[x] != Class_Info[class_number+14])&&(x<mon_table_cells.length)){
+            if(text_added_to_table[x] == 0){
+                setBgColorOfCell(mon_table_cells[x],'CornflowerBlue','CornflowerBlue');
+                text_added_to_table[x] = (class_number/25+1);
+            }
+            else if((text_added_to_table[x] == (class_number/25)+1)||(text_added_to_table[x]==class_number+1000)){
+                setBgColorOfCell(mon_table_cells[x],'White','#ddd');
+                text_added_to_table[x] = 0;
+            }
+            else{
+                if(text_added_to_table[x]>1000){
+                    setBgColorOfCell(mon_table_cells[x],'CornflowerBlue','CornflowerBlue');
+                    text_added_to_table[x] = text_added_to_table[x] - 1000;
+                }
+                else {
+                    setBgColorOfCell(mon_table_cells[x], 'Red', 'Red');
+                    text_added_to_table[x] = text_added_to_table[x] + 1000;
+                }
+            }
+            x++;
+        }
+
+        //---------Tuesday------------
+        x=0;
+        while((tue_table_cells[x] != Class_Info[class_number+15])&&(x<tue_table_cells.length)){
+            x++;
+        }
+        changeText(tue_table_cells[x],Class_Info[class_number]);
+        while((tue_table_cells[x] != Class_Info[class_number+16])&&(x<tue_table_cells.length)){
+             if(text_added_to_table[x+26] == 0){
+                setBgColorOfCell(tue_table_cells[x],'CornflowerBlue','CornflowerBlue');
+                text_added_to_table[x+26] = (class_number/25+1);
+            }
+            else if((text_added_to_table[x+26] == (class_number/25)+1)||(text_added_to_table[x+26]==class_number+1000)){
+                setBgColorOfCell(tue_table_cells[x],'White','#ddd');
+                text_added_to_table[x+26] = 0;
+            }
+            else{
+                if(text_added_to_table[x+26]>1000){
+                    setBgColorOfCell(tue_table_cells[x],'CornflowerBlue','CornflowerBlue');
+                    text_added_to_table[x+26] = text_added_to_table[x+26] - 1000;
+                }
+                else {
+                    setBgColorOfCell(tue_table_cells[x], 'Red', 'Red');
+                    text_added_to_table[x + 26] = text_added_to_table[x + 26] + 1000;
+                }
+            }
+            x++;
+        }
+
+        //---------Wednesday------------
+        x=0;
+        while((wed_table_cells[x] != Class_Info[class_number+17])&&(x<wed_table_cells.length)){
+            x++;
+        }
+        changeText(wed_table_cells[x],Class_Info[class_number]);
+        while((wed_table_cells[x] != Class_Info[class_number+18])&&(x<wed_table_cells.length)){
+             if(text_added_to_table[x+52] == 0){
+                setBgColorOfCell(wed_table_cells[x],'CornflowerBlue','CornflowerBlue');
+                text_added_to_table[x+52] = (class_number/25+1);
+            }
+            else if((text_added_to_table[x+52] == (class_number/25)+1)||(text_added_to_table[x+52]==class_number+1000)){
+                setBgColorOfCell(wed_table_cells[x],'White','#ddd');
+                text_added_to_table[x+52] = 0;
+            }
+            else{
+                if(text_added_to_table[x+52]>1000){
+                    setBgColorOfCell(wed_table_cells[x],'CornflowerBlue','CornflowerBlue');
+                    text_added_to_table[x+52] = text_added_to_table[x+52] - 1000;
+                }
+                else {
+                    setBgColorOfCell(wed_table_cells[x], 'Red', 'Red');
+                    text_added_to_table[x + 52] = text_added_to_table[x + 52] + 1000;
+                }
+            }
+            x++;
+        }
+
+        //---------Thursday------------
+        x=0;
+        while((thurs_table_cells[x] != Class_Info[class_number+19])&&(x<thurs_table_cells.length)){
+            x++;
+        }
+        changeText(thurs_table_cells[x],Class_Info[class_number]);
+         while((thurs_table_cells[x] != Class_Info[class_number+20])&&(x<thurs_table_cells.length)){
+             if(text_added_to_table[x+78] == 0){
+                setBgColorOfCell(thurs_table_cells[x],'CornflowerBlue','CornflowerBlue');
+                text_added_to_table[x+78] = (class_number/25+1);
+            }
+            else if((text_added_to_table[x+78] == (class_number/25)+1)||(text_added_to_table[x+78]==((class_number/25)+1)+1000)){
+                setBgColorOfCell(thurs_table_cells[x],'White','#ddd');
+                text_added_to_table[x+78] = 0;
+            }
+            else{
+                if(text_added_to_table[x+78]>1000){
+                    setBgColorOfCell(thurs_table_cells[x],'CornflowerBlue','CornflowerBlue');
+                    text_added_to_table[x+78] = text_added_to_table[x+78] - 1000;
+                }
+                else {
+                    setBgColorOfCell(thurs_table_cells[x], 'Red', 'Red');
+                    text_added_to_table[x + 78] = text_added_to_table[x + 78] + 1000;
+                }
+            }
+            x++;
+        }
+
+        //---------Friday------------
+        x=0;
+        while((fri_table_cells[x] != Class_Info[class_number+21])&&(x<fri_table_cells.length)){
+            x++;
+        }
+        changeText(fri_table_cells[x],Class_Info[class_number]);
+        while((fri_table_cells[x] != Class_Info[class_number+22])&&(x<fri_table_cells.length)){
+             if(text_added_to_table[x+104] == 0){
+                setBgColorOfCell(fri_table_cells[x],'CornflowerBlue','CornflowerBlue');
+                text_added_to_table[x+104] = (class_number/25+1);
+            }
+            else if((text_added_to_table[x+104] == (class_number/25)+1)||(text_added_to_table[x+104]==((class_number/25)+1)+1000)){
+                setBgColorOfCell(fri_table_cells[x],'White','#ddd');
+                text_added_to_table[x+104] = 0;
+            }
+            else{
+                if(text_added_to_table[x+104]>1000){
+                    setBgColorOfCell(fri_table_cells[x],'CornflowerBlue','CornflowerBlue');
+                    text_added_to_table[x+104] = text_added_to_table[x+104] - 1000;
+                }
+                else {
+                    setBgColorOfCell(fri_table_cells[x], 'Red', 'Red');
+                    text_added_to_table[x + 104] = text_added_to_table[x + 104] + 1000;
+                }
+            }
+            x++;
+        }
+    }
+
 </script>
 
 
@@ -223,35 +518,35 @@
                                         </div>
                                         <div class="form-horizontal" role="form">
                                             <div class="checkbox-inline">
-                                                <label><input type="checkbox" value="">8am</label>
+                                                <label><input type="checkbox" value="">8:00AM</label>
                                             </div>
                                             <div class="checkbox-inline">
-                                                <label><input type="checkbox" value="">9am</label>
+                                                <label><input type="checkbox" value="">9:00AM</label>
                                             </div>
                                             <div class="checkbox-inline">
                                                 <label><input type="checkbox" value="">10am</label>
                                             </div>
                                             <div class="checkbox-inline">
-                                                <label><input type="checkbox" value="">11am</label>
+                                                <label><input type="checkbox" value="">11:00AM</label>
                                             </div>
                                         </div>
                                         <div class="form-horizontal" role="form">
                                             <div class="checkbox-inline">
-                                                <label><input type="checkbox" value="">12pm</label>
+                                                <label><input type="checkbox" value="">12:00PM</label>
                                             </div>
                                             <div class="checkbox-inline">
-                                                <label><input type="checkbox" value="">1pm</label>
+                                                <label><input type="checkbox" value="">1:00PM</label>
                                             </div>
                                             <div class="checkbox-inline">
-                                                <label><input type="checkbox" value="">2pm</label>
+                                                <label><input type="checkbox" value="">2:00PM</label>
                                             </div>
                                             <div class="checkbox-inline">
-                                                <label><input type="checkbox" value="">3pm</label>
+                                                <label><input type="checkbox" value="">3:00PM</label>
                                             </div>
                                         </div>
                                         <div class="form-horizontal" role="form">
                                             <div class="checkbox-inline">
-                                                <label><input type="checkbox" value="">4pm</label>
+                                                <label><input type="checkbox" value="">4:00PM</label>
                                             </div>
                                             <div class="checkbox-inline">
                                                 <label><input type="checkbox" value="">5pm</label>
@@ -301,9 +596,9 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="table-responsive">
-                                        <table class="table table-bordered table-hover table-striped">
+                                        <table class="table table-bordered table-hover" align="center">
                                             <thead>
-                                                <tr>
+                                                <tr style="background-color:#abb9d3;">
                                                     <th style="width:50px;">Time</th>
                                                     <th>Mon</th>
                                                     <th>Tue</th>
@@ -313,149 +608,213 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                     <td>8:00</td>
-                                                    <td id="Mon_8AM"></td>
-                                                    <td id="Tue_8AM"></td>
-                                                    <td id="Wed_8AM"></td>
-                                                    <td id="Thu_8AM"></td>
-                                                    <td id="Fri_8AM"></td>
+                                                    <td id="M8:00AM"></td>
+                                                    <td id="T8:00AM"></td>
+                                                    <td id="W8:00AM"></td>
+                                                    <td id="R8:00AM"></td>
+                                                    <td id="F8:00AM"></td>
                                                 </tr>
-                                                <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                     <td>8:30</td>
-                                                    <td id="Mon_8:30AM"></td>
-                                                    <td id="Tue_8:30AM"></td>
-                                                    <td id="Wed_8:30AM"></td>
-                                                    <td id="Thu_8:30AM"></td>
-                                                    <td id="Fri_8:30AM"></td>
+                                                    <td id="M8:30AM"></td>
+                                                    <td id="T8:30AM"></td>
+                                                    <td id="W8:30AM"></td>
+                                                    <td id="R8:30AM"></td>
+                                                    <td id="F8:30AM"></td>
                                                 </tr>
-                                                <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                     <td>9:00</td>
-                                                    <td id="Mon_9AM"></td>
-                                                    <td id="Tue_9AM"></td>
-                                                    <td id="Wed_9AM"></td>
-                                                    <td id="Thu_9AM"></td>
-                                                    <td id="Fri_9AM"></td>
+                                                    <td id="M9:00AM"></td>
+                                                    <td id="T9:00AM"></td>
+                                                    <td id="W9:00AM"></td>
+                                                    <td id="R9:00AM"></td>
+                                                    <td id="F9:00AM"></td>
                                                 </tr>
-                                                <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                     <td>9:30</td>
-                                                    <td id="Mon_9:30AM"></td>
-                                                    <td id="Tue_9:30AM"></td>
-                                                    <td id="Wed_9:30AM"></td>
-                                                    <td id="Thu_9:30AM"></td>
-                                                    <td id="Fri_9:30AM"></td>
+                                                    <td id="M9:30AM"></td>
+                                                    <td id="T9:30AM"></td>
+                                                    <td id="W9:30AM"></td>
+                                                    <td id="R9:30AM"></td>
+                                                    <td id="F9:30AM"></td>
                                                 </tr>
-                                                <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                     <td>10:00</td>
-                                                    <td id="Mon_10AM"></td>
-                                                    <td id="Tue_10AM"></td>
-                                                    <td id="Wed_10AM"></td>
-                                                    <td id="Thu_10AM"></td>
-                                                    <td id="Fri_10AM"></td>
+                                                    <td id="M10:00AM"></td>
+                                                    <td id="T10:00AM"></td>
+                                                    <td id="W10:00AM"></td>
+                                                    <td id="R10:00AM"></td>
+                                                    <td id="F10:00AM"></td>
                                                 </tr>
-                                                <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                     <td>10:30</td>
-                                                    <td id="Mon_10:30AM"></td>
-                                                    <td id="Tue_10:30AM"></td>
-                                                    <td id="Wed_10:30AM"></td>
-                                                    <td id="Thu_10:30AM"></td>
-                                                    <td id="Fri_10:30AM"></td>
+                                                    <td id="M10:30AM"></td>
+                                                    <td id="T10:30AM"></td>
+                                                    <td id="W10:30AM"></td>
+                                                    <td id="R10:30AM"></td>
+                                                    <td id="F10:30AM"></td>
                                                 </tr>
-                                                <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                     <td>11:00</td>
-                                                    <td id="Mon_11AM"></td>
-                                                    <td id="Tue_11AM"></td>
-                                                    <td id="Wed_11AM"></td>
-                                                    <td id="Thu_11AM"></td>
-                                                    <td id="Fri_11AM"></td>
+                                                    <td id="M11:00AM"></td>
+                                                    <td id="T11:00AM"></td>
+                                                    <td id="W11:00AM"></td>
+                                                    <td id="R11:00AM"></td>
+                                                    <td id="F11:00AM"></td>
                                                 </tr>
-                                                <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                    <td>11:30</td>
-                                                    <td id="Mon_11:30AM"></td>
-                                                    <td id="Tue_11:30AM"></td>
-                                                    <td id="Wed_11:30AM"></td>
-                                                    <td id="Thu_11:30AM"></td>
-                                                    <td id="Fri_11:30AM"></td>
+                                                    <td id="M11:30AM"></td>
+                                                    <td id="T11:30AM"></td>
+                                                    <td id="W11:30AM"></td>
+                                                    <td id="R11:30AM"></td>
+                                                    <td id="F11:30AM"></td>
                                                 </tr>
-                                                <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                     <td>12:00</td>
-                                                    <td id="Mon_12PM"></td>
-                                                    <td id="Tue_12PM"></td>
-                                                    <td id="Wed_12PM"></td>
-                                                    <td id="Thu_12PM"></td>
-                                                    <td id="Fri_12PM"></td>
+                                                    <td id="M12:00PM"></td>
+                                                    <td id="T12:00PM"></td>
+                                                    <td id="W12:00PM"></td>
+                                                    <td id="R12:00PM"></td>
+                                                    <td id="F12:00PM"></td>
                                                 </tr>
-                                                <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                     <td>12:30</td>
-                                                    <td id="Mon_12:30PM"></td>
-                                                    <td id="Tue_12:30PM"></td>
-                                                    <td id="Wed_12:30PM"></td>
-                                                    <td id="Thu_12:30PM"></td>
-                                                    <td id="Fri_12:30PM"></td>
+                                                    <td id="M12:30PM"></td>
+                                                    <td id="T12:30PM"></td>
+                                                    <td id="W12:30PM"></td>
+                                                    <td id="R12:30PM"></td>
+                                                    <td id="F12:30PM"></td>
                                                 </tr>
-                                                <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                     <td>1:00</td>
-                                                    <td id="Mon_1PM"></td>
-                                                    <td id="Tue_1PM"></td>
-                                                    <td id="Wed_1PM"></td>
-                                                    <td id="Thu_1PM"></td>
-                                                    <td id="Fri_1PM"></td>
+                                                    <td id="M1:00PM"></td>
+                                                    <td id="T1:00PM"></td>
+                                                    <td id="W1:00PM"></td>
+                                                    <td id="R1:00PM"></td>
+                                                    <td id="F1:00PM"></td>
                                                 </tr>
-                                                <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                     <td>1:30</td>
-                                                    <td id="Mon_1:30PM"></td>
-                                                    <td id="Tue_1:30PM"></td>
-                                                    <td id="Wed_1:30PM"></td>
-                                                    <td id="Thu_1:30PM"></td>
-                                                    <td id="Fri_1:30PM"></td>
+                                                    <td id="M1:30PM"></td>
+                                                    <td id="T1:30PM"></td>
+                                                    <td id="W1:30PM"></td>
+                                                    <td id="R1:30PM"></td>
+                                                    <td id="F1:30PM"></td>
                                                 </tr>
-                                                <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                     <td>2:00</td>
-                                                    <td id="Mon_2PM"></td>
-                                                    <td id="Tue_2PM"></td>
-                                                    <td id="Wed_2PM"></td>
-                                                    <td id="Thu_2PM"></td>
-                                                    <td id="Fri_2PM"></td>
+                                                    <td id="M2:00PM"></td>
+                                                    <td id="T2:00PM"></td>
+                                                    <td id="W2:00PM"></td>
+                                                    <td id="R2:00PM"></td>
+                                                    <td id="F2:00PM"></td>
                                                 </tr>
-                                                <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                     <td>2:30</td>
-                                                    <td id="Mon_2:30PM"></td>
-                                                    <td id="Tue_2:30PM"></td>
-                                                    <td id="Wed_2:30PM"></td>
-                                                    <td id="Thu_2:30PM"></td>
-                                                    <td id="Fri_2:30PM"></td>
+                                                    <td id="M2:30PM"></td>
+                                                    <td id="T2:30PM"></td>
+                                                    <td id="W2:30PM"></td>
+                                                    <td id="R2:30PM"></td>
+                                                    <td id="F2:30PM"></td>
                                                 </tr>
-                                                <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                     <td>3:00</td>
-                                                    <td id="Mon_3PM"></td>
-                                                    <td id="Tue_3PM"></td>
-                                                    <td id="Wed_3PM"></td>
-                                                    <td id="Thu_3PM"></td>
-                                                    <td id="Fri_3PM"></td>
+                                                    <td id="M3:00PM"></td>
+                                                    <td id="T3:00PM"></td>
+                                                    <td id="W3:00PM"></td>
+                                                    <td id="R3:00PM"></td>
+                                                    <td id="F3:00PM"></td>
                                                 </tr>
-                                                 <tr style="height:40px;">
+                                                 <tr style="height:15px;">
                                                     <td>3:30</td>
-                                                    <td id="Mon_3:30PM"></td>
-                                                    <td id="Tue_3:30PM"></td>
-                                                    <td id="Wed_3:30PM"></td>
-                                                    <td id="Thu_3:30PM"></td>
-                                                    <td id="Fri_3:30PM"></td>
+                                                    <td id="M3:30PM"></td>
+                                                    <td id="T3:30PM"></td>
+                                                    <td id="W3:30PM"></td>
+                                                    <td id="R3:30PM"></td>
+                                                    <td id="F3:30PM"></td>
                                                 </tr>
                                                 <tr style="height:40px;">
                                                     <td>4:00</td>
-                                                    <td id="Mon_4PM"></td>
-                                                    <td id="Tue_4PM"></td>
-                                                    <td id="Wed_4PM"></td>
-                                                    <td id="Thu_4PM"></td>
-                                                    <td id="Fri_4PM"></td>
+                                                    <td id="M4:00PM"></td>
+                                                    <td id="T4:00PM"></td>
+                                                    <td id="W4:00PM"></td>
+                                                    <td id="R4:00PM"></td>
+                                                    <td id="F4:00PM"></td>
                                                 </tr>
                                                 <tr style="height:40px;">
                                                     <td>4:30</td>
-                                                    <td id="Mon_4:30PM"></td>
-                                                    <td id="Tue_4:30PM"></td>
-                                                    <td id="Wed_4:30PM"></td>
-                                                    <td id="Thu_4:30PM"></td>
-                                                    <td id="Fri_4:30PM"></td>
+                                                    <td id="M4:30PM"></td>
+                                                    <td id="T4:30PM"></td>
+                                                    <td id="W4:30PM"></td>
+                                                    <td id="R4:30PM"></td>
+                                                    <td id="F4:30PM"></td>
+                                                </tr>
+                                                <tr style="height:40px;">
+                                                    <td>5:00</td>
+                                                    <td id="M5:00PM"></td>
+                                                    <td id="T5:00PM"></td>
+                                                    <td id="W5:00PM"></td>
+                                                    <td id="R5:00PM"></td>
+                                                    <td id="F5:00PM"></td>
+                                                </tr>
+                                                <tr style="height:40px;">
+                                                    <td>5:30</td>
+                                                    <td id="M5:30PM"></td>
+                                                    <td id="T5:30PM"></td>
+                                                    <td id="W5:30PM"></td>
+                                                    <td id="R5:30PM"></td>
+                                                    <td id="F5:30PM"></td>
+                                                </tr>
+                                            <tr style="height:40px;">
+                                                    <td>6:00</td>
+                                                    <td id="M6:00PM"></td>
+                                                    <td id="T6:00PM"></td>
+                                                    <td id="W6:00PM"></td>
+                                                    <td id="R6:00PM"></td>
+                                                    <td id="F6:00PM"></td>
+                                                </tr>
+                                                <tr style="height:40px;">
+                                                    <td>6:30</td>
+                                                    <td id="M6:30PM"></td>
+                                                    <td id="T6:30PM"></td>
+                                                    <td id="W6:30PM"></td>
+                                                    <td id="R6:30PM"></td>
+                                                    <td id="F6:30PM"></td>
+                                                </tr>
+                                            <tr style="height:40px;">
+                                                    <td>7:00</td>
+                                                    <td id="M7:00PM"></td>
+                                                    <td id="T7:00PM"></td>
+                                                    <td id="W7:00PM"></td>
+                                                    <td id="R7:00PM"></td>
+                                                    <td id="F7:00PM"></td>
+                                                </tr>
+                                                <tr style="height:40px;">
+                                                    <td>7:30</td>
+                                                    <td id="M7:30PM"></td>
+                                                    <td id="T7:30PM"></td>
+                                                    <td id="W7:30PM"></td>
+                                                    <td id="R7:30PM"></td>
+                                                    <td id="F7:30PM"></td>
+                                                </tr>
+                                                <tr style="height:40px;">
+                                                    <td>8:00</td>
+                                                    <td id="M8:00PM"></td>
+                                                    <td id="T8:00PM"></td>
+                                                    <td id="W8:00PM"></td>
+                                                    <td id="R8:00PM"></td>
+                                                    <td id="F8:00PM"></td>
+                                                </tr>
+                                                <tr style="height:40px;">
+                                                    <td>8:30</td>
+                                                    <td id="M8:30PM"></td>
+                                                    <td id="T8:30PM"></td>
+                                                    <td id="W8:30PM"></td>
+                                                    <td id="R8:30PM"></td>
+                                                    <td id="F8:30PM"></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -479,116 +838,117 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="list-group">
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="setBgColorOfCell(Class_Info[14],Class_Info[15],Class_Info[16],'CornflowerBlue', Class_Info[0]);return false;">
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(0);return false;">
                                     <div class="col-md-1">
                                         <i class="fa fa-cog fa-spin"></i>
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-3">
                                         <p id="Class1"></p>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-8">
                                         <p id="Class1_Days_and_Time"></p>
                                     </div>
                                 </a>
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="setBgColorOfCell(Class_Info[34],Class_Info[35],Class_Info[36],'CornflowerBlue', Class_Info[20]);return false;">
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(1);return false;">
                                     <div class="col-md-1">
                                         <i class="fa fa-cog fa-spin"></i>
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-3">
                                         <p id="Class2"></p>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-8">
                                         <p id="Class2_Days_and_Time"></p>
                                     </div>
                                 </a>
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="setBgColorOfCell(Class_Info[54],Class_Info[55],Class_Info[56],'CornflowerBlue', Class_Info[40]);return false;">
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(2);return false;">
                                     <div class="col-md-1">
                                         <i class="fa fa-cog fa-spin"></i>
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-3">
                                         <p id="Class3"></p>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-8">
                                         <p id="Class3_Days_and_Time"></p>
                                     </div>
                                 </a>
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="setBgColorOfCell(Class_Info[34],Class_Info[35],Class_Info[36],'CornflowerBlue', Class_Info[60]);return false;">
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(3);return false;">
                                     <div class="col-md-1">
                                         <i class="fa fa-cog fa-spin"></i>
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-3">
                                         <p id="Class4"></p>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-8">
                                         <p id="Class4_Days_and_Time"></p>
                                     </div>
                                 </a>
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="setBgColorOfCell(Class_Info[34],Class_Info[35],Class_Info[36],'CornflowerBlue', Class_Info[80]);return false;">
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(4);return false;">
                                     <div class="col-md-1">
                                         <i class="fa fa-cog fa-spin"></i>
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-3">
                                         <p id="Class5"></p>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-8">
                                         <p id="Class5_Days_and_Time"></p>
                                     </div>
                                 </a>
-                                <!--a href="#" id="Class2" class="list-group-item" onclick="setBgColorOfCell(Class2_slot1,Class2_slot2,Class2_slot3,'CornflowerBlue',Class2);return false;">
-                                    <i class="fa fa-cog fa-spin"></i> {{ session[20] }}
-                                    <span class="pull-right text-muted small"><em>{{ session[21] }} : {{ session[22] }}</em>
-                                    </span>
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(5);return false;">
+                                    <div class="col-md-1">
+                                        <i class="fa fa-cog fa-spin"></i>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p id="Class6"></p>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <p id="Class6_Days_and_Time"></p>
+                                    </div>
                                 </a>
-                                <a href="#" id="Class3" class="list-group-item" onclick="setBgColorOfCell(Class3_slot1,Class3_slot2,Class3_slot3,'CornflowerBlue',Class3);return false;">
-                                    <i class="fa fa-cog fa-spin"></i> {{ session[40] }}
-                                    <span class="pull-right text-muted small"><em>{{ session[41] }} : {{ session[42] }}</em>
-                                    </span>
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(6);return false;">
+                                    <div class="col-md-1">
+                                        <i class="fa fa-cog fa-spin"></i>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p id="Class7"></p>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <p id="Class7_Days_and_Time"></p>
+                                    </div>
                                 </a>
-                                <a href="#" id="Class4" class="list-group-item" onclick="setBgColorOfCell(Class4_slot1,Class4_slot2,Class4_slot3,'CornflowerBlue',Class4);return false;">
-                                    <i class="fa fa-cog fa-spin"></i> {{ session[60] }}
-                                    <span class="pull-right text-muted small"><em>{{ session[61] }} : {{ session[62] }}</em>
-                                    </span>
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(7);return false;">
+                                    <div class="col-md-1">
+                                        <i class="fa fa-cog fa-spin"></i>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p id="Class8"></p>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <p id="Class8_Days_and_Time"></p>
+                                    </div>
                                 </a>
-                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(c4_slot_1,c4_slot_2,c4_slot_3,'CornflowerBlue',cOption4);return false;">
-                                    <i class="fa fa-cog fa-spin"></i> {{ Class_Option_4 }}
-                                    <span class="pull-right text-muted small"><em>{{ Class_Option_4_Days }} : {{ Class_Option_4_Time }}</em>
-                                    </span>
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(8);return false;">
+                                    <div class="col-md-1">
+                                        <i class="fa fa-cog fa-spin"></i>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p id="Class9"></p>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <p id="Class9_Days_and_Time"></p>
+                                    </div>
                                 </a>
-                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(c5_slot_1,c5_slot_2,c5_slot_3,'CornflowerBlue',cOption5);return false;">
-                                    <i class="fa fa-cog fa-spin"></i> {{ Class_Option_5 }}
-                                    <span class="pull-right text-muted small"><em>{{ Class_Option_5_Days }} : {{ Class_Option_5_Time }}</em>
-                                    </span>
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(9);return false;">
+                                    <div class="col-md-1">
+                                        <i class="fa fa-cog fa-spin"></i>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p id="Class10"></p>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <p id="Class10_Days_and_Time"></p>
+                                    </div>
                                 </a>
-                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(c6_slot_1,c6_slot_2,c6_slot_3,'CornflowerBlue',cOption6);return false;">
-                                    <i class="fa fa-cog fa-spin"></i> {{ Class_Option_6 }}
-                                    <span class="pull-right text-muted small"><em>{{ Class_Option_6_Days }} : {{ Class_Option_6_Time }}</em>
-                                    </span>
-                                </a>
-                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(c7_slot_1,c7_slot_2,c7_slot_3,'CornflowerBlue',cOption7);return false;">
-                                    <i class="fa fa-cog fa-spin"></i> {{ Class_Option_7 }}
-                                    <span class="pull-right text-muted small"><em>{{ Class_Option_7_Days }} : {{ Class_Option_7_Time }}</em>
-                                    </span>
-                                </a>
-                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(c8_slot_1,c8_slot_2,c8_slot_3,'CornflowerBlue',cOption8);return false;">
-                                    <i class="fa fa-cog fa-spin"></i> {{ Class_Option_8 }}
-                                    <span class="pull-right text-muted small"><em>{{ Class_Option_8_Days }} : {{ Class_Option_8_Time }}</em>
-                                    </span>
-                                </a>
-                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(c9_slot_1,c9_slot_2,c9_slot_3,'CornflowerBlue',cOption9);return false;">
-                                    <i class="fa fa-cog fa-spin"></i> {{ Class_Option_9 }}
-                                    <span class="pull-right text-muted small"><em>{{ Class_Option_9_Days }} : {{ Class_Option_9_Time }}</em>
-                                    </span>
-                                </a>
-                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(c10_slot_1,c10_slot_2,c10_slot_3,'CornflowerBlue',cOption10);return false;">
-                                    <i class="fa fa-cog fa-spin"></i> {{ Class_Option_10 }}
-                                    <span class="pull-right text-muted small"><em>{{ Class_Option_10_Days }} : {{ Class_Option_10_Time }}</em>
-                                    </span>
-                                </a>
-                                <a href="#" class="list-group-item" onclick="setBgColorOfCell(c11_slot_1,c11_slot_2,c11_slot_3,'CornflowerBlue',cOption11);return false;">
-                                    <i class="fa fa-cog fa-spin"></i> {{ Class_Option_11 }}
-                                    <span class="pull-right text-muted small"><em>{{ Class_Option_11_Days }} : {{ Class_Option_11_Time }}</em>
-                                    </span>
-                                </a--
+
                             </div>
                             <!-- /.list-group -->
                         </div>
@@ -596,6 +956,58 @@
                     </div>
                     <!-- /.panel -->
                 </div>
+
+
+
+                <div class="col-lg-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bell fa-fw"></i> Class Schedule Options
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="list-group">
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(0);return false;">
+
+                                </a>
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(1);return false;">
+
+                                </a>
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(2);return false;">
+
+                                </a>
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(3);return false;">
+
+                                </a>
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(4);return false;">
+
+                                </a>
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(5);return false;">
+
+                                </a>
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(6);return false;">
+
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(7);return false;">
+
+                                </a>
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(8);return false;">
+
+                                </a>
+                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(9);return false;">
+
+                                </a>
+
+                            </div>
+                            <!-- /.list-group -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+
+
+
+
                 <!-- /.col-lg-3 -->
             </div>
             <!-- /.row -->
