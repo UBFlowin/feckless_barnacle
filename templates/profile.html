@@ -468,7 +468,7 @@
     <div id="wrapper">
         <div id="page-wrapper">
             <div class="row">
-                <!--div class="col-lg-12">
+                <div class="col-lg-12">
                     <h2 class="page-header">Welcome</h2>
                 </div-->
                 <!-- /.col-lg-12 -->
@@ -489,7 +489,6 @@
                                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">*Department
                                     <span class="caret"></span>
                                 </button>
-                                    <!-- Need some space here, but want to do it in .css file -->
                                     <ul class="dropdown-menu scrollable-menu" role="menu">
                                         <li><a href="#">CIE</a></li>
                                         <li><a href="#">CSE</a></li>
@@ -497,66 +496,44 @@
                                         <li><a href="#">EE</a></li>
                                         <li><a href="#">MAE</a></li>
                                     </ul>
+                                </div>
+                                <div class="dropdown">
                                     <form class="form-horizontal" role="form">
                                         <div class="form-group">
+                                            <br>
                                             <label for="courseNo" class="col-sm-4 control-label">*Course #</label>
                                             <div class="col-sm-4">
                                                 <input type="text" class="form-control" id="courseNo" placeholder="###">
                                             </div>
                                         </div>
-                                        <div class="form-horizontal" role="form">
-                                            <h6>Optional: filter by day/time:</h6>
-                                            <div class="checkbox-inline">
-                                                <label><input type="checkbox" value="">MWF</label>
-                                            </div>
-                                            <div class="checkbox-inline">
-                                                <label><input type="checkbox" value="">TR</label>
-                                            </div>
-                                            <div class="checkbox-inline">
-                                                <label><input type="checkbox" value="">MW</label>
-                                            </div>
-                                        </div>
-                                        <div class="form-horizontal" role="form">
-                                            <div class="checkbox-inline">
-                                                <label><input type="checkbox" value="">8:00AM</label>
-                                            </div>
-                                            <div class="checkbox-inline">
-                                                <label><input type="checkbox" value="">9:00AM</label>
-                                            </div>
-                                            <div class="checkbox-inline">
-                                                <label><input type="checkbox" value="">10am</label>
-                                            </div>
-                                            <div class="checkbox-inline">
-                                                <label><input type="checkbox" value="">11:00AM</label>
-                                            </div>
-                                        </div>
-                                        <div class="form-horizontal" role="form">
-                                            <div class="checkbox-inline">
-                                                <label><input type="checkbox" value="">12:00PM</label>
-                                            </div>
-                                            <div class="checkbox-inline">
-                                                <label><input type="checkbox" value="">1:00PM</label>
-                                            </div>
-                                            <div class="checkbox-inline">
-                                                <label><input type="checkbox" value="">2:00PM</label>
-                                            </div>
-                                            <div class="checkbox-inline">
-                                                <label><input type="checkbox" value="">3:00PM</label>
-                                            </div>
-                                        </div>
-                                        <div class="form-horizontal" role="form">
-                                            <div class="checkbox-inline">
-                                                <label><input type="checkbox" value="">4:00PM</label>
-                                            </div>
-                                            <div class="checkbox-inline">
-                                                <label><input type="checkbox" value="">5pm</label>
-                                            </div>
-                                            <div class="checkbox-inline">
-                                                <label><input type="checkbox" value="">6pm</label>
-                                            </div>
-                                            <div class="checkbox-inline">
-                                                <label><input type="checkbox" value="">7pm</label>
-                                            </div>
+                                    </form>
+                                    <form>
+                                        <div class="dropdown">
+                                            <br>
+                                            <br>
+                                            <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">Filters (optional)
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu scrollable-menu" role="menu" style="padding-left:5px; max-height:200px; overflow:hidden; overflow-y:auto">
+                                                <li class="dropdown-header"><i>Days</i></li>
+                                                    <li><label><input type="checkbox" value=""> MWF</label></li>
+                                                    <li><label><input type="checkbox" value=""> TR</label></li>
+                                                    <li><label><input type="checkbox" value=""> MW</label></li>
+                                                <li class="dropdown-header"><i>Times</i></li>
+                                                    <li><label><input type="checkbox" value=""> 8:00AM</label></li>
+                                                    <li><label><input type="checkbox" value=""> 9:00AM</label></li>
+                                                    <li><label><input type="checkbox" value=""> 10:00AM</label></li>
+                                                    <li><label><input type="checkbox" value=""> 11:00AM</label></li>
+                                                    <li><label><input type="checkbox" value=""> 12:00PM</label></li>
+                                                    <li><label><input type="checkbox" value=""> 1:00PM</label></li>
+                                                    <li><label><input type="checkbox" value=""> 2:00PM</label></li>
+                                                    <li><label><input type="checkbox" value=""> 3:00PM</label></li>
+                                                    <li><label><input type="checkbox" value=""> 4:00PM</label></li>
+                                                    <li><label><input type="checkbox" value=""> 5:00PM</label></li>
+                                                    <li><label><input type="checkbox" value=""> 6:00PM</label></li>
+                                                    <li><label><input type="checkbox" value=""> 7:00PM</label></li>
+                                                    <li><label><input type="checkbox" value=""> 8:00PM</label></li>
+                                            </ul>
                                         </div>
                                     </form>
                                 </div>
@@ -600,11 +577,11 @@
                                             <thead>
                                                 <tr style="background-color:#abb9d3;">
                                                     <th style="width:50px;">Time</th>
-                                                    <th>Mon</th>
-                                                    <th>Tue</th>
-                                                    <th>Wed</th>
-                                                    <th>Thu</th>
-                                                    <th>Fri</th>
+                                                    <th style="width:90px; text-align:center">Monday</th>
+                                                    <th style="width:90px; text-align:center">Tuesday</th>
+                                                    <th style="width:90px; text-align:center">Wednesday</th>
+                                                    <th style="width:90px; text-align:center">Thursday</th>
+                                                    <th style="width:90px; text-align:center">Friday</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -736,7 +713,7 @@
                                                     <td id="R3:30PM"></td>
                                                     <td id="F3:30PM"></td>
                                                 </tr>
-                                                <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                     <td>4:00</td>
                                                     <td id="M4:00PM"></td>
                                                     <td id="T4:00PM"></td>
@@ -744,7 +721,7 @@
                                                     <td id="R4:00PM"></td>
                                                     <td id="F4:00PM"></td>
                                                 </tr>
-                                                <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                     <td>4:30</td>
                                                     <td id="M4:30PM"></td>
                                                     <td id="T4:30PM"></td>
@@ -752,7 +729,7 @@
                                                     <td id="R4:30PM"></td>
                                                     <td id="F4:30PM"></td>
                                                 </tr>
-                                                <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                     <td>5:00</td>
                                                     <td id="M5:00PM"></td>
                                                     <td id="T5:00PM"></td>
@@ -760,7 +737,7 @@
                                                     <td id="R5:00PM"></td>
                                                     <td id="F5:00PM"></td>
                                                 </tr>
-                                                <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                     <td>5:30</td>
                                                     <td id="M5:30PM"></td>
                                                     <td id="T5:30PM"></td>
@@ -768,7 +745,7 @@
                                                     <td id="R5:30PM"></td>
                                                     <td id="F5:30PM"></td>
                                                 </tr>
-                                            <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                     <td>6:00</td>
                                                     <td id="M6:00PM"></td>
                                                     <td id="T6:00PM"></td>
@@ -776,7 +753,7 @@
                                                     <td id="R6:00PM"></td>
                                                     <td id="F6:00PM"></td>
                                                 </tr>
-                                                <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                     <td>6:30</td>
                                                     <td id="M6:30PM"></td>
                                                     <td id="T6:30PM"></td>
@@ -784,7 +761,7 @@
                                                     <td id="R6:30PM"></td>
                                                     <td id="F6:30PM"></td>
                                                 </tr>
-                                            <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                     <td>7:00</td>
                                                     <td id="M7:00PM"></td>
                                                     <td id="T7:00PM"></td>
@@ -792,7 +769,7 @@
                                                     <td id="R7:00PM"></td>
                                                     <td id="F7:00PM"></td>
                                                 </tr>
-                                                <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                     <td>7:30</td>
                                                     <td id="M7:30PM"></td>
                                                     <td id="T7:30PM"></td>
@@ -800,7 +777,7 @@
                                                     <td id="R7:30PM"></td>
                                                     <td id="F7:30PM"></td>
                                                 </tr>
-                                                <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                     <td>8:00</td>
                                                     <td id="M8:00PM"></td>
                                                     <td id="T8:00PM"></td>
@@ -808,7 +785,7 @@
                                                     <td id="R8:00PM"></td>
                                                     <td id="F8:00PM"></td>
                                                 </tr>
-                                                <tr style="height:40px;">
+                                                <tr style="height:15px;">
                                                     <td>8:30</td>
                                                     <td id="M8:30PM"></td>
                                                     <td id="T8:30PM"></td>
@@ -987,6 +964,7 @@
                                 </a>
                                 <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(6);return false;">
 
+                                </a>
                                 <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(7);return false;">
 
                                 </a>
@@ -1004,10 +982,6 @@
                     </div>
                     <!-- /.panel -->
                 </div>
-
-
-
-
                 <!-- /.col-lg-3 -->
             </div>
             <!-- /.row -->
