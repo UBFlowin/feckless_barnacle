@@ -11,21 +11,24 @@
             <div class="panel-group" id="flowsheet_container">
                 <div class="row" align="center">
 
-                    <div class="col-md-2">
+                    <div id="year1" class="col-md-3">
                         <div class="panel panel-primary">
                             <div class="panel-heading-ubflow">
                                 <h4>Freshman</h4>
                             </div>
-                            <div class="panel-body">
-                                <div class="col-md-6" >
+                            <div  class="panel-body">
+                                <div id="semester1" class="col-md-6" >
                                     <div class="panel panel-primary">
                                         <div class="panel-heading-ubflow">
                                             <h4>Fall 2015</h4>
                                         </div>
                                         <div class="panel-body">
                                             <div class="panel panel-info">
-                                                <div class="panel-heading">
+                                                <div id="F1" class="panel-heading" onmouseover="show_info('F1','F1_pop')" onmouseout="hide_info('F1','F1_pop')">
                                                     <h5>MTH141</h5>
+                                                    <div id="F1_pop" style="display: None">
+                                                        <h6> Calculus 1 </h6>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="panel panel-info">
@@ -90,7 +93,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="panel panel-primary">
                             <div class="panel-heading-ubflow">
                                 <h4>Sophomore</h4>
@@ -168,7 +171,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="panel panel-primary">
                             <div class="panel-heading-ubflow">
                                 <h4>Junior</h4>
@@ -247,7 +250,7 @@
                     </div>
 
 
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="panel panel-primary">
                             <div class="panel-heading-ubflow">
                                 <h4>Senior</h4>
@@ -334,5 +337,19 @@
     </div>
 </div>
 
+<script>
+    function show_info(id,child){
+        var elem = document.getElementById(id);
+        elem.style.backgroundColor = "CornflowerBlue";
+        document.getElementById('F1_pop').style.display = 'block';
+    }
+    function hide_info(id,child){
+        var elem = document.getElementById(id);
+        elem.style.backgroundColor = "#d9edf7";
+         document.getElementById('F1_pop').style.display = 'none';
+    }
+
+
+</script>
 
 {% endblock %}
