@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<!--script type="text/javascript" src="{{ url_for('static', filename='custom_ubflow.js') }}"></script-->
 
 
 <!---------------------------------------------------------------
@@ -8,70 +9,8 @@
     - Populate the Class Options Container
 ---------------------------------------------------------------->
 <script>
-    var Class_Info=[];
-
-    var place_holder = 0;
-
-    var text_added_to_table = [];
-    for(x=0;x<130;x++){
-        text_added_to_table[x] = 0;
-    }
-
-    var class_list_ids = ['Class1', 'Class2', 'Class3', 'Class4', 'Class5', 'Class6', 'Class7', 'Class8', 'Class9', 'Class10'];
-
-    var class_list_times_ids = ['Class1_Days_and_Time', 'Class2_Days_and_Time', 'Class3_Days_and_Time', 'Class4_Days_and_Time',
-        'Class5_Days_and_Time', 'Class6_Days_and_Time', 'Class7_Days_and_Time', 'Class8_Days_and_Time',
-        'Class9_Days_and_Time', 'Class10_Days_and_Time'];
-
-    var mon_table_cells = ['M8:00AM','M8:30AM','M9:00AM','M9:30AM','M10:00AM','M10:30AM','M11:00AM','M11:30AM','M12:00PM',
-                            'M12:30PM','M1:00PM','M1:30PM','M2:00PM','M2:30PM','M3:00PM','M3:30PM','M4:00PM','M4:30PM','M5:00PM',
-                            'M5:30PM','M6:00PM','M6:30PM','M7:00PM','M7:30PM','M8:00PM','M8:30PM','M9:00PM'];
-    var tue_table_cells = ['T8:00AM','T8:30AM','T9:00AM','T9:30AM','T10:00AM','T10:30AM','T11:00AM','T11:30AM','T12:00PM',
-                            'T12:30PM','T1:00PM','T1:30PM','T2:00PM','T2:30PM','T3:00PM','T3:30PM','T4:00PM','T4:30PM','T5:00PM',
-                            'T5:30PM','T6:00PM','T6:30PM','T7:00PM','T7:30PM','T8:00PM','T8:30PM','T9:00PM']
-    var wed_table_cells = ['W8:00AM','W8:30AM','W9:00AM','W9:30AM','W10:00AM','W10:30AM','W11:00AM','W11:30AM','W12:00PM',
-                            'W12:30PM','W1:00PM','W1:30PM','W2:00PM','W2:30PM','W3:00PM','W3:30PM','W4:00PM','W4:30PM','W5:00PM',
-                            'W5:30PM','W6:00PM','W6:30PM','W7:00PM','W7:30PM','W8:00PM','W8:30PM','W9:00PM'];
-    var thurs_table_cells = ['R8:00AM','R8:30AM','R9:00AM','R9:30AM','R10:00AM','R10:30AM','R11:00AM','R11:30AM','R12:00PM',
-                            'R12:30PM','R1:00PM','R1:30PM','R2:00PM','R2:30PM','R3:00PM','R3:30PM','R4:00PM','R4:30PM','R5:00PM',
-                            'R5:30PM','R6:00PM','R6:30PM','R7:00PM','R7:30PM','R8:00PM','R8:30PM','R9:00PM'];
-    var fri_table_cells = ['F8:00AM','F8:30AM','F9:00AM','F9:30AM','F10:00AM','F10:30AM','F11:00AM','F11:30AM','F12:00PM',
-                            'F12:30PM','F1:00PM','F1:30PM','F2:00PM','F2:30PM','F3:00PM','F3:30PM','F4:00PM','F4:30PM','F5:00PM',
-                            'F5:30PM','F6:00PM','F6:30PM','F7:00PM','F7:30PM','F8:00PM','F8:30PM','F9:00PM'];
-
-
-    $.getJSON('/getfirstclassgroup', function(dat) {
-        var x = 0;
-        while(dat.classes[x] != null) {
-            Class_Info[x*25] = dat.classes[x].UBCLASS;
-            Class_Info[x*25 + 1] = dat.classes[x].DEPARTMENT;
-            Class_Info[x*25 + 2] = dat.classes[x].SECTION;
-            Class_Info[x*25 + 3] = dat.classes[x].TYPE;
-            Class_Info[x*25 + 4] = dat.classes[x].DAYS;
-            Class_Info[x*25 + 5] = dat.classes[x].TIME;
-            Class_Info[x*25 + 6] = dat.classes[x].BUILDING;
-            Class_Info[x*25 + 7] = dat.classes[x].ROOM_NUMBER;
-            Class_Info[x*25 + 8] = dat.classes[x].LOCATION;
-            Class_Info[x*25 + 9] = dat.classes[x].PROFESSOR;
-            Class_Info[x*25 + 10] = dat.classes[x].STATUS;
-            Class_Info[x*25 + 11] = dat.classes[x].RESERVED;
-            Class_Info[x*25 + 12] = dat.classes[x].SEMESTER;
-            times = convertTimes(dat.classes[x].DAYS,dat.classes[x].TIME);
-            Class_Info[x*25 + 13] = times[0];
-            Class_Info[x*25 + 14] = times[1];
-            Class_Info[x*25 + 15] = times[2];
-            Class_Info[x*25 + 16] = times[3];
-            Class_Info[x*25 + 17] = times[4];
-            Class_Info[x*25 + 18] = times[5];
-            Class_Info[x*25 + 19] = times[6];
-            Class_Info[x*25 + 20] = times[7];
-            Class_Info[x*25 + 21] = times[8];
-            Class_Info[x*25 + 22] = times[9];
-            x = x + 1;
-        }
-        clearText(x);
-        resetText();
-    });
+    var Class_Handles = [];
+    var Selected_Class_Handles = [0];
 </script>
 
 
@@ -83,40 +22,210 @@
     $(function() {
         $("#SearchButton").click(function() {
             var x = 0;
+            var rectitation = [];
             var times;
             $.getJSON('/getnextclassgroup', function (dat) {
                 while(dat.classes[x] != null) {
-                    Class_Info[x*25] = dat.classes[x].UBCLASS;
-                    Class_Info[x*25 + 1] = dat.classes[x].DEPARTMENT;
-                    Class_Info[x*25 + 2] = dat.classes[x].SECTION;
-                    Class_Info[x*25 + 3] = dat.classes[x].TYPE;
-                    Class_Info[x*25 + 4] = dat.classes[x].DAYS;
-                    Class_Info[x*25 + 5] = dat.classes[x].TIME;
-                    Class_Info[x*25+ 6] = dat.classes[x].BUILDING;
-                    Class_Info[x*25 + 7] = dat.classes[x].ROOM_NUMBER;
-                    Class_Info[x*25 + 8] = dat.classes[x].LOCATION;
-                    Class_Info[x*25 + 9] = dat.classes[x].PROFESSOR;
-                    Class_Info[x*25 + 10] = dat.classes[x].STATUS;
-                    Class_Info[x*25 + 11] = dat.classes[x].RESERVED;
-                    Class_Info[x*25 + 12] = dat.classes[x].SEMESTER;
-                    times = convertTimes(dat.classes[x].DAYS,dat.classes[x].TIME);
-                    Class_Info[x*25 + 13] = times[0];
-                    Class_Info[x*25 + 14] = times[1];
-                    Class_Info[x*25 + 15] = times[2];
-                    Class_Info[x*25 + 16] = times[3];
-                    Class_Info[x*25 + 17] = times[4];
-                    Class_Info[x*25 + 18] = times[5];
-                    Class_Info[x*25 + 19] = times[6];
-                    Class_Info[x*25 + 20] = times[7];
-                    Class_Info[x*25 + 21] = times[8];
-                    Class_Info[x*25 + 22] = times[9];
+                    var id = dat.classes[x].ID;
+                    var ubclass = dat.classes[x].UBCLASS;
+                    var department = dat.classes[x].DEPARTMENT;
+                    var section = dat.classes[x].SECTION;
+                    var type = dat.classes[x].TYPE;
+                    var days = dat.classes[x].DAYS;
+                    var time = dat.classes[x].TIME;
+                    var  building = dat.classes[x].BUILDING;
+                    var room_number = dat.classes[x].ROOM_NUMBER;
+                    var location = dat.classes[x].LOCATION;
+                    var  professor = dat.classes[x].PROFESSOR;
+                    var status = dat.classes[x].STATUS;
+                    var reserved = dat.classes[x].RESERVED;
+                    var  semester = dat.classes[x].SEMESTER;
+                    if(dat.classes[x].RECITATION.length != 0){
+                        var index =0;
+                        while(index<dat.classes[x].RECITATION.length) {
+                            var rec_id = dat.classes[x].RECITATION[index].REC_ID;
+                            var rec_section = dat.classes[x].RECITATION[index].SECTION;
+                            var rec_type = dat.classes[x].RECITATION[index].TYPE;
+                            var rec_days = dat.classes[x].RECITATION[index].DAYS;
+                            var rec_time = dat.classes[x].RECITATION[index].TIME;
+                            var rec_building = dat.classes[x].RECITATION[index].BUILDING;
+                            var rec_room = dat.classes[x].RECITATION[index].ROOM_NUMBER;
+                            var rec_location = dat.classes[x].RECITATION[index].LOCATION;
+                            var rec_status = dat.classes[x].RECITATION[index].STATUS;
+                            var rec_reserved = dat.classes[x].RECITATION[index].RESERVED;
+                            recitation[index] = new UbRec(rec_id, rec_section, rec_type, rec_days, rec_time, rec_building, rec_room, rec_location, rec_status, rec_reserved);
+                            index++;
+                        }
+                    }
+                    Class_Handles[x] = new UbClass(id,ubclass,department,section,type,days,time,building,room_number,location, professor,status,reserved,semester);
                     x = x + 1;
+                    recitation = [];
                 }
-                clearText(x);                       //Empty unecessary items from Class_Info
-                resetText();                        //Reset the list-group with blanks
             });
         });
     });
+
+
+    // Add container
+    //   _____ ________________ _______________________
+    //  |     |                |                       |
+    //  |  S  |      CSE442    |  9:00 AM - 9:50 AM    |
+    //  |_____|________________|_______________________|
+    //
+    function make_available_classes()
+        {
+            for (var j = 0; j < Class_Handles.length; j++) {
+                var heading = document.createElement('heading');
+                var a = document.createElement('availableClass'+ String(j));
+                a.setAttribute('style', 'height: 40px;');
+                a.setAttribute('id', 'container' + String(j));
+                a.setAttribute('class', 'list-group-item');
+                a.setAttribute('data-toggle', 'collapse');
+                a.setAttribute('data-parent', '#accordion');
+                a.setAttribute('href', '#collapse'+String(j));
+                var mouseover = "shade('container"+String(j)+"')";
+                var mouseout = "unshade('container"+String(j)+"')";
+                a.setAttribute('onmouseover',mouseover);
+                a.setAttribute('onmouseout',mouseout);
+                heading.appendChild(a);
+
+                //Add spin wheel container
+                var spin_wheel_holder = document.createElement("spin_wheel_holder");
+                spin_wheel_holder.setAttribute('class', 'col-md-1');
+                a.appendChild(spin_wheel_holder);
+
+                //Add spin wheel
+                var spin_wheel = document.createElement('spin_wheel');
+                spin_wheel.setAttribute('class', 'fa fa-cog fa-spin');
+                spin_wheel_holder.appendChild(spin_wheel);
+
+                //add class name container
+                var class_name_holder = document.createElement("class_name_holder");
+                class_name_holder.setAttribute('class', 'col-md-4');
+                a.appendChild(class_name_holder);
+
+                //add class name
+                var p1 = document.createElement('class_name_'+String(j));
+                var txt1 = document.createTextNode(Class_Handles[j].UBCLASS);
+                p1.appendChild(txt1);
+                class_name_holder.appendChild(p1);
+
+                //class times container
+                var class_time_holder = document.createElement("class_time_holder");
+                class_time_holder.setAttribute('class', 'col-md-7');
+                a.appendChild(class_time_holder);
+
+                //add class times
+                var p2 = document.createElement('class_name_'+String(j));
+                var txt2 = document.createTextNode(Class_Handles[j].DAYS+":"+Class_Handles[j].TIME);
+                p2.appendChild(txt2);
+                class_time_holder.appendChild(p2);
+
+                if(Class_Handles[j].RECITATION.length !=0){
+                    var sub_group = document.createElement('sub_group');
+                    sub_group.setAttribute('id', 'collapse'+String(j));
+                    sub_group.setAttribute('class', 'panel-collapse collapse');
+                    sub_group.setAttribute('style', 'padding: 4px;');
+                    var k;
+                    for(k=0;k<Class_Handles[j].RECITATION.length;k++){
+                        var sub_heading = document.createElement('sub_heading');
+                        var sub_a = document.createElement('availableClass'+ String(j));
+                        sub_a.setAttribute('id', 'collapser' + String(j) + String(k));
+                        sub_a.setAttribute('style', 'height: 40px;');
+                        sub_a.setAttribute('class', 'list-group-item');
+                        sub_a.setAttribute('onclick', 'table1.clicked_class(Class_Handles['+String(j)+'].RECITATION['+String(k)+'], Class_Handles['+String(j)+'])');
+                        sub_a.setAttribute('href', '#');
+                        var sub_mouseover = "shade('collapser" + String(j) + String(k)+"')";
+                        var sub_mouseout = "unshade('collapser" + String(j) + String(k)+"')";
+                        sub_a.setAttribute('onmouseover',sub_mouseover);
+                        sub_a.setAttribute('onmouseout',sub_mouseout);
+                        sub_heading.appendChild(sub_a);
+
+                        //Add spin wheel container
+                        var sub_spin_wheel_holder = document.createElement("sub_spin_wheel_holder");
+                        sub_spin_wheel_holder.setAttribute('class', 'col-md-1 col-md-offset-2');
+                        sub_a.appendChild(sub_spin_wheel_holder);
+
+                        //Add spin wheel
+                        var sub_spin_wheel = document.createElement('sub_spin_wheel');
+                        sub_spin_wheel.setAttribute('class', 'fa fa-cog fa-spin');
+                        sub_spin_wheel_holder.appendChild(sub_spin_wheel);
+
+                        //class times container
+                        var sub_class_time_holder = document.createElement("sub_class_time_holder");
+                        sub_class_time_holder.setAttribute('class', 'col-md-9');
+                        sub_a.appendChild(sub_class_time_holder);
+
+                        //add class times
+                        var p4 = document.createElement('class_name_'+String(j));
+                        var txt4 = document.createTextNode(Class_Handles[j].RECITATION[k].DAYS+":"+Class_Handles[j].RECITATION[k].TIME);
+                        p4.appendChild(txt4);
+                        sub_class_time_holder.appendChild(p4);
+
+                        sub_group.appendChild(sub_heading);
+                    }
+                    heading.appendChild(sub_group);
+                }
+                //Add parent (with all children to html)
+                var list = document.getElementById('accordion-body');
+                list.insertBefore(heading, list.childNodes[0]);
+            }
+        }
+
+
+    function populate_selected_class(class_handle){
+        var heading = document.createElement('heading');
+        var a = document.createElement('availableClass');
+        a.setAttribute('style', 'height: 40px;');
+        a.setAttribute('id', 'container');
+        a.setAttribute('class', 'list-group-item');
+        //a.setAttribute('data-toggle', 'collapse');
+        //a.setAttribute('data-parent', '#accordion');
+        //a.setAttribute('href', '#collapse'+String(j));
+        var mouseover = "shade('container')";
+        var mouseout = "unshade('container')";
+        a.setAttribute('onmouseover',mouseover);
+        a.setAttribute('onmouseout',mouseout);
+        heading.appendChild(a);
+
+        //Add spin wheel container
+        var spin_wheel_holder = document.createElement("spin_wheel_holder");
+        spin_wheel_holder.setAttribute('class', 'col-md-1');
+        a.appendChild(spin_wheel_holder);
+
+        //Add spin wheel
+        var spin_wheel = document.createElement('spin_wheel');
+        spin_wheel.setAttribute('class', 'fa fa-cog fa-spin');
+        spin_wheel_holder.appendChild(spin_wheel);
+
+        //add class name container
+        var class_name_holder = document.createElement("class_name_holder");
+        class_name_holder.setAttribute('class', 'col-md-4');
+        a.appendChild(class_name_holder);
+
+        //add class name
+        var p1 = document.createElement('class_name');
+        var txt1 = document.createTextNode(class_handle.UBCLASS);
+        p1.appendChild(txt1);
+        class_name_holder.appendChild(p1);
+
+        //class times container
+        var class_time_holder = document.createElement("class_time_holder");
+        class_time_holder.setAttribute('class', 'col-md-7');
+        a.appendChild(class_time_holder);
+
+        //add class times
+        var p2 = document.createElement('class_name');
+        var txt2 = document.createTextNode(class_handle.DAYS+":"+class_handle.TIME);
+        p2.appendChild(txt2);
+        class_time_holder.appendChild(p2);
+
+        //Add parent (with all children to html)
+        var list = document.getElementById('selected_class_container');
+        list.insertBefore(heading, list.childNodes[0]);
+        Selected_Class_Handles[0] = Selected_Class_Handles[0] + 1;
+        Selected_Class_Handles[Selected_Class_Handles[0]] = class_handle;
+    }
 </script>
 
 
@@ -124,62 +233,6 @@
     - Helper Functions
 ---------------------------------------------------------------->
 <script language="JavaScript">
-    function resetText() {
-        for (var x = 0; x < 10; x++){
-            if (elem = document.getElementById(class_list_ids[x])) {
-                elem.innerText = "  " + Class_Info[x*25];
-            }
-            if (elem = document.getElementById(class_list_times_ids[x])) {
-                elem.innerText = Class_Info[x*25+4] + " " + Class_Info[x*25+5];
-            }
-        }
-    }
-
-    /* Clear all unnecessary text from Class Options */
-    function clearText(x) {
-        x = x*25;
-        for (x; x < 275; x++){
-            Class_Info[x] = ' ';
-        }
-    }
-
-    /* Change text in cells */
-    function changeText(id1,text) {
-        if (elem = document.getElementById(id1)){
-            elem.innerHTML = text;
-        }
-    }
-
-
-    /* Change color of cells based on ids*/
-    function setBgColorOfCell(id1,sColor, border_color) {
-        Color = sColor;
-        var elem;
-        if (elem = document.getElementById(id1)) {
-            if (elem.style) {
-                elem.style.backgroundColor = Color;
-                elem.style.borderBottomColor = border_color;
-            }
-        }
-    }
-
-    /* Get color of cells */
-    function getBgColorOfCell(id) {
-    var elem;
-        if (document.getElementById) {
-            if (elem=document.getElementById(id)) {
-                if(elem.style.backgroundColor=="rgb(100, 149, 237)"){
-                    return "CornflowerBlue";
-                }
-                else{
-                    return "White";
-                }
-            }
-        }
-        return 'undefined';
-    }
-
-
 /*---------------------------------------------------------
 /       - Convert Times from
 /                XX:XX AM - XX:XX PM  to
@@ -206,13 +259,22 @@
             else if(round[0] == '8'){round[0]="9";}
             else if(round[0] == '9'){round[0]="10";}
             else if(round[0] == '10'){round[0]="11";}
-            else if(round[0] == '11'){round[0]="12";}
+            else if(round[0] == '11')
+            {
+                round[0]="12";
+                if(split_time[4] == "AM"){
+                    split_time[4] = "PM";
+                }
+                else{
+                    split_time[4] = "AM";
+                }
+            }
+            else if(round[0] == '12'){round[0]='1';}
         }
 
         split_time[3] = round[0]+":"+round[1];
         var start_time = split_time[0]+split_time[1];
         var end_time = split_time[3]+split_time[4];
-
         switch(db_days) {
             case "M W F":
                 times[0] = "M" + start_time;
@@ -316,170 +378,27 @@
         return times;
     }
 
-
-    function changeTimeColors(class_number){
-        var x=0;
-        class_number = class_number*25;
-
-        //---------Monday------------
-        while((mon_table_cells[x] != Class_Info[class_number+13])&&(x<mon_table_cells.length)){
-            x++;
-        }
-        changeText(mon_table_cells[x],Class_Info[class_number], (class_number/25));
-        while((mon_table_cells[x] != Class_Info[class_number+14])&&(x<mon_table_cells.length)){
-            if(text_added_to_table[x] == 0){
-                setBgColorOfCell(mon_table_cells[x],'CornflowerBlue','CornflowerBlue');
-                text_added_to_table[x] = (class_number/25+1);
-            }
-            else if((text_added_to_table[x] == (class_number/25)+1)){
-                setBgColorOfCell(mon_table_cells[x],'White','#ddd');
-                text_added_to_table[x] = 0;
-            }
-            else{
-                if(text_added_to_table[x]>1000){
-                    setBgColorOfCell(mon_table_cells[x],'CornflowerBlue','CornflowerBlue');
-                    text_added_to_table[x] = text_added_to_table[x] - 1000 - ((class_number/25)+1);
-                }
-                else {
-                    setBgColorOfCell(mon_table_cells[x], 'Red', 'Red');
-                    text_added_to_table[x] = text_added_to_table[x] + 1000 + ((class_number/25)+1);
-                }
-            }
-            x++;
-        }
-
-        //---------Tuesday------------
-        x=0;
-        while((tue_table_cells[x] != Class_Info[class_number+15])&&(x<tue_table_cells.length)){
-            x++;
-        }
-        changeText(tue_table_cells[x],Class_Info[class_number]);
-        while((tue_table_cells[x] != Class_Info[class_number+16])&&(x<tue_table_cells.length)){
-             if(text_added_to_table[x+26] == 0){
-                setBgColorOfCell(tue_table_cells[x],'CornflowerBlue','CornflowerBlue');
-                text_added_to_table[x+26] = (class_number/25+1);
-            }
-            else if((text_added_to_table[x+26] == (class_number/25)+1)){
-                setBgColorOfCell(tue_table_cells[x],'White','#ddd');
-                text_added_to_table[x+26] = 0;
-            }
-            else{
-                if(text_added_to_table[x+26]>1000){
-                    setBgColorOfCell(tue_table_cells[x],'CornflowerBlue','CornflowerBlue');
-                    text_added_to_table[x+26] = text_added_to_table[x+26] - 1000 - ((class_number/25)+1);
-                }
-                else {
-                    setBgColorOfCell(tue_table_cells[x], 'Red', 'Red');
-                    text_added_to_table[x + 26] = text_added_to_table[x + 26] + 1000 + ((class_number/25)+1);
-                }
-            }
-            x++;
-        }
-
-        //---------Wednesday------------
-        x=0;
-        while((wed_table_cells[x] != Class_Info[class_number+17])&&(x<wed_table_cells.length)){
-            x++;
-        }
-        changeText(wed_table_cells[x],Class_Info[class_number]);
-        while((wed_table_cells[x] != Class_Info[class_number+18])&&(x<wed_table_cells.length)){
-             if(text_added_to_table[x+52] == 0){
-                setBgColorOfCell(wed_table_cells[x],'CornflowerBlue','CornflowerBlue');
-                text_added_to_table[x+52] = (class_number/25+1);
-            }
-            else if((text_added_to_table[x+52] == (class_number/25)+1)){
-                setBgColorOfCell(wed_table_cells[x],'White','#ddd');
-                text_added_to_table[x+52] = 0;
-            }
-            else{
-                if(text_added_to_table[x+52]>1000){
-                    setBgColorOfCell(wed_table_cells[x],'CornflowerBlue','CornflowerBlue');
-                    text_added_to_table[x+52] = text_added_to_table[x+52] - 1000 - ((class_number/25)+1);
-                }
-                else {
-                    setBgColorOfCell(wed_table_cells[x], 'Red', 'Red');
-                    text_added_to_table[x + 52] = text_added_to_table[x + 52] + 1000 + ((class_number/25)+1);
-                }
-            }
-            x++;
-        }
-
-        //---------Thursday------------
-        x=0;
-        while((thurs_table_cells[x] != Class_Info[class_number+19])&&(x<thurs_table_cells.length)){
-            x++;
-        }
-        changeText(thurs_table_cells[x],Class_Info[class_number]);
-         while((thurs_table_cells[x] != Class_Info[class_number+20])&&(x<thurs_table_cells.length)){
-             if(text_added_to_table[x+78] == 0){
-                setBgColorOfCell(thurs_table_cells[x],'CornflowerBlue','CornflowerBlue');
-                text_added_to_table[x+78] = (class_number/25+1);
-            }
-            else if((text_added_to_table[x+78] == (class_number/25)+1)){
-                setBgColorOfCell(thurs_table_cells[x],'White','#ddd');
-                text_added_to_table[x+78] = 0;
-            }
-            else{
-                if(text_added_to_table[x+78]>1000){
-                    setBgColorOfCell(thurs_table_cells[x],'CornflowerBlue','CornflowerBlue');
-                    text_added_to_table[x+78] = text_added_to_table[x+78] - 1000 - ((class_number/25)+1);
-                }
-                else {
-                    setBgColorOfCell(thurs_table_cells[x], 'Red', 'Red');
-                    text_added_to_table[x + 78] = text_added_to_table[x + 78] + 1000 + ((class_number/25)+1);
-                }
-            }
-            x++;
-        }
-
-        //---------Friday------------
-        x=0;
-        while((fri_table_cells[x] != Class_Info[class_number+21])&&(x<fri_table_cells.length)){
-            x++;
-        }
-        changeText(fri_table_cells[x],Class_Info[class_number]);
-        while((fri_table_cells[x] != Class_Info[class_number+22])&&(x<fri_table_cells.length)){
-             if(text_added_to_table[x+104] == 0){
-                setBgColorOfCell(fri_table_cells[x],'CornflowerBlue','CornflowerBlue');
-                text_added_to_table[x+104] = (class_number/25+1);
-            }
-            else if((text_added_to_table[x+104] == (class_number/25)+1)){
-                setBgColorOfCell(fri_table_cells[x],'White','#ddd');
-                text_added_to_table[x+104] = 0;
-            }
-            else{
-                if(text_added_to_table[x+104]>1000){
-                    setBgColorOfCell(fri_table_cells[x],'CornflowerBlue','CornflowerBlue');
-                    text_added_to_table[x+104] = text_added_to_table[x+104] - 1000 - ((class_number/25)+1);
-                }
-                else {
-                    setBgColorOfCell(fri_table_cells[x], 'Red', 'Red');
-                    text_added_to_table[x + 104] = text_added_to_table[x + 104] + 1000 + ((class_number/25)+1);
-                }
-            }
-            x++;
-        }
+    function shade(id){
+        var elem = document.getElementById(id);
+        elem.style.backgroundColor = "#cce0ff";
     }
 
+    function unshade(id){
+        var elem = document.getElementById(id);
+        elem.style.backgroundColor = "white";
+    }
 </script>
 
 
 <body>
     <div id="wrapper">
         <div id="page-wrapper">
+            <br/>
             <div class="row">
-                <div class="col-lg-12">
-                    <h2 class="page-header">Welcome</h2>
-                </div-->
-                <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
-
-            <div class="row">
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-book"></i> Choose a course you'd like to take...
+                            <i class="fa fa-book"></i> Course Search...
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -807,126 +726,21 @@
                     <!-- /.panel -->
                 </div>
                 <!-- /.col-lg-9 -->
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-bell fa-fw"></i> Class Schedule Options
+                        <div id = "head" class="panel-heading">
+                            <i class="fa fa-bell fa-fw"></i> Available Classes
                         </div>
                         <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="list-group">
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(0);return false;">
-                                    <div class="col-md-1">
-                                        <i class="fa fa-cog fa-spin"></i>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p id="Class1"></p>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <p id="Class1_Days_and_Time"></p>
-                                    </div>
-                                </a>
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(1);return false;">
-                                    <div class="col-md-1">
-                                        <i class="fa fa-cog fa-spin"></i>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p id="Class2"></p>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <p id="Class2_Days_and_Time"></p>
-                                    </div>
-                                </a>
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(2);return false;">
-                                    <div class="col-md-1">
-                                        <i class="fa fa-cog fa-spin"></i>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p id="Class3"></p>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <p id="Class3_Days_and_Time"></p>
-                                    </div>
-                                </a>
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(3);return false;">
-                                    <div class="col-md-1">
-                                        <i class="fa fa-cog fa-spin"></i>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p id="Class4"></p>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <p id="Class4_Days_and_Time"></p>
-                                    </div>
-                                </a>
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(4);return false;">
-                                    <div class="col-md-1">
-                                        <i class="fa fa-cog fa-spin"></i>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p id="Class5"></p>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <p id="Class5_Days_and_Time"></p>
-                                    </div>
-                                </a>
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(5);return false;">
-                                    <div class="col-md-1">
-                                        <i class="fa fa-cog fa-spin"></i>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p id="Class6"></p>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <p id="Class6_Days_and_Time"></p>
-                                    </div>
-                                </a>
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(6);return false;">
-                                    <div class="col-md-1">
-                                        <i class="fa fa-cog fa-spin"></i>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p id="Class7"></p>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <p id="Class7_Days_and_Time"></p>
-                                    </div>
-                                </a>
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(7);return false;">
-                                    <div class="col-md-1">
-                                        <i class="fa fa-cog fa-spin"></i>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p id="Class8"></p>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <p id="Class8_Days_and_Time"></p>
-                                    </div>
-                                </a>
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(8);return false;">
-                                    <div class="col-md-1">
-                                        <i class="fa fa-cog fa-spin"></i>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p id="Class9"></p>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <p id="Class9_Days_and_Time"></p>
-                                    </div>
-                                </a>
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(9);return false;">
-                                    <div class="col-md-1">
-                                        <i class="fa fa-cog fa-spin"></i>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p id="Class10"></p>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <p id="Class10_Days_and_Time"></p>
-                                    </div>
-                                </a>
-
+                        <div id="accordion-body" class="panel-body">
+                            <div class="panel-group" id="accordion" >
+                                <div class="panel panel-default" >
+                                    <script>
+                                        window.setTimeout(make_available_classes,1000);
+                                    </script>
+                                </div>
                             </div>
+
                             <!-- /.list-group -->
                         </div>
                         <!-- /.panel-body -->
@@ -936,44 +750,14 @@
 
 
 
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bell fa-fw"></i> Class Schedule Options
+                            <i class="fa fa-bell fa-fw"></i> Selected Classes
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <div class="list-group">
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(0);return false;">
-
-                                </a>
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(1);return false;">
-
-                                </a>
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(2);return false;">
-
-                                </a>
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(3);return false;">
-
-                                </a>
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(4);return false;">
-
-                                </a>
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(5);return false;">
-
-                                </a>
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(6);return false;">
-
-                                </a>
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(7);return false;">
-
-                                </a>
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(8);return false;">
-
-                                </a>
-                                <a style="height:40px;" href="#" class="list-group-item" onclick="changeTimeColors(9);return false;">
-
-                                </a>
+                            <div id="selected_class_container" class="list-group">
 
                             </div>
                             <!-- /.list-group -->
@@ -999,6 +783,368 @@
     <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap-sb-admin-2-1.0.7/js/morris-data.js') }}"></script>
     <!--bootstrap and custom bootstrap js files-->
     <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap-sb-admin-2-1.0.7/dist/js/sb-admin-2.js') }}"></script>
+    <script type ='text/javascript'>
+        var g_Color = "#0c1Aff";
+        var g_Border_Color = "Black";
+        /*
+        *
+        *       Courses Class
+        *
+        */
+        var UbClass = function(id,ubclass,department,section,type,days,time,building,room_number,location,professor,status,reserved,semester, recitation){
+            this.ID = id;
+            this.UBCLASS = ubclass;
+            this.DEPARTMENT = department;
+            this.SECTION = section;
+            this.TYPE = type;
+            this.DAYS = days;
+            this.TIME = time;
+            this.BUILDING = building;
+            this.ROOM_NUMBER = room_number;
+            this.LOCATION = location;
+            this.PROFESSOR = professor;
+            this.STATUS = status;
+            this.RESERVED = reserved;
+            this.SEMESTER = semester;
+            this.RECITATION = recitation;
+            this.REC_ID_selected = 0;
+
+        };
+
+        UbClass.prototype.get_id = function(){
+            console.log(this.ID);
+            return this.ID;
+        };
+
+        UbClass.prototype.set_id = function(new_id) {
+            this.ID = new_id;
+            return this.ID;
+        };
+
+
+
+        /*
+        *
+        *       Recitation Class
+        *
+        */
+        var UbRec = function(rec_class_id, rec_id, ubclass,section,type,days,time,building,room_number,location,status,reserved){
+            this.ID = rec_class_id;
+            this.REC_ID = rec_id;
+            this.UBCLASS = ubclass;
+            this.SECTION = section;
+            this.TYPE = type;
+            this.DAYS = days;
+            this.TIME = time;
+            this.BUILDING = building;
+            this.ROOM_NUMBER = room_number;
+            this.LOCATION = location;
+            this.STATUS = status;
+            this.RESERVED = reserved;
+        };
+
+        UbRec.prototype.get_id = function(){
+            console.log(this.ID);
+            return this.ID;
+        };
+
+        UbRec.prototype.set_id = function(new_id) {
+            this.ID = new_id;
+            return this.ID;
+        };
+
+
+
+
+
+        /***********************************
+        *
+        *       Table Class
+        *
+        ************************************/
+        var Table_Class = function() {
+            var x = 0;
+            this.table_cells = [];
+            for (x; x < 135; x++) {
+                this.table_cells[x] = " ";
+            }
+            this.id_table = ['M8:00AM', 'M8:30AM', 'M9:00AM', 'M9:30AM', 'M10:00AM', 'M10:30AM', 'M11:00AM', 'M11:30AM', 'M12:00PM',
+                'M12:30PM', 'M1:00PM', 'M1:30PM', 'M2:00PM', 'M2:30PM', 'M3:00PM', 'M3:30PM', 'M4:00PM', 'M4:30PM', 'M5:00PM',
+                'M5:30PM', 'M6:00PM', 'M6:30PM', 'M7:00PM', 'M7:30PM', 'M8:00PM', 'M8:30PM', 'M9:00PM',
+                'T8:00AM', 'T8:30AM', 'T9:00AM', 'T9:30AM', 'T10:00AM', 'T10:30AM', 'T11:00AM', 'T11:30AM', 'T12:00PM',
+                'T12:30PM', 'T1:00PM', 'T1:30PM', 'T2:00PM', 'T2:30PM', 'T3:00PM', 'T3:30PM', 'T4:00PM', 'T4:30PM', 'T5:00PM',
+                'T5:30PM', 'T6:00PM', 'T6:30PM', 'T7:00PM', 'T7:30PM', 'T8:00PM', 'T8:30PM', 'T9:00PM',
+                'W8:00AM', 'W8:30AM', 'W9:00AM', 'W9:30AM', 'W10:00AM', 'W10:30AM', 'W11:00AM', 'W11:30AM', 'W12:00PM',
+                'W12:30PM', 'W1:00PM', 'W1:30PM', 'W2:00PM', 'W2:30PM', 'W3:00PM', 'W3:30PM', 'W4:00PM', 'W4:30PM', 'W5:00PM',
+                'W5:30PM', 'W6:00PM', 'W6:30PM', 'W7:00PM', 'W7:30PM', 'W8:00PM', 'W8:30PM', 'W9:00PM',
+                'R8:00AM', 'R8:30AM', 'R9:00AM', 'R9:30AM', 'R10:00AM', 'R10:30AM', 'R11:00AM', 'R11:30AM', 'R12:00PM',
+                'R12:30PM', 'R1:00PM', 'R1:30PM', 'R2:00PM', 'R2:30PM', 'R3:00PM', 'R3:30PM', 'R4:00PM', 'R4:30PM', 'R5:00PM',
+                'R5:30PM', 'R6:00PM', 'R6:30PM', 'R7:00PM', 'R7:30PM', 'R8:00PM', 'R8:30PM', 'R9:00PM',
+                'F8:00AM', 'F8:30AM', 'F9:00AM', 'F9:30AM', 'F10:00AM', 'F10:30AM', 'F11:00AM', 'F11:30AM', 'F12:00PM',
+                'F12:30PM', 'F1:00PM', 'F1:30PM', 'F2:00PM', 'F2:30PM', 'F3:00PM', 'F3:30PM', 'F4:00PM', 'F4:30PM', 'F5:00PM',
+                'F5:30PM', 'F6:00PM', 'F6:30PM', 'F7:00PM', 'F7:30PM', 'F8:00PM', 'F8:30PM', 'F9:00PM'];
+        };
+
+        /***********************************
+        *       Get Cell Values
+        ************************************/
+        Table_Class.prototype.get_cell_value = function(cell_id){
+            var index = this.id_table.indexOf(cell_id);
+            return this.table_cells[index];
+        };
+
+        /***********************************
+        *       Set Cell Values
+        ************************************/
+        Table_Class.prototype.set_cell_value = function(cell_id, new_data){
+            var index = this.id_table.indexOf(cell_id);
+            this.table_cells[index] = new_data;
+        };
+
+        /***********************************
+        *       Change Cell Color
+        ************************************/
+        Table_Class.prototype.set_cell_color = function(cell_id, color) {
+            var elem;
+            if (elem = document.getElementById(cell_id)) {
+                if (elem.style) {
+                    elem.style.backgroundColor = color;
+                }
+            }
+        };
+
+        /***********************************
+        *       Change Border Color
+        ************************************/
+        Table_Class.prototype.set_cell_border_color = function(cell_id, color) {
+            var elem;
+            if (elem = document.getElementById(cell_id)) {
+                if (elem.style) {
+                    elem.style.borderBottomColor = color;
+                }
+            }
+        };
+
+
+        Table_Class.prototype.set_bottom_border_color = function(cell_id, color) {
+            var elem;
+            if (elem = document.getElementById(cell_id)) {
+                if (elem.style) {
+                    elem.style.borderBottomColor = color;
+                }
+            }
+        };
+
+        Table_Class.prototype.set_top_border_color = function(cell_id, color) {
+            var elem;
+            if (elem = document.getElementById(cell_id)) {
+                if (elem.style) {
+                    elem.style.borderTopColor = color;
+                }
+            }
+        };
+        Table_Class.prototype.set_side_borders_color = function(cell_id, color) {
+            var elem;
+            if (elem = document.getElementById(cell_id)) {
+                if (elem.style) {
+                    elem.style.borderRightColor = color;
+                    elem.style.borderLeftColor = color;
+                }
+            }
+        };
+
+
+
+        /***********************************
+        *       Test for cell_Conflict
+        ************************************/
+        Table_Class.prototype.cell_conflict = function(cell_id){
+            var index = this.id_table.indexOf(cell_id);
+            if(this.table_cells[index] == ' '){
+                return false;
+            }
+            return true;
+        };
+
+
+        /***********************************
+        *       Set Cell Color and Text
+        ************************************/
+        Table_Class.prototype.clicked_class = function(rec_handle, class_handle){
+            if(class_handle.REC_ID_selected == 0){
+                table1.paint_cells(class_handle);
+                table1.paint_cells(rec_handle);
+                class_handle.REC_ID_selected = rec_handle.ID;
+            }
+            else if(class_handle.REC_ID_selected != (rec_handle.ID)){
+                table1.clear_all_recs(class_handle,rec_handle);
+                class_handle.REC_ID_selected = rec_handle.ID;
+                table1.paint_cells(rec_handle);
+            }
+            else if(class_handle.REC_ID_selected == (rec_handle.ID)){
+                table1.clear_cells(class_handle);
+                table1.clear_cells(rec_handle);
+                class_handle.REC_ID_selected = 0;
+            }
+            populate_selected_class(class_handle);
+        };
+
+
+        /***********************************
+        *       Change Visible Text
+        ************************************/
+        Table_Class.prototype.changeText = function(cell_id,text) {
+            if (elem = document.getElementById(cell_id)) {
+                elem.innerHTML = text;
+            }
+        };
+
+        /***************************************
+        *       Clear All Recitations of Parent Class
+        ****************************************/
+        Table_Class.prototype.clear_all_recs = function(class_handle) {
+            var x=0;
+            while(x<class_handle.RECITATION.length){
+                table1.clear_cells(class_handle.RECITATION[x]);
+                x++;
+            }
+        };
+
+        /***************************************
+        *       Clear All Recitations of Parent
+        ****************************************/
+        Table_Class.prototype.clear_cells = function(class_handle) {
+            var clear_times = convertTimes(class_handle.DAYS, class_handle.TIME);
+            var clear_index;
+            var first_cell_of_block;
+            for(var k=0;k<10;k=k+2) {
+                first_cell_of_block = 1;
+                if (times[k] != ' ') {
+                    clear_index = table1.id_table.indexOf(clear_times[k]);
+                    while (table1.id_table[clear_index] != clear_times[k + 1]) {
+                        if(table1.cell_conflict(this.id_table[clear_index])){
+                            this.set_cell_value(this.id_table[clear_index],' ');
+                            this.set_cell_color(this.id_table[clear_index], "White");
+                            this.set_cell_border_color(this.id_table[clear_index], "#ddd");
+                            this.set_side_borders_color(this.id_table[clear_index], "#ddd");
+                            if(first_cell_of_block == 1) {
+                                this.changeText(this.id_table[clear_index], ' ');
+                                this.changeText(this.id_table[clear_index+1], ' ');
+                                first_cell_of_block = 0;
+                            }
+                        }
+                        clear_index++;
+                    }
+                }
+            }
+        };
+
+        /***************************************
+        *       Paint Cells
+        ****************************************/
+        Table_Class.prototype.paint_cells = function(class_handle) {
+            var paint_times = convertTimes(class_handle.DAYS, class_handle.TIME);
+            var paint_index;
+            var first_cell_of_block;
+            for(var w=0;w<10;w=w+2) {
+                first_cell_of_block = 1;
+                if (times[w] != ' ') {
+                    paint_index = table1.id_table.indexOf(paint_times[w]);
+                    while (table1.id_table[paint_index] != paint_times[w + 1]) {
+                        if(!table1.cell_conflict(table1.id_table[paint_index])){
+                            this.set_cell_value(this.id_table[paint_index],class_handle.ID);
+                            this.set_cell_color(this.id_table[paint_index], g_Color);
+
+                            this.set_side_borders_color(this.id_table[paint_index], g_Border_Color);
+                            this.set_bottom_border_color(this.id_table[paint_index], g_Color);
+
+                            //this.set_cell_border_color(this.id_table[paint_index], g_Color);
+                            if(first_cell_of_block == 1) {
+                                if(class_handle.REC_ID) {
+                                    this.changeText(this.id_table[paint_index], class_handle.UBCLASS);
+                                    this.changeText(this.id_table[paint_index+1], class_handle.TYPE);
+                                }
+                                else{
+                                    this.changeText(this.id_table[paint_index], class_handle.UBCLASS);
+                                }
+                                first_cell_of_block = 0;
+                                this.set_top_border_color(this.id_table[paint_index], g_Border_Color);
+                            }
+                        }
+                        paint_index++;
+                    }
+                    this.set_bottom_border_color(this.id_table[paint_index-1], g_Border_Color);
+                }
+            }
+        };
+
+
+
+
+
+
+    $.getJSON('/getfirstclassgroup', function(dat) {
+        var x = 0;
+        recitation = [];
+        while(dat.classes[x] != null) {
+            var id = dat.classes[x].ID;
+            var ubclass = dat.classes[x].UBCLASS;
+            var department = dat.classes[x].DEPARTMENT;
+            var section = dat.classes[x].SECTION;
+            var type = dat.classes[x].TYPE;
+            var days = dat.classes[x].DAYS;
+            var time = dat.classes[x].TIME;
+            var building = dat.classes[x].BUILDING;
+            var room_number = dat.classes[x].ROOM_NUMBER;
+            var location = dat.classes[x].LOCATION;
+            var professor = dat.classes[x].PROFESSOR;
+            var status = dat.classes[x].STATUS;
+            var reserved = dat.classes[x].RESERVED;
+            var semester = dat.classes[x].SEMESTER;
+            if(dat.classes[x].RECITATION.length != 0){
+                var index =0;
+                while(index<dat.classes[x].RECITATION.length) {
+                    var rec_class_id = dat.classes[x].RECITATION[index].ID;
+                    var rec_id = dat.classes[x].RECITATION[index].REC_ID;
+                    var ubclass1 = dat.classes[x].RECITATION[index].UBCLASS;
+                    var rec_section = dat.classes[x].RECITATION[index].SECTION;
+                    var rec_type = dat.classes[x].RECITATION[index].TYPE;
+                    var rec_days = dat.classes[x].RECITATION[index].DAYS;
+                    var rec_time = dat.classes[x].RECITATION[index].TIME;
+                    var rec_building = dat.classes[x].RECITATION[index].BUILDING;
+                    var rec_room = dat.classes[x].RECITATION[index].ROOM_NUMBER;
+                    var rec_location = dat.classes[x].RECITATION[index].LOCATION;
+                    var rec_status = dat.classes[x].RECITATION[index].STATUS;
+                    var rec_reserved = dat.classes[x].RECITATION[index].RESERVED;
+                    recitation[index] = new UbRec(rec_class_id, rec_id, ubclass1, rec_section, rec_type, rec_days, rec_time, rec_building, rec_room, rec_location, rec_status, rec_reserved);
+                    index++;
+                }
+            }
+
+
+            Class_Handles[x] = new UbClass(id,ubclass,department,section,type,days,time,building,room_number,location,professor,status,reserved,semester, recitation);
+            x = x + 1;
+            recitation = [];
+        }
+    });
+
+
+    /*
+    *       Example for creating new ubclass instance
+    */
+    //var ubclass1 = new UbClass(32,'CSE442','CSE','A','LEC','T R', '9:00 AM - 10:50 AM','442','NORTH','SCHINDLER', 'OPEN','No');
+
+    /*
+    *   New Table Instance
+    */
+    var table1 = new Table_Class();
+
+
+
+    </script>
+
+
+
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </body>
 {% endblock %}

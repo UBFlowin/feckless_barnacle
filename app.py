@@ -121,12 +121,13 @@ class UBClasses(db.Model):
 
 
 '''-----------------------------------------------
-        Classes Class
+        Recitations Class
 -----------------------------------------------'''
 class UBRecitation(db.Model):
     __tablename__ = "ubrecitations"
 
     ID = db.Column(db.Integer, primary_key=True)
+    UBCLASS = db.Column(db.String(50), nullable=False)
     RECITATION_ID = db.Column(db.Integer, db.ForeignKey('ubclasses.ID'))
     SECTION = db.Column(db.String(50), nullable=False)
     TYPE = db.Column(db.String(50), nullable=False)
@@ -139,9 +140,10 @@ class UBRecitation(db.Model):
     RESERVED = db.Column(db.String(50), nullable=False)
 
 
-    def __init__(self, id, recitation, section, type, days, time, building, room_number, location, status, reserved, semester):
+    def __init__(self, id, ubclass, recitation, section, type, days, time, building, room_number, location, status, reserved, semester):
         self.ID = id
-        self.RECITATION_ID = id
+        self.UBCLASS = ubclass
+        self.RECITATION_ID = recitation
         self.SECTION = section
         self.TYPE = type
         self.DAYS = days
@@ -224,8 +226,6 @@ def login_user():
 @app.route('/profile', methods=['GET'])
 def profile():
     result = UBClasses.query.filter_by(TYPE="LEC").all()
-    #populate_session(result)
-
     ClassOps = [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ']
     x = len(result)
     for i in range(0,x):
@@ -238,25 +238,47 @@ def profile():
 @app.route('/getnextclassgroup', methods=['GET'])
 def getClassGroup():
     if request.method == 'GET':
-        results = UBClasses.query.filter_by(DEPARTMENT="EAS").all()
+        results = UBClasses.query.filter_by(DEPARTMENT="CSE").all()
+    rec = {}
     json_results = []
+    json_rec = []
     for result in results:
-        d = {'ID': result.ID,
-             'UBCLASS': result.UBCLASS,
-             'DEPARTMENT': result.DEPARTMENT,
-             'SECTION': result.SECTION,
-             'TYPE': result.TYPE,
-             'DAYS': result.DAYS,
-             'TIME': result.TIME,
-             'BUILDING': result.BUILDING,
-             'ROOM_NUMBER': result.ROOM_NUMBER,
-             'LOCATION': result.LOCATION,
-             'PROFESSOR_ID': result.PROFESSOR_ID,
-             'PROFESSOR': result.PROFESSOR,
-             'STATUS': result.STATUS,
-             'RESERVED': result.RESERVED,
-             'SEMESTER': result.SEMESTER}
-        json_results.append(d)
+         recitations = UBRecitation.query.filter_by(RECITATION_ID=result.ID).all()
+         for recitation in recitations:
+              rec = {'ID': recitation.ID,
+                     'UBCLASS' : recitation.UBCLASS,
+                     'REC_ID': recitation.RECITATION_ID,
+                     'SECTION': recitation.SECTION,
+                     'TYPE': recitation.TYPE,
+                     'DAYS': recitation.DAYS,
+                     'TIME': recitation.TIME,
+                     'BUILDING': recitation.BUILDING,
+                     'ROOM_NUMBER': recitation.ROOM_NUMBER,
+                     'LOCATION': recitation.LOCATION,
+                     'STATUS': recitation.STATUS,
+                     'RESERVED': recitation.RESERVED,
+              }
+              json_rec.append(rec)
+         d = {'ID': result.ID,
+              'UBCLASS': result.UBCLASS,
+              'DEPARTMENT': result.DEPARTMENT,
+              'SECTION': result.SECTION,
+              'TYPE': result.TYPE,
+              'DAYS': result.DAYS,
+              'TIME': result.TIME,
+              'BUILDING': result.BUILDING,
+              'ROOM_NUMBER': result.ROOM_NUMBER,
+              'LOCATION': result.LOCATION,
+              'PROFESSOR_ID': result.PROFESSOR_ID,
+              'PROFESSOR': result.PROFESSOR,
+              'STATUS': result.STATUS,
+              'RESERVED': result.RESERVED,
+              'SEMESTER': result.SEMESTER,
+              'RECITATION': json_rec
+            }
+         json_rec = []
+         json_results.append(d)
+
     return jsonify(classes=json_results)
 
 
@@ -264,8 +286,26 @@ def getClassGroup():
 def getFirstClassGroup():
     if request.method == 'GET':
         results = UBClasses.query.filter_by(TYPE='LEC').all()
+    rec = {}
     json_results = []
+    json_rec = []
     for result in results:
+        recitations = UBRecitation.query.filter_by(RECITATION_ID=result.ID).all()
+        for recitation in recitations:
+            rec = {'ID': recitation.ID,
+                   'REC_ID': recitation.RECITATION_ID,
+                   'UBCLASS' : recitation.UBCLASS,
+                   'SECTION': recitation.SECTION,
+                   'TYPE': recitation.TYPE,
+                   'DAYS': recitation.DAYS,
+                   'TIME': recitation.TIME,
+                   'BUILDING': recitation.BUILDING,
+                   'ROOM_NUMBER': recitation.ROOM_NUMBER,
+                   'LOCATION': recitation.LOCATION,
+                   'STATUS': recitation.STATUS,
+                   'RESERVED': recitation.RESERVED,
+            }
+            json_rec.append(rec)
         d = {'ID': result.ID,
              'UBCLASS': result.UBCLASS,
              'DEPARTMENT': result.DEPARTMENT,
@@ -280,37 +320,12 @@ def getFirstClassGroup():
              'PROFESSOR': result.PROFESSOR,
              'STATUS': result.STATUS,
              'RESERVED': result.RESERVED,
-             'SEMESTER': result.SEMESTER}
+             'SEMESTER': result.SEMESTER,
+             'RECITATION': json_rec
+            }
+        json_rec = []
         json_results.append(d)
     return jsonify(classes=json_results)
-
-
-def populate_session(array):
-    x=0
-    for result in array:
-        slots = gen_time_slots(result.DAYS, result.TIME)
-        session[x]=result.UBCLASS
-        session[x+1]=result.DAYS
-        session[x+2]=result.TIME
-        session[x+3]=result.TYPE
-        session[x+4]=result.DEPARTMENT
-        session[x+5]=result.SECTION
-        session[x+6]=result.LOCATION
-        session[x+7]=result.BUILDING
-        session[x+8]=result.ROOM_NUMBER
-        session[x+9]=result.PROFESSOR
-        session[x+10]=result.STATUS
-        session[x+11]=result.RESERVED
-        session[x+12]=' '
-        session[x+13]=' '
-        session[x+14]=slots[0]
-        session[x+15]=slots[1]
-        session[x+16]=slots[2]
-        session[x+17]=slots[3]
-        session[x+18]=slots[4]
-        session[x+19]=slots[5]
-        x+=20
-    return None
 
 
 def gen_time_slots(days, times):
