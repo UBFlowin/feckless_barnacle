@@ -85,6 +85,7 @@ class UBClasses(db.Model):
 
     ID = db.Column(db.Integer, primary_key=True)
     UBCLASS = db.Column(db.String(50), nullable=False)
+    TITLE = db.Column(db.Integer,nullable=False)
     DEPARTMENT = db.Column(db.String(50), nullable=False)
     SECTION = db.Column(db.String(50), nullable=False)
     TYPE = db.Column(db.String(50), nullable=False)
@@ -99,9 +100,10 @@ class UBClasses(db.Model):
     RESERVED = db.Column(db.String(50), nullable=False)
     SEMESTER = db.Column(db.String(50), nullable=False)
 
-    def __init__(self, ubclass, department, section, type, days, time, building, room_number, location, professor, status, reserved, semester):
+    def __init__(self, ubclass, title, department, section, type, days, time, building, room_number, location, professor, status, reserved, semester):
 
         self.UBCLASS = ubclass
+        self.TITLE = title
         self.DEPARTMENT = department
         self.SECTION = section
         self.TYPE = type
@@ -110,7 +112,6 @@ class UBClasses(db.Model):
         self.BUILDING = building
         self.ROOM_NUMBER = room_number
         self.LOCATION = location
-
         self.PROFESSOR = professor
         self.STATUS = status
         self.RESERVED = reserved
@@ -128,6 +129,7 @@ class UBRecitation(db.Model):
 
     ID = db.Column(db.Integer, primary_key=True)
     UBCLASS = db.Column(db.String(50), nullable=False)
+    HUB_ID = db.Column(db.Integer,nullable=False)
     RECITATION_ID = db.Column(db.Integer, db.ForeignKey('ubclasses.ID'))
     SECTION = db.Column(db.String(50), nullable=False)
     TYPE = db.Column(db.String(50), nullable=False)
@@ -140,9 +142,10 @@ class UBRecitation(db.Model):
     RESERVED = db.Column(db.String(50), nullable=False)
 
 
-    def __init__(self, id, ubclass, recitation, section, type, days, time, building, room_number, location, status, reserved, semester):
+    def __init__(self, id, ubclass, hub_id, recitation, section, type, days, time, building, room_number, location, status, reserved, semester):
         self.ID = id
         self.UBCLASS = ubclass
+        self.HUB_ID = hub_id
         self.RECITATION_ID = recitation
         self.SECTION = section
         self.TYPE = type
@@ -167,6 +170,43 @@ class Schedule(db.Model):
 
     ID = db.Column(db.Integer, primary_key=True)
     USER_ID = db.Column(db.Integer, db.ForeignKey('user.ID'))
+
+
+
+
+'''-----------------------------------------------
+        DEGREE COURSE CLASS
+-----------------------------------------------'''
+class Schedule(db.Model):
+    __tablename__ = 'course'
+
+    ID = db.Column(db.Integer, primary_key=True)
+    UBCLASS = db.Column(db.String, nullable=False)
+    TITLE = db.Column(db.String, nullable=False)
+    DEGREE = db.Column(db.String, nullable=False)
+    PRE_REQ1 = db.Column(db.String, nullable=True)
+    PRE_REQ2 = db.Column(db.String, nullable=True)
+    PRE_REQ3 = db.Column(db.String, nullable=True)
+    PRE_REQ4 = db.Column(db.String, nullable=True)
+    PRE_REQ5 = db.Column(db.String, nullable=True)
+    SEMESTER = db.Column(db.String, nullable=True)
+    YEAR = db.Column(db.String, nullable=True)
+
+    def __init__(self,ubclass,title,degree,pre1,pre2,pre3,pre4,pre5, semester,year):
+        self.UBCLASS = ubclass
+        self.TITLE = title
+        self.DEGREE = degree
+        self.PRE1 = pre1
+        self.PRE2 = pre2
+        self.PRE3 = pre3
+        self.PRE4 = pre4
+        self.PRE5 = pre5
+        self.SEMESTER = semester
+        self.YEAR = year
+
+    def __repr__(self):
+        return '<title'.format(self.TITLE)
+
 
 
 '''-----------------------------------------------
