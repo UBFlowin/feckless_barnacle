@@ -99,8 +99,8 @@ class UBClasses(db.Model):
     RESERVED = db.Column(db.String(50), nullable=False)
     SEMESTER = db.Column(db.String(50), nullable=False)
 
-    def __init__(self, id, ubclass, department, section, type, days, time, building, room_number, location, professor_id, professor, status, reserved, semester):
-        self.ID = id
+    def __init__(self, ubclass, department, section, type, days, time, building, room_number, location, professor, status, reserved, semester):
+
         self.UBCLASS = ubclass
         self.DEPARTMENT = department
         self.SECTION = section
@@ -110,7 +110,7 @@ class UBClasses(db.Model):
         self.BUILDING = building
         self.ROOM_NUMBER = room_number
         self.LOCATION = location
-        self.PROFESSOR_ID = professor_id
+
         self.PROFESSOR = professor
         self.STATUS = status
         self.RESERVED = reserved

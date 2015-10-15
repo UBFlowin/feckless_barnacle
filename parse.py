@@ -1,4 +1,5 @@
 from scraper import get_info
+from app import db, UBClasses
 import re
 
 
@@ -69,7 +70,7 @@ def isolate_data(info):
                     if(curr_data == 'ARR'):
                         room.append(curr_data)
                     else:
-                        campus.append(curr_data)
+                        room.append("-")
                         position += 1
                 time_unknown = 0
             elif(position == 9):
@@ -83,9 +84,47 @@ def isolate_data(info):
             else:
                 position += 1
             curr_data = ''
+
+
+            # UBCLASS = course_name[i]
+            # DEPARTMENT = "CSE"
+            # SECTION = section[i]
+            # TYPE = type[i]
+            # DAYS = days[i]
+            # TIME = time[i]
+            # BUILDING = room[i]
+            # ROOM_NUMBER = room[i]
+            # LOCATION = campus[i]
+            # PROFESSOR_ID = 0
+            # PROFESSOR = instructor[i]
+            # STATUS = status[i]
+            # RESERVED = "No"
+            # SEMESTER = "Fall"
+            # class1 = UBClasses(UBCLASS,DEPARTMENT,SECTION,TYPE,DAYS,TIME,BUILDING,ROOM_NUMBER,LOCATION,0,PROFESSOR,STATUS,RESERVED,SEMESTER)
+            # db.add(class1)
+            # db.commit()
         else:
             curr_data += data[i]
-    print instructor
+
+    #TODO for loop making an object and adding to the database
+    for z in range(0,171):
+        UBCLASS = course_name[z]
+        DEPARTMENT = "CSE"
+        SECTION = section[z]
+        TYPE = type[z]
+        DAYS = days[z]
+        TIME = time[z]
+        BUILDING = room[z]
+        ROOM_NUMBER = room[z]
+        LOCATION = campus[z]
+
+        PROFESSOR = instructor[z]
+        STATUS = status[z]
+        RESERVED = "No"
+        SEMESTER = "Fall"
+        class1 = UBClasses(UBCLASS,DEPARTMENT,SECTION,TYPE,DAYS,TIME,BUILDING,ROOM_NUMBER,LOCATION,PROFESSOR,STATUS,RESERVED,SEMESTER)
+        db.session.add(class1)
+        db.session.commit()
     return data
 
 
