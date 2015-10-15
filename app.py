@@ -85,7 +85,7 @@ class UBClasses(db.Model):
 
     ID = db.Column(db.Integer, primary_key=True)
     UBCLASS = db.Column(db.String(50), nullable=False)
-    TITLE = db.Column(db.Integer,nullable=False)
+    TITLE = db.Column(db.String(50),nullable=False)
     DEPARTMENT = db.Column(db.String(50), nullable=False)
     SECTION = db.Column(db.String(50), nullable=False)
     TYPE = db.Column(db.String(50), nullable=False)
@@ -98,9 +98,15 @@ class UBClasses(db.Model):
     PROFESSOR = db.Column(db.String(50), nullable=False)
     STATUS = db.Column(db.String(50), nullable=False)
     RESERVED = db.Column(db.String(50), nullable=False)
-    SEMESTER = db.Column(db.String(50), nullable=False)
+    SEMESTER = db.Column(db.String(50), nullable=True)
+    PRE_REQ1 = db.Column(db.String(50), nullable=True)
+    PRE_REQ2 = db.Column(db.String(50), nullable=True)
+    PRE_REQ3 = db.Column(db.String(50), nullable=True)
+    PRE_REQ4 = db.Column(db.String(50), nullable=True)
+    PRE_REQ5 = db.Column(db.String(50), nullable=True)
+    DEGREE = db.Column(db.String(50), nullable=True)
 
-    def __init__(self, ubclass, title, department, section, type, days, time, building, room_number, location, professor, status, reserved, semester):
+    def __init__(self, ubclass, title, department, section, type, days, time, building, room_number, location, professor, status, reserved, semester,pre1,pre2,pre3,pre4,pre5,degree):
 
         self.UBCLASS = ubclass
         self.TITLE = title
@@ -116,6 +122,12 @@ class UBClasses(db.Model):
         self.STATUS = status
         self.RESERVED = reserved
         self.SEMESTER = semester
+        self.PRE_REQ1 = pre1
+        self.PRE_REQ2 = pre2
+        self.PRE_REQ3 = pre3
+        self.PRE_REQ4 = pre4
+        self.PRE_REQ5 = pre5
+        self.DEGREE = degree
 
     def __repr__(self):
         return '<class {}'.format(self.UBCLASS)
@@ -142,8 +154,7 @@ class UBRecitation(db.Model):
     RESERVED = db.Column(db.String(50), nullable=False)
 
 
-    def __init__(self, id, ubclass, hub_id, recitation, section, type, days, time, building, room_number, location, status, reserved, semester):
-        self.ID = id
+    def __init__(self, ubclass, hub_id, recitation, section, type, days, time, building, room_number, location, status, reserved, semester):
         self.UBCLASS = ubclass
         self.HUB_ID = hub_id
         self.RECITATION_ID = recitation
@@ -165,7 +176,7 @@ class UBRecitation(db.Model):
 '''-----------------------------------------------
         Schedule Class
 -----------------------------------------------'''
-class Schedule(db.Model):
+class UBSchedule(db.Model):
     __tablename__ = 'schedule'
 
     ID = db.Column(db.Integer, primary_key=True)
@@ -177,20 +188,20 @@ class Schedule(db.Model):
 '''-----------------------------------------------
         DEGREE COURSE CLASS
 -----------------------------------------------'''
-class Schedule(db.Model):
+class Degree(db.Model):
     __tablename__ = 'course'
 
     ID = db.Column(db.Integer, primary_key=True)
-    UBCLASS = db.Column(db.String, nullable=False)
-    TITLE = db.Column(db.String, nullable=False)
-    DEGREE = db.Column(db.String, nullable=False)
-    PRE_REQ1 = db.Column(db.String, nullable=True)
-    PRE_REQ2 = db.Column(db.String, nullable=True)
-    PRE_REQ3 = db.Column(db.String, nullable=True)
-    PRE_REQ4 = db.Column(db.String, nullable=True)
-    PRE_REQ5 = db.Column(db.String, nullable=True)
-    SEMESTER = db.Column(db.String, nullable=True)
-    YEAR = db.Column(db.String, nullable=True)
+    UBCLASS = db.Column(db.String(50), nullable=False)
+    TITLE = db.Column(db.String(50), nullable=False)
+    DEGREE = db.Column(db.String(50), nullable=False)
+    PRE_REQ1 = db.Column(db.String(50), nullable=True)
+    PRE_REQ2 = db.Column(db.String(50), nullable=True)
+    PRE_REQ3 = db.Column(db.String(50), nullable=True)
+    PRE_REQ4 = db.Column(db.String(50), nullable=True)
+    PRE_REQ5 = db.Column(db.String(50), nullable=True)
+    SEMESTER = db.Column(db.String(50), nullable=True)
+    YEAR = db.Column(db.String(50), nullable=True)
 
     def __init__(self,ubclass,title,degree,pre1,pre2,pre3,pre4,pre5, semester,year):
         self.UBCLASS = ubclass

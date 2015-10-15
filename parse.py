@@ -1,5 +1,5 @@
 from scraper import get_info
-from app import db, UBClasses
+from app import db, UBClasses, UBRecitation
 import re
 
 
@@ -50,6 +50,13 @@ def isolate_data(info):
             if(position == 1):
                 course_id.append(curr_data)
             elif(position == 2):
+                curr_data = curr_data.replace("L","")
+                curr_data = curr_data.replace("R","")
+                curr_data = curr_data.replace("B","")
+                curr_data = curr_data.replace("T","")
+                curr_data = curr_data.replace("U","")
+                curr_data = curr_data.replace(" ","")
+                print curr_data
                 course_num.append(curr_data)
             elif(position == 3):
                 course_name.append(curr_data)
@@ -100,15 +107,18 @@ def isolate_data(info):
             # STATUS = status[i]
             # RESERVED = "No"
             # SEMESTER = "Fall"
-            # class1 = UBClasses(UBCLASS,DEPARTMENT,SECTION,TYPE,DAYS,TIME,BUILDING,ROOM_NUMBER,LOCATION,0,PROFESSOR,STATUS,RESERVED,SEMESTER)
+            # class1 = UBClasses(UBCLASS,HUB_ID,DEPARTMENT,SECTION,TYPE,DAYS,TIME,BUILDING,ROOM_NUMBER,LOCATION,0,PROFESSOR,STATUS,RESERVED,SEMESTER)
             # db.add(class1)
             # db.commit()
         else:
             curr_data += data[i]
 
     #TODO for loop making an object and adding to the database
-    for z in range(0,171):
-        UBCLASS = course_name[z]
+    max = 0
+    for z in range(0,30):
+        UBCLASS = course_num[z]
+        HUB_ID = course_id[z]
+        TITLE = course_name[z]
         DEPARTMENT = "CSE"
         SECTION = section[z]
         TYPE = type[z]
@@ -116,15 +126,32 @@ def isolate_data(info):
         TIME = time[z]
         BUILDING = room[z]
         ROOM_NUMBER = room[z]
-        LOCATION = campus[z]
-
+        LOCATION = "North"
         PROFESSOR = instructor[z]
         STATUS = status[z]
         RESERVED = "No"
         SEMESTER = "Fall"
-        class1 = UBClasses(UBCLASS,DEPARTMENT,SECTION,TYPE,DAYS,TIME,BUILDING,ROOM_NUMBER,LOCATION,PROFESSOR,STATUS,RESERVED,SEMESTER)
-        db.session.add(class1)
-        db.session.commit()
+        RECITATION = 7
+        PRE1 = "None"
+        PRE2 = "None"
+        PRE3 = "None"
+        PRE4 = "None"
+        PRE5 = "None"
+        DEGREE = "None"
+        if TYPE == 'LEC':
+            class1 = UBClasses(UBCLASS,TITLE,DEPARTMENT,SECTION,TYPE,DAYS,TIME,BUILDING,ROOM_NUMBER,LOCATION,PROFESSOR,STATUS,RESERVED,SEMESTER,PRE1,PRE2,PRE3,PRE4,PRE5,DEGREE)
+            db.session.add(class1)
+            db.session.commit()
+        else:
+            results = UBClasses.query.all()
+            for result in results:
+                temp_max = result.ID
+                if temp_max > max:
+                    max = temp_max
+            print max
+            class1 = UBRecitation(UBCLASS,HUB_ID,max,SECTION,TYPE,DAYS,TIME,BUILDING,ROOM_NUMBER,LOCATION,STATUS,RESERVED,SEMESTER)
+            db.session.add(class1)
+            db.session.commit()
     return data
 
 
