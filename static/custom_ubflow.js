@@ -1,6 +1,398 @@
 /**
  * Created by Seth on 10/11/2015.
  */
+/********************************************************************
+*               Add container to Available Classes
+*********************************************************************
+*        ______ ________________ _______________________
+*       |      |                |                       |
+*       |  S   |      CSE442    |  9:00 AM - 9:50 AM    |
+*       |______|________________|_______________________|
+*
+*-------------------------------------------------------------------*/
+function make_available_classes() {
+    var available_class,a,mouseover,mouseout,spin_wheel_holder,spin_wheel,class_name_holder,p1,p2,txt1,txt2,class_time_holder;
+    for (var j = 0; j < CLASS_HANDLES.length; j++) {
+        if(CLASS_HANDLES[j] != null) {
+            available_class = document.createElement('available_class'+String(j));
+            a = document.createElement('Class' + String(j));
+            a.setAttribute('style', 'height: 40px;');
+            a.setAttribute('id', 'container' + String(j));
+            a.setAttribute('class', 'list-group-item');
+            a.setAttribute('data-toggle', 'collapse');
+            a.setAttribute('data-parent', '#accordion');
+            a.setAttribute('href', '#collapse' + String(j));
+            mouseover = "shade('container" + String(j) + "')";
+            mouseout = "unshade('container" + String(j) + "')";
+            a.setAttribute('onmouseover', mouseover);
+            a.setAttribute('onmouseout', mouseout);
+            available_class.appendChild(a);
+
+            //Add spin wheel container
+            spin_wheel_holder = document.createElement("spin_wheel_holder");
+            spin_wheel_holder.setAttribute('class', 'col-md-1');
+            a.appendChild(spin_wheel_holder);
+
+            //Add spin wheel
+            spin_wheel = document.createElement('spin_wheel');
+            spin_wheel.setAttribute('class', 'fa fa-cog fa-spin');
+            spin_wheel_holder.appendChild(spin_wheel);
+
+            //add class name container
+            class_name_holder = document.createElement("class_name_holder");
+            class_name_holder.setAttribute('class', 'col-md-4');
+            a.appendChild(class_name_holder);
+
+            //add class name
+            p1 = document.createElement('class_name_' + String(j));
+            txt1 = document.createTextNode(CLASS_HANDLES[j].UBCLASS);
+            p1.appendChild(txt1);
+            class_name_holder.appendChild(p1);
+
+            //class times container
+            class_time_holder = document.createElement("class_time_holder");
+            class_time_holder.setAttribute('class', 'col-md-7');
+            a.appendChild(class_time_holder);
+
+            //add class times
+            p2 = document.createElement('class_name_' + String(j));
+            txt2 = document.createTextNode(CLASS_HANDLES[j].DAYS + ":" + CLASS_HANDLES[j].TIME);
+            p2.appendChild(txt2);
+            class_time_holder.appendChild(p2);
+
+            if (CLASS_HANDLES[j].RECITATION.length != 0) {
+                var sub_group = document.createElement('sub_group');
+                sub_group.setAttribute('id', 'collapse' + String(j));
+                sub_group.setAttribute('class', 'panel-collapse collapse');
+                sub_group.setAttribute('style', 'padding: 4px;');
+                var k;
+                for (k = 0; k < CLASS_HANDLES[j].RECITATION.length; k++) {
+                    var sub_heading = document.createElement('sub_heading');
+                    var sub_a = document.createElement('availableClass' + String(j));
+                    sub_a.setAttribute('id', 'collapser' + String(j) + String(k));
+                    sub_a.setAttribute('style', 'height: 40px;');
+                    sub_a.setAttribute('class', 'list-group-item');
+                    sub_a.setAttribute('onclick', 'Table1.clicked_class(CLASS_HANDLES[' + String(j) + '].RECITATION[' + String(k) + '], CLASS_HANDLES[' + String(j) + '])');
+                    sub_a.setAttribute('href', '#');
+                    var sub_mouseover = "shade('collapser" + String(j) + String(k) + "')";
+                    var sub_mouseout = "unshade('collapser" + String(j) + String(k) + "')";
+                    sub_a.setAttribute('onmouseover', sub_mouseover);
+                    sub_a.setAttribute('onmouseout', sub_mouseout);
+                    sub_heading.appendChild(sub_a);
+
+                    //Add spin wheel container
+                    var sub_spin_wheel_holder = document.createElement("sub_spin_wheel_holder");
+                    sub_spin_wheel_holder.setAttribute('class', 'col-md-1 col-md-offset-2');
+                    sub_a.appendChild(sub_spin_wheel_holder);
+
+                    //Add spin wheel
+                    var sub_spin_wheel = document.createElement('sub_spin_wheel');
+                    sub_spin_wheel.setAttribute('class', 'fa fa-cog fa-spin');
+                    sub_spin_wheel_holder.appendChild(sub_spin_wheel);
+
+                    //class times container
+                    var sub_class_time_holder = document.createElement("sub_class_time_holder");
+                    sub_class_time_holder.setAttribute('class', 'col-md-9');
+                    sub_a.appendChild(sub_class_time_holder);
+
+                    //add class times
+                    var p4 = document.createElement('class_name_' + String(j));
+                    var txt4 = document.createTextNode(CLASS_HANDLES[j].RECITATION[k].DAYS + ":" + CLASS_HANDLES[j].RECITATION[k].TIME);
+                    p4.appendChild(txt4);
+                    sub_class_time_holder.appendChild(p4);
+
+                    sub_group.appendChild(sub_heading);
+                }
+                available_class.appendChild(sub_group);
+            }
+            //Add parent (with all children to html)
+            var list = document.getElementById('accordion-body');
+            list.insertBefore(available_class, list.childNodes[0]);
+        }
+    }
+}
+
+
+/********************************************************************
+*               Switch From Wheel to Avilable Courses
+*********************************************************************/
+function switch_avail_classes(){
+    var wheel = document.getElementById("timeout_wheel");
+    wheel.style.display = "none";
+    make_available_classes();
+}
+
+
+/********************************************************************
+*               Add Classes to "Selected Classes"
+*********************************************************************/
+function populate_selected_class(class_handle, rec_handle) {
+    var heading = document.createElement('heading' + class_handle.ID);
+    var a = document.createElement('availableClass');
+    a.setAttribute('style', 'height: 40px;');
+    a.setAttribute('id', 'selected_container' + class_handle.ID);
+    a.setAttribute('class', 'list-group-item');
+
+    var onmouseover = "shade('container" + class_handle.ID + "')";
+    var onmouseout = "unshade('container" + class_handle.ID + "')";
+    a.setAttribute('onmouseover', onmouseover);
+    a.setAttribute('onmouseout', onmouseout);
+    heading.appendChild(a);
+
+    //Add spin wheel container
+    var lock_icon_holder = document.createElement("lock_icon_holder");
+    lock_icon_holder.setAttribute('class', 'col-md-1');
+    a.appendChild(lock_icon_holder);
+
+    //Add spin wheel
+    var lock_icon = document.createElement('lock_icon');
+    lock_icon.setAttribute('id','lock_icon'+class_handle.ID);
+    lock_icon.setAttribute('class', 'fa fa-unlock');
+    lock_icon.setAttribute('onclick','lock_in_course("lock_icon'+class_handle.ID+'"'+')');
+    lock_icon_holder.appendChild(lock_icon);
+
+    //add class name container
+    var class_name_holder = document.createElement("class_name_holder");
+    class_name_holder.setAttribute('class', 'col-md-4');
+    a.appendChild(class_name_holder);
+
+    //add class name
+    var p1 = document.createElement('class_name');
+    var txt1 = document.createTextNode(class_handle.UBCLASS);
+    p1.appendChild(txt1);
+    class_name_holder.appendChild(p1);
+
+    //class times container
+    var class_time_holder = document.createElement("class_time_holder");
+    class_time_holder.setAttribute('class', 'col-md-7');
+    a.appendChild(class_time_holder);
+
+    //add class times
+    var p2 = document.createElement('class_time');
+    var txt2 = document.createTextNode(class_handle.DAYS + ":" + class_handle.TIME);
+    p2.appendChild(txt2);
+    class_time_holder.appendChild(p2);
+
+    validate_selected_class(class_handle,rec_handle, heading);
+}
+
+
+/********************************************************************
+*               Validate "Selected Classes"
+*********************************************************************/
+function validate_selected_class(class_handle,rec_handle, heading){
+    var list;
+    var parent;
+    if (Selected_Classes.SELECTED_CLASS_HANDLES.length !=0 ) {
+        if (Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] != null) {
+            if (rec_handle.ID == Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID].ID) {
+                parent = document.getElementById('selected_container' + class_handle.ID).remove();
+                Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = 0;
+            }
+            else if (rec_handle.REC_ID == Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID].REC_ID) {
+                Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = rec_handle;
+            }
+            else {
+                //Add parent (with all children to html)
+                list = document.getElementById('selected_class_container');
+                list.insertBefore(heading, list.childNodes[0]);
+
+                Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = rec_handle;
+                Selected_Classes.NUM_SELECTED_CLASSES = Selected_Classes.NUM_SELECTED_CLASSES + 1;
+            }
+        }
+         else{
+            //Add parent (with all children to html)
+            list = document.getElementById('selected_class_container');
+            list.insertBefore(heading, list.childNodes[0]);
+
+            Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = rec_handle;
+            Selected_Classes.NUM_SELECTED_CLASSES = Selected_Classes.NUM_SELECTED_CLASSES + 1;
+        }
+    }
+    else{
+        //Add parent (with all children to html)
+        list = document.getElementById('selected_class_container');
+        list.insertBefore(heading, list.childNodes[0]);
+
+        Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = rec_handle;
+        Selected_Classes.NUM_SELECTED_CLASSES = Selected_Classes.NUM_SELECTED_CLASSES + 1;
+    }
+}
+
+
+
+/********************************************************************
+*               Lock In "Selected Classes"
+*********************************************************************/
+function lock_in_course(id){
+    var elem = document.getElementById(id);
+    elem.setAttribute('class','fa fa-lock');
+}
+
+
+/********************************************************************
+*               Convert Database Times to Table Times
+*********************************************************************
+*       - Convert from
+*                XX:XX AM - XX:XX PM  to
+*                XX:XXAM and XX:XXPM
+*       - Return array of start and end times for each day
+*-------------------------------------------------------------------*/
+function convertTimes(db_days,db_time){
+    times = [];
+    for(var num=0;num<10;num++){
+        times[num] = " ";
+    }
+    if(db_time == 'TBA'){
+        return times;
+    }
+    var split_time = db_time.split(" ");
+    var round = split_time[3].split(":");
+    if((round[1] == '10')||(round[1] == '20')){
+        round[1] = '00';
+    }
+    if((round[1] == '40')||(round[1] == '50')){
+        round[1] = '00';
+        if(round[0] == '1'){round[0]="2";}
+        else if(round[0] == '2'){round[0]="3";}
+        else if(round[0] == '3'){round[0]="4";}
+        else if(round[0] == '4'){round[0]="5";}
+        else if(round[0] == '5'){round[0]="6";}
+        else if(round[0] == '6'){round[0]="7";}
+        else if(round[0] == '7'){round[0]="8";}
+        else if(round[0] == '8'){round[0]="9";}
+        else if(round[0] == '9'){round[0]="10";}
+        else if(round[0] == '10'){round[0]="11";}
+        else if(round[0] == '11')
+        {
+            round[0]="12";
+            if(split_time[4] == "AM"){
+                split_time[4] = "PM";
+            }
+            else{
+                split_time[4] = "AM";
+            }
+        }
+        else if(round[0] == '12'){round[0]='1';}
+    }
+
+    split_time[3] = round[0]+":"+round[1];
+    var start_time = split_time[0]+split_time[1];
+    var end_time = split_time[3]+split_time[4];
+    switch(db_days) {
+        case "M W F":
+            times[0] = "M" + start_time;
+            times[1] = "M" + end_time;
+            times[2] = " ";
+            times[3] = " ";
+            times[4] = "W" + start_time;
+            times[5] = "W" + end_time;
+            times[6] = " ";
+            times[7] = " ";
+            times[8] = "F" + start_time;
+            times[9] = "F" + end_time;
+            break;
+        case "M W":
+            times[0] = "M" + start_time;
+            times[1] = "M" + end_time;
+            times[2] = " ";
+            times[3] = " ";
+            times[4] = "W" + start_time;
+            times[5] = "W" + end_time;
+            times[6] = " ";
+            times[7] = " ";
+            times[8] = " ";
+            times[9] = " ";
+            break;
+        case "M":
+            times[0] = "M" + start_time;
+            times[1] = "M" + end_time;
+            times[2] = " ";
+            times[3] = " ";
+            times[4] = " ";
+            times[5] = " ";
+            times[6] = " ";
+            times[7] = " ";
+            times[8] = " ";
+            times[9] = " ";
+            break;
+        case "W":
+            times[0] = " ";
+            times[1] = " ";
+            times[2] = " ";
+            times[3] = " ";
+            times[4] = "W" + start_time;
+            times[5] = "W" + end_time;
+            times[6] = " ";
+            times[7] = " ";
+            times[8] = " ";
+            times[9] = " ";
+            break;
+        case "F":
+            times[0] = " ";
+            times[1] = " ";
+            times[2] = " ";
+            times[3] = " ";
+            times[4] = " ";
+            times[5] = " ";
+            times[6] = " ";
+            times[7] = " ";
+            times[8] = "F" + start_time;
+            times[9] = "F" + end_time;
+            break;
+        case "T R":
+            times[0] = " ";
+            times[1] = " ";
+            times[2] = "T" + start_time;
+            times[3] = "T" + end_time;
+            times[4] = " ";
+            times[5] = " ";
+            times[6] = "R" + start_time;
+            times[7] = "R" + end_time;
+            times[8] = " ";
+            times[9] = " ";
+            break;
+        case "T":
+            times[0] = " ";
+            times[1] = " ";
+            times[2] = "T" + start_time;
+            times[3] = "T" + end_time;
+            times[4] = " ";
+            times[5] = " ";
+            times[6] = " ";
+            times[7] = " ";
+            times[8] = " ";
+            times[9] = " ";
+            break;
+        case "R":
+            times[0] = " ";
+            times[1] = " ";
+            times[2] = " ";
+            times[3] = " ";
+            times[4] = " ";
+            times[5] = " ";
+            times[6] = "R" + start_time;
+            times[7] = "R" + end_time;
+            times[8] = " ";
+            times[9] = " ";
+            break;
+        default:
+            break;
+    }
+    return times;
+}
+
+function shade(id){
+    var elem = document.getElementById(id);
+    elem.style.backgroundColor = "#cce0ff";
+}
+
+function unshade(id){
+    var elem = document.getElementById(id);
+    elem.style.backgroundColor = "white";
+}
+
 
 /********************************************************************
 *               Spinning Wheel to Used during delay
@@ -377,391 +769,3 @@
 
   return Spinner
 }));
-
-
-
-/********************************************************************
-*               Add container to Available Classes
-*********************************************************************
-*        ______ ________________ _______________________
-*       |      |                |                       |
-*       |  S   |      CSE442    |  9:00 AM - 9:50 AM    |
-*       |______|________________|_______________________|
-*
-*-------------------------------------------------------------------*/
-function make_available_classes() {
-    for (var j = 0; j < CLASS_HANDLES.length; j++) {
-        var heading = document.createElement('heading');
-        var a = document.createElement('availableClass'+ String(j));
-        a.setAttribute('style', 'height: 40px;');
-        a.setAttribute('id', 'container' + String(j));
-        a.setAttribute('class', 'list-group-item');
-        a.setAttribute('data-toggle', 'collapse');
-        a.setAttribute('data-parent', '#accordion');
-        a.setAttribute('href', '#collapse'+String(j));
-        var mouseover = "shade('container"+String(j)+"')";
-        var mouseout = "unshade('container"+String(j)+"')";
-        a.setAttribute('onmouseover',mouseover);
-        a.setAttribute('onmouseout',mouseout);
-        heading.appendChild(a);
-
-        //Add spin wheel container
-        var spin_wheel_holder = document.createElement("spin_wheel_holder");
-        spin_wheel_holder.setAttribute('class', 'col-md-1');
-        a.appendChild(spin_wheel_holder);
-
-        //Add spin wheel
-        var spin_wheel = document.createElement('spin_wheel');
-        spin_wheel.setAttribute('class', 'fa fa-cog fa-spin');
-        spin_wheel_holder.appendChild(spin_wheel);
-
-        //add class name container
-        var class_name_holder = document.createElement("class_name_holder");
-        class_name_holder.setAttribute('class', 'col-md-4');
-        a.appendChild(class_name_holder);
-
-        //add class name
-        var p1 = document.createElement('class_name_'+String(j));
-        var txt1 = document.createTextNode(CLASS_HANDLES[j].UBCLASS);
-        p1.appendChild(txt1);
-        class_name_holder.appendChild(p1);
-
-        //class times container
-        var class_time_holder = document.createElement("class_time_holder");
-        class_time_holder.setAttribute('class', 'col-md-7');
-        a.appendChild(class_time_holder);
-
-        //add class times
-        var p2 = document.createElement('class_name_'+String(j));
-        var txt2 = document.createTextNode(CLASS_HANDLES[j].DAYS+":"+CLASS_HANDLES[j].TIME);
-        p2.appendChild(txt2);
-        class_time_holder.appendChild(p2);
-
-        if(CLASS_HANDLES[j].RECITATION.length !=0){
-            var sub_group = document.createElement('sub_group');
-            sub_group.setAttribute('id', 'collapse'+String(j));
-            sub_group.setAttribute('class', 'panel-collapse collapse');
-            sub_group.setAttribute('style', 'padding: 4px;');
-            var k;
-            for(k=0;k<CLASS_HANDLES[j].RECITATION.length;k++){
-                var sub_heading = document.createElement('sub_heading');
-                var sub_a = document.createElement('availableClass'+ String(j));
-                sub_a.setAttribute('id', 'collapser' + String(j) + String(k));
-                sub_a.setAttribute('style', 'height: 40px;');
-                sub_a.setAttribute('class', 'list-group-item');
-                sub_a.setAttribute('onclick', 'Table1.clicked_class(CLASS_HANDLES['+String(j)+'].RECITATION['+String(k)+'], CLASS_HANDLES['+String(j)+'])');
-                sub_a.setAttribute('href', '#');
-                var sub_mouseover = "shade('collapser" + String(j) + String(k)+"')";
-                var sub_mouseout = "unshade('collapser" + String(j) + String(k)+"')";
-                sub_a.setAttribute('onmouseover',sub_mouseover);
-                sub_a.setAttribute('onmouseout',sub_mouseout);
-                sub_heading.appendChild(sub_a);
-
-                //Add spin wheel container
-                var sub_spin_wheel_holder = document.createElement("sub_spin_wheel_holder");
-                sub_spin_wheel_holder.setAttribute('class', 'col-md-1 col-md-offset-2');
-                sub_a.appendChild(sub_spin_wheel_holder);
-
-                //Add spin wheel
-                var sub_spin_wheel = document.createElement('sub_spin_wheel');
-                sub_spin_wheel.setAttribute('class', 'fa fa-cog fa-spin');
-                sub_spin_wheel_holder.appendChild(sub_spin_wheel);
-
-                //class times container
-                var sub_class_time_holder = document.createElement("sub_class_time_holder");
-                sub_class_time_holder.setAttribute('class', 'col-md-9');
-                sub_a.appendChild(sub_class_time_holder);
-
-                //add class times
-                var p4 = document.createElement('class_name_'+String(j));
-                var txt4 = document.createTextNode(CLASS_HANDLES[j].RECITATION[k].DAYS+":"+CLASS_HANDLES[j].RECITATION[k].TIME);
-                p4.appendChild(txt4);
-                sub_class_time_holder.appendChild(p4);
-
-                sub_group.appendChild(sub_heading);
-            }
-            heading.appendChild(sub_group);
-        }
-        //Add parent (with all children to html)
-        var list = document.getElementById('accordion-body');
-        list.insertBefore(heading, list.childNodes[0]);
-    }
-}
-
-
-/********************************************************************
-*               Add Classes to "Selected Classes"
-*********************************************************************/
-function populate_selected_class(class_handle, rec_handle) {
-    var heading = document.createElement('heading' + class_handle.ID);
-    var a = document.createElement('availableClass');
-    a.setAttribute('style', 'height: 40px;');
-    a.setAttribute('id', 'selected_container' + class_handle.ID);
-    a.setAttribute('class', 'list-group-item');
-
-    var onmouseover = "shade('container" + class_handle.ID + "')";
-    var onmouseout = "unshade('container" + class_handle.ID + "')";
-    a.setAttribute('onmouseover', onmouseover);
-    a.setAttribute('onmouseout', onmouseout);
-    heading.appendChild(a);
-
-    //Add spin wheel container
-    var lock_icon_holder = document.createElement("lock_icon_holder");
-    lock_icon_holder.setAttribute('class', 'col-md-1');
-    a.appendChild(lock_icon_holder);
-
-    //Add spin wheel
-    var lock_icon = document.createElement('lock_icon');
-    lock_icon.setAttribute('id','lock_icon'+class_handle.ID);
-    lock_icon.setAttribute('class', 'fa fa-unlock');
-    lock_icon.setAttribute('onclick','lock_in_course("lock_icon'+class_handle.ID+'"'+')');
-    lock_icon_holder.appendChild(lock_icon);
-
-    //add class name container
-    var class_name_holder = document.createElement("class_name_holder");
-    class_name_holder.setAttribute('class', 'col-md-4');
-    a.appendChild(class_name_holder);
-
-    //add class name
-    var p1 = document.createElement('class_name');
-    var txt1 = document.createTextNode(class_handle.UBCLASS);
-    p1.appendChild(txt1);
-    class_name_holder.appendChild(p1);
-
-    //class times container
-    var class_time_holder = document.createElement("class_time_holder");
-    class_time_holder.setAttribute('class', 'col-md-7');
-    a.appendChild(class_time_holder);
-
-    //add class times
-    var p2 = document.createElement('class_time');
-    var txt2 = document.createTextNode(class_handle.DAYS + ":" + class_handle.TIME);
-    p2.appendChild(txt2);
-    class_time_holder.appendChild(p2);
-
-    validate_selected_class(class_handle,rec_handle, heading);
-}
-
-
-
-/********************************************************************
-*               Switch From Wheel to Avilable Courses
-*********************************************************************/
-function switch_avail_classes(){
-    var wheel = document.getElementById("timeout_wheel");
-    wheel.style.display = "none";
-    make_available_classes();
-}
-
-/********************************************************************
-*               Lock In "Selected Classes"
-*********************************************************************/
-function lock_in_course(id){
-    var elem = document.getElementById(id);
-    elem.setAttribute('class','fa fa-lock');
-}
-
-/********************************************************************
-*               Validate "Selected Classes"
-*********************************************************************/
-function validate_selected_class(class_handle,rec_handle, heading){
-    var list;
-    var parent;
-    if (Selected_Classes.SELECTED_CLASS_HANDLES.length !=0 ) {
-        if (Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] != null) {
-            if (rec_handle.ID == Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID].ID) {
-                parent = document.getElementById('selected_container' + class_handle.ID).remove();
-                Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = 0;
-            }
-            else if (rec_handle.REC_ID == Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID].REC_ID) {
-                Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = rec_handle;
-            }
-            else {
-                //Add parent (with all children to html)
-                list = document.getElementById('selected_class_container');
-                list.insertBefore(heading, list.childNodes[0]);
-
-                Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = rec_handle;
-                Selected_Classes.NUM_SELECTED_CLASSES = Selected_Classes.NUM_SELECTED_CLASSES + 1;
-            }
-        }
-         else{
-            //Add parent (with all children to html)
-            list = document.getElementById('selected_class_container');
-            list.insertBefore(heading, list.childNodes[0]);
-
-            Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = rec_handle;
-            Selected_Classes.NUM_SELECTED_CLASSES = Selected_Classes.NUM_SELECTED_CLASSES + 1;
-        }
-    }
-    else{
-        //Add parent (with all children to html)
-        list = document.getElementById('selected_class_container');
-        list.insertBefore(heading, list.childNodes[0]);
-
-        Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = rec_handle;
-        Selected_Classes.NUM_SELECTED_CLASSES = Selected_Classes.NUM_SELECTED_CLASSES + 1;
-    }
-}
-
-/********************************************************************
-*               Convert Database Times to Table Times
-*********************************************************************
-*       - Convert from
-*                XX:XX AM - XX:XX PM  to
-*                XX:XXAM and XX:XXPM
-*       - Return array of start and end times for each day
-*-------------------------------------------------------------------*/
-function convertTimes(db_days,db_time){
-    times = [];
-    for(var num=0;num<10;num++){
-        times[num] = " ";
-    }
-    if(db_time == 'TBA'){
-        return times;
-    }
-    var split_time = db_time.split(" ");
-    var round = split_time[3].split(":");
-    if((round[1] == '10')||(round[1] == '20')){
-        round[1] = '00';
-    }
-    if((round[1] == '40')||(round[1] == '50')){
-        round[1] = '00';
-        if(round[0] == '1'){round[0]="2";}
-        else if(round[0] == '2'){round[0]="3";}
-        else if(round[0] == '3'){round[0]="4";}
-        else if(round[0] == '4'){round[0]="5";}
-        else if(round[0] == '5'){round[0]="6";}
-        else if(round[0] == '6'){round[0]="7";}
-        else if(round[0] == '7'){round[0]="8";}
-        else if(round[0] == '8'){round[0]="9";}
-        else if(round[0] == '9'){round[0]="10";}
-        else if(round[0] == '10'){round[0]="11";}
-        else if(round[0] == '11')
-        {
-            round[0]="12";
-            if(split_time[4] == "AM"){
-                split_time[4] = "PM";
-            }
-            else{
-                split_time[4] = "AM";
-            }
-        }
-        else if(round[0] == '12'){round[0]='1';}
-    }
-
-    split_time[3] = round[0]+":"+round[1];
-    var start_time = split_time[0]+split_time[1];
-    var end_time = split_time[3]+split_time[4];
-    switch(db_days) {
-        case "M W F":
-            times[0] = "M" + start_time;
-            times[1] = "M" + end_time;
-            times[2] = " ";
-            times[3] = " ";
-            times[4] = "W" + start_time;
-            times[5] = "W" + end_time;
-            times[6] = " ";
-            times[7] = " ";
-            times[8] = "F" + start_time;
-            times[9] = "F" + end_time;
-            break;
-        case "M W":
-            times[0] = "M" + start_time;
-            times[1] = "M" + end_time;
-            times[2] = " ";
-            times[3] = " ";
-            times[4] = "W" + start_time;
-            times[5] = "W" + end_time;
-            times[6] = " ";
-            times[7] = " ";
-            times[8] = " ";
-            times[9] = " ";
-            break;
-        case "M":
-            times[0] = "M" + start_time;
-            times[1] = "M" + end_time;
-            times[2] = " ";
-            times[3] = " ";
-            times[4] = " ";
-            times[5] = " ";
-            times[6] = " ";
-            times[7] = " ";
-            times[8] = " ";
-            times[9] = " ";
-            break;
-        case "W":
-            times[0] = " ";
-            times[1] = " ";
-            times[2] = " ";
-            times[3] = " ";
-            times[4] = "W" + start_time;
-            times[5] = "W" + end_time;
-            times[6] = " ";
-            times[7] = " ";
-            times[8] = " ";
-            times[9] = " ";
-            break;
-        case "F":
-            times[0] = " ";
-            times[1] = " ";
-            times[2] = " ";
-            times[3] = " ";
-            times[4] = " ";
-            times[5] = " ";
-            times[6] = " ";
-            times[7] = " ";
-            times[8] = "F" + start_time;
-            times[9] = "F" + end_time;
-            break;
-        case "T R":
-            times[0] = " ";
-            times[1] = " ";
-            times[2] = "T" + start_time;
-            times[3] = "T" + end_time;
-            times[4] = " ";
-            times[5] = " ";
-            times[6] = "R" + start_time;
-            times[7] = "R" + end_time;
-            times[8] = " ";
-            times[9] = " ";
-            break;
-        case "T":
-            times[0] = " ";
-            times[1] = " ";
-            times[2] = "T" + start_time;
-            times[3] = "T" + end_time;
-            times[4] = " ";
-            times[5] = " ";
-            times[6] = " ";
-            times[7] = " ";
-            times[8] = " ";
-            times[9] = " ";
-            break;
-        case "R":
-            times[0] = " ";
-            times[1] = " ";
-            times[2] = " ";
-            times[3] = " ";
-            times[4] = " ";
-            times[5] = " ";
-            times[6] = "R" + start_time;
-            times[7] = "R" + end_time;
-            times[8] = " ";
-            times[9] = " ";
-            break;
-        default:
-            break;
-    }
-    return times;
-}
-
-function shade(id){
-    var elem = document.getElementById(id);
-    elem.style.backgroundColor = "#cce0ff";
-}
-
-function unshade(id){
-    var elem = document.getElementById(id);
-    elem.style.backgroundColor = "white";
-}

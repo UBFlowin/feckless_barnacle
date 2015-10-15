@@ -22,6 +22,7 @@
         while(dat.classes[x] != null) {
             var id = dat.classes[x].ID;
             var ubclass = dat.classes[x].UBCLASS;
+            var title = "title";
             var department = dat.classes[x].DEPARTMENT;
             var section = dat.classes[x].SECTION;
             var type = dat.classes[x].TYPE;
@@ -55,7 +56,7 @@
             }
 
 
-            CLASS_HANDLES[x] = new UbClass(id,ubclass,department,section,type,days,time,building,room_number,location,professor,status,reserved,semester, recitation);
+            CLASS_HANDLES[x] = new UbClass(id,ubclass,title, department,section,type,days,time,building,room_number,location,professor,status,reserved,semester, recitation);
             x = x + 1;
             recitation = [];
         }
@@ -70,26 +71,34 @@
             var x = 0;
             var recitation = [];
             var times;
+
+            //remove Available Classes
+            remove_available_classes();
+            //Reset Class_Handles
+            reset_class_handles();
             $.getJSON('/getnextclassgroup', function (dat) {
                 while(dat.classes[x] != null) {
                     var id = dat.classes[x].ID;
                     var ubclass = dat.classes[x].UBCLASS;
+                    var title = "title";
                     var department = dat.classes[x].DEPARTMENT;
                     var section = dat.classes[x].SECTION;
                     var type = dat.classes[x].TYPE;
                     var days = dat.classes[x].DAYS;
                     var time = dat.classes[x].TIME;
-                    var  building = dat.classes[x].BUILDING;
+                    var building = dat.classes[x].BUILDING;
                     var room_number = dat.classes[x].ROOM_NUMBER;
                     var location = dat.classes[x].LOCATION;
-                    var  professor = dat.classes[x].PROFESSOR;
+                    var professor = dat.classes[x].PROFESSOR;
                     var status = dat.classes[x].STATUS;
                     var reserved = dat.classes[x].RESERVED;
-                    var  semester = dat.classes[x].SEMESTER;
+                    var semester = dat.classes[x].SEMESTER;
                     if(dat.classes[x].RECITATION.length != 0){
                         var index =0;
                         while(index<dat.classes[x].RECITATION.length) {
+                            var rec_class_id = dat.classes[x].RECITATION[index].ID;
                             var rec_id = dat.classes[x].RECITATION[index].REC_ID;
+                            var ubclass1 = dat.classes[x].RECITATION[index].UBCLASS;
                             var rec_section = dat.classes[x].RECITATION[index].SECTION;
                             var rec_type = dat.classes[x].RECITATION[index].TYPE;
                             var rec_days = dat.classes[x].RECITATION[index].DAYS;
@@ -99,18 +108,33 @@
                             var rec_location = dat.classes[x].RECITATION[index].LOCATION;
                             var rec_status = dat.classes[x].RECITATION[index].STATUS;
                             var rec_reserved = dat.classes[x].RECITATION[index].RESERVED;
-                            recitation[index] = new UbRec(rec_id, rec_section, rec_type, rec_days, rec_time, rec_building, rec_room, rec_location, rec_status, rec_reserved);
+                            recitation[index] = new UbRec(rec_class_id, rec_id, ubclass1, rec_section, rec_type, rec_days, rec_time, rec_building, rec_room, rec_location, rec_status, rec_reserved);
                             index++;
                         }
                     }
-                    CLASS_HANDLES[x] = new UbClass(id,ubclass,department,section,type,days,time,building,room_number,location, professor,status,reserved,semester);
+                    CLASS_HANDLES[x] = new UbClass(id, ubclass, title, department,section,type,days,time,building,room_number,location,professor,status,reserved,semester, recitation);
                     x = x + 1;
                     recitation = [];
                 }
+            //repopulate list
+            make_available_classes();
             });
         });
     });
 
+
+    function reset_class_handles(){
+        for(var i=0;i<CLASS_HANDLES.length;i++){
+            CLASS_HANDLES[i] = null;
+        }
+    }
+
+    function remove_available_classes(){
+        var list = document.getElementById('accordion-body');
+        for(var i=CLASS_HANDLES.length-1;i>=0;i--){
+            list = document.getElementById('container' + (CLASS_HANDLES[i].ID-1)).remove();
+        }
+    }
 </script>
 
 
@@ -541,9 +565,10 @@
         /*********************************************************
         *       Courses Class
         *********************************************************/
-        var UbClass = function(id,ubclass,department,section,type,days,time,building,room_number,location,professor,status,reserved,semester, recitation){
+        var UbClass = function(id,ubclass,title,department,section,type,days,time,building,room_number,location,professor,status,reserved,semester, recitation){
             this.ID = id;
             this.UBCLASS = ubclass;
+            this.TITLE = title;
             this.DEPARTMENT = department;
             this.SECTION = section;
             this.TYPE = type;
