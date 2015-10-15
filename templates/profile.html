@@ -9,16 +9,63 @@
     - Populate the Class Options Container
 ---------------------------------------------------------------->
 <script>
-    var Class_Handles = [];
-    var Selected_Class_Handles = [0];
+    var CLASS_HANDLES = [];
+    var SELECTED_CLASS_HANDLES = [];
+    var NUM_SELECTED_CLASSES = 0;
 </script>
+<script>
+    /*********************************************************
+    *       Get First Class Information
+    *********************************************************/
+    $.getJSON('/getfirstclassgroup', function(dat) {
+        var x = 0;
+        recitation = [];
+        while(dat.classes[x] != null) {
+            var id = dat.classes[x].ID;
+            var ubclass = dat.classes[x].UBCLASS;
+            var department = dat.classes[x].DEPARTMENT;
+            var section = dat.classes[x].SECTION;
+            var type = dat.classes[x].TYPE;
+            var days = dat.classes[x].DAYS;
+            var time = dat.classes[x].TIME;
+            var building = dat.classes[x].BUILDING;
+            var room_number = dat.classes[x].ROOM_NUMBER;
+            var location = dat.classes[x].LOCATION;
+            var professor = dat.classes[x].PROFESSOR;
+            var status = dat.classes[x].STATUS;
+            var reserved = dat.classes[x].RESERVED;
+            var semester = dat.classes[x].SEMESTER;
+            if(dat.classes[x].RECITATION.length != 0){
+                var index =0;
+                while(index<dat.classes[x].RECITATION.length) {
+                    var rec_class_id = dat.classes[x].RECITATION[index].ID;
+                    var rec_id = dat.classes[x].RECITATION[index].REC_ID;
+                    var ubclass1 = dat.classes[x].RECITATION[index].UBCLASS;
+                    var rec_section = dat.classes[x].RECITATION[index].SECTION;
+                    var rec_type = dat.classes[x].RECITATION[index].TYPE;
+                    var rec_days = dat.classes[x].RECITATION[index].DAYS;
+                    var rec_time = dat.classes[x].RECITATION[index].TIME;
+                    var rec_building = dat.classes[x].RECITATION[index].BUILDING;
+                    var rec_room = dat.classes[x].RECITATION[index].ROOM_NUMBER;
+                    var rec_location = dat.classes[x].RECITATION[index].LOCATION;
+                    var rec_status = dat.classes[x].RECITATION[index].STATUS;
+                    var rec_reserved = dat.classes[x].RECITATION[index].RESERVED;
+                    recitation[index] = new UbRec(rec_class_id, rec_id, ubclass1, rec_section, rec_type, rec_days, rec_time, rec_building, rec_room, rec_location, rec_status, rec_reserved);
+                    index++;
+                }
+            }
 
 
-<!---------------------------------------------------------------
-    - When Search is Clicked, Query the database
-    - Replace the information in the Class Options container
----------------------------------------------------------------->
-<script type="text/javascript">
+            CLASS_HANDLES[x] = new UbClass(id,ubclass,department,section,type,days,time,building,room_number,location,professor,status,reserved,semester, recitation);
+            x = x + 1;
+            recitation = [];
+        }
+    });
+
+
+    /*********************************************************
+    *       Get Next Class Information
+    *********************************************************/
     $(function() {
         $("#SearchButton").click(function() {
             var x = 0;
@@ -57,7 +104,7 @@
                             index++;
                         }
                     }
-                    Class_Handles[x] = new UbClass(id,ubclass,department,section,type,days,time,building,room_number,location, professor,status,reserved,semester);
+                    CLASS_HANDLES[x] = new UbClass(id,ubclass,department,section,type,days,time,building,room_number,location, professor,status,reserved,semester);
                     x = x + 1;
                     recitation = [];
                 }
@@ -72,120 +119,119 @@
     //  |  S  |      CSE442    |  9:00 AM - 9:50 AM    |
     //  |_____|________________|_______________________|
     //
-    function make_available_classes()
-        {
-            for (var j = 0; j < Class_Handles.length; j++) {
-                var heading = document.createElement('heading');
-                var a = document.createElement('availableClass'+ String(j));
-                a.setAttribute('style', 'height: 40px;');
-                a.setAttribute('id', 'container' + String(j));
-                a.setAttribute('class', 'list-group-item');
-                a.setAttribute('data-toggle', 'collapse');
-                a.setAttribute('data-parent', '#accordion');
-                a.setAttribute('href', '#collapse'+String(j));
-                var mouseover = "shade('container"+String(j)+"')";
-                var mouseout = "unshade('container"+String(j)+"')";
-                a.setAttribute('onmouseover',mouseover);
-                a.setAttribute('onmouseout',mouseout);
-                heading.appendChild(a);
+    function make_available_classes() {
+        for (var j = 0; j < CLASS_HANDLES.length; j++) {
+            var heading = document.createElement('heading');
+            var a = document.createElement('availableClass'+ String(j));
+            a.setAttribute('style', 'height: 40px;');
+            a.setAttribute('id', 'container' + String(j));
+            a.setAttribute('class', 'list-group-item');
+            a.setAttribute('data-toggle', 'collapse');
+            a.setAttribute('data-parent', '#accordion');
+            a.setAttribute('href', '#collapse'+String(j));
+            var mouseover = "shade('container"+String(j)+"')";
+            var mouseout = "unshade('container"+String(j)+"')";
+            a.setAttribute('onmouseover',mouseover);
+            a.setAttribute('onmouseout',mouseout);
+            heading.appendChild(a);
 
-                //Add spin wheel container
-                var spin_wheel_holder = document.createElement("spin_wheel_holder");
-                spin_wheel_holder.setAttribute('class', 'col-md-1');
-                a.appendChild(spin_wheel_holder);
+            //Add spin wheel container
+            var spin_wheel_holder = document.createElement("spin_wheel_holder");
+            spin_wheel_holder.setAttribute('class', 'col-md-1');
+            a.appendChild(spin_wheel_holder);
 
-                //Add spin wheel
-                var spin_wheel = document.createElement('spin_wheel');
-                spin_wheel.setAttribute('class', 'fa fa-cog fa-spin');
-                spin_wheel_holder.appendChild(spin_wheel);
+            //Add spin wheel
+            var spin_wheel = document.createElement('spin_wheel');
+            spin_wheel.setAttribute('class', 'fa fa-cog fa-spin');
+            spin_wheel_holder.appendChild(spin_wheel);
 
-                //add class name container
-                var class_name_holder = document.createElement("class_name_holder");
-                class_name_holder.setAttribute('class', 'col-md-4');
-                a.appendChild(class_name_holder);
+            //add class name container
+            var class_name_holder = document.createElement("class_name_holder");
+            class_name_holder.setAttribute('class', 'col-md-4');
+            a.appendChild(class_name_holder);
 
-                //add class name
-                var p1 = document.createElement('class_name_'+String(j));
-                var txt1 = document.createTextNode(Class_Handles[j].UBCLASS);
-                p1.appendChild(txt1);
-                class_name_holder.appendChild(p1);
+            //add class name
+            var p1 = document.createElement('class_name_'+String(j));
+            var txt1 = document.createTextNode(CLASS_HANDLES[j].UBCLASS);
+            p1.appendChild(txt1);
+            class_name_holder.appendChild(p1);
 
-                //class times container
-                var class_time_holder = document.createElement("class_time_holder");
-                class_time_holder.setAttribute('class', 'col-md-7');
-                a.appendChild(class_time_holder);
+            //class times container
+            var class_time_holder = document.createElement("class_time_holder");
+            class_time_holder.setAttribute('class', 'col-md-7');
+            a.appendChild(class_time_holder);
 
-                //add class times
-                var p2 = document.createElement('class_name_'+String(j));
-                var txt2 = document.createTextNode(Class_Handles[j].DAYS+":"+Class_Handles[j].TIME);
-                p2.appendChild(txt2);
-                class_time_holder.appendChild(p2);
+            //add class times
+            var p2 = document.createElement('class_name_'+String(j));
+            var txt2 = document.createTextNode(CLASS_HANDLES[j].DAYS+":"+CLASS_HANDLES[j].TIME);
+            p2.appendChild(txt2);
+            class_time_holder.appendChild(p2);
 
-                if(Class_Handles[j].RECITATION.length !=0){
-                    var sub_group = document.createElement('sub_group');
-                    sub_group.setAttribute('id', 'collapse'+String(j));
-                    sub_group.setAttribute('class', 'panel-collapse collapse');
-                    sub_group.setAttribute('style', 'padding: 4px;');
-                    var k;
-                    for(k=0;k<Class_Handles[j].RECITATION.length;k++){
-                        var sub_heading = document.createElement('sub_heading');
-                        var sub_a = document.createElement('availableClass'+ String(j));
-                        sub_a.setAttribute('id', 'collapser' + String(j) + String(k));
-                        sub_a.setAttribute('style', 'height: 40px;');
-                        sub_a.setAttribute('class', 'list-group-item');
-                        sub_a.setAttribute('onclick', 'table1.clicked_class(Class_Handles['+String(j)+'].RECITATION['+String(k)+'], Class_Handles['+String(j)+'])');
-                        sub_a.setAttribute('href', '#');
-                        var sub_mouseover = "shade('collapser" + String(j) + String(k)+"')";
-                        var sub_mouseout = "unshade('collapser" + String(j) + String(k)+"')";
-                        sub_a.setAttribute('onmouseover',sub_mouseover);
-                        sub_a.setAttribute('onmouseout',sub_mouseout);
-                        sub_heading.appendChild(sub_a);
+            if(CLASS_HANDLES[j].RECITATION.length !=0){
+                var sub_group = document.createElement('sub_group');
+                sub_group.setAttribute('id', 'collapse'+String(j));
+                sub_group.setAttribute('class', 'panel-collapse collapse');
+                sub_group.setAttribute('style', 'padding: 4px;');
+                var k;
+                for(k=0;k<CLASS_HANDLES[j].RECITATION.length;k++){
+                    var sub_heading = document.createElement('sub_heading');
+                    var sub_a = document.createElement('availableClass'+ String(j));
+                    sub_a.setAttribute('id', 'collapser' + String(j) + String(k));
+                    sub_a.setAttribute('style', 'height: 40px;');
+                    sub_a.setAttribute('class', 'list-group-item');
+                    sub_a.setAttribute('onclick', 'table1.clicked_class(CLASS_HANDLES['+String(j)+'].RECITATION['+String(k)+'], CLASS_HANDLES['+String(j)+'])');
+                    sub_a.setAttribute('href', '#');
+                    var sub_mouseover = "shade('collapser" + String(j) + String(k)+"')";
+                    var sub_mouseout = "unshade('collapser" + String(j) + String(k)+"')";
+                    sub_a.setAttribute('onmouseover',sub_mouseover);
+                    sub_a.setAttribute('onmouseout',sub_mouseout);
+                    sub_heading.appendChild(sub_a);
 
-                        //Add spin wheel container
-                        var sub_spin_wheel_holder = document.createElement("sub_spin_wheel_holder");
-                        sub_spin_wheel_holder.setAttribute('class', 'col-md-1 col-md-offset-2');
-                        sub_a.appendChild(sub_spin_wheel_holder);
+                    //Add spin wheel container
+                    var sub_spin_wheel_holder = document.createElement("sub_spin_wheel_holder");
+                    sub_spin_wheel_holder.setAttribute('class', 'col-md-1 col-md-offset-2');
+                    sub_a.appendChild(sub_spin_wheel_holder);
 
-                        //Add spin wheel
-                        var sub_spin_wheel = document.createElement('sub_spin_wheel');
-                        sub_spin_wheel.setAttribute('class', 'fa fa-cog fa-spin');
-                        sub_spin_wheel_holder.appendChild(sub_spin_wheel);
+                    //Add spin wheel
+                    var sub_spin_wheel = document.createElement('sub_spin_wheel');
+                    sub_spin_wheel.setAttribute('class', 'fa fa-cog fa-spin');
+                    sub_spin_wheel_holder.appendChild(sub_spin_wheel);
 
-                        //class times container
-                        var sub_class_time_holder = document.createElement("sub_class_time_holder");
-                        sub_class_time_holder.setAttribute('class', 'col-md-9');
-                        sub_a.appendChild(sub_class_time_holder);
+                    //class times container
+                    var sub_class_time_holder = document.createElement("sub_class_time_holder");
+                    sub_class_time_holder.setAttribute('class', 'col-md-9');
+                    sub_a.appendChild(sub_class_time_holder);
 
-                        //add class times
-                        var p4 = document.createElement('class_name_'+String(j));
-                        var txt4 = document.createTextNode(Class_Handles[j].RECITATION[k].DAYS+":"+Class_Handles[j].RECITATION[k].TIME);
-                        p4.appendChild(txt4);
-                        sub_class_time_holder.appendChild(p4);
+                    //add class times
+                    var p4 = document.createElement('class_name_'+String(j));
+                    var txt4 = document.createTextNode(CLASS_HANDLES[j].RECITATION[k].DAYS+":"+CLASS_HANDLES[j].RECITATION[k].TIME);
+                    p4.appendChild(txt4);
+                    sub_class_time_holder.appendChild(p4);
 
-                        sub_group.appendChild(sub_heading);
-                    }
-                    heading.appendChild(sub_group);
+                    sub_group.appendChild(sub_heading);
                 }
-                //Add parent (with all children to html)
-                var list = document.getElementById('accordion-body');
-                list.insertBefore(heading, list.childNodes[0]);
+                heading.appendChild(sub_group);
             }
+            //Add parent (with all children to html)
+            var list = document.getElementById('accordion-body');
+            list.insertBefore(heading, list.childNodes[0]);
         }
+    }
 
-
-    function populate_selected_class(class_handle){
-        var heading = document.createElement('heading');
+    /*********************************************************
+    *        Add Classes to "Selected Classes
+    *********************************************************/
+    function populate_selected_class(class_handle, rec_handle) {
+        var heading = document.createElement('heading' + class_handle.ID);
         var a = document.createElement('availableClass');
         a.setAttribute('style', 'height: 40px;');
-        a.setAttribute('id', 'container');
+        a.setAttribute('id', 'selected_container' + class_handle.ID);
         a.setAttribute('class', 'list-group-item');
-        //a.setAttribute('data-toggle', 'collapse');
-        //a.setAttribute('data-parent', '#accordion');
-        //a.setAttribute('href', '#collapse'+String(j));
-        var mouseover = "shade('container')";
-        var mouseout = "unshade('container')";
-        a.setAttribute('onmouseover',mouseover);
-        a.setAttribute('onmouseout',mouseout);
+
+        var onmouseover = "shade('container" + class_handle.ID + "')";
+        var onmouseout = "unshade('container" + class_handle.ID + "')";
+        a.setAttribute('onmouseover', onmouseover);
+        a.setAttribute('onmouseout', onmouseout);
         heading.appendChild(a);
 
         //Add spin wheel container
@@ -195,7 +241,7 @@
 
         //Add spin wheel
         var spin_wheel = document.createElement('spin_wheel');
-        spin_wheel.setAttribute('class', 'fa fa-cog fa-spin');
+        spin_wheel.setAttribute('class', 'fa fa-unlock');
         spin_wheel_holder.appendChild(spin_wheel);
 
         //add class name container
@@ -216,15 +262,55 @@
 
         //add class times
         var p2 = document.createElement('class_name');
-        var txt2 = document.createTextNode(class_handle.DAYS+":"+class_handle.TIME);
+        var txt2 = document.createTextNode(class_handle.DAYS + ":" + class_handle.TIME);
         p2.appendChild(txt2);
         class_time_holder.appendChild(p2);
 
-        //Add parent (with all children to html)
-        var list = document.getElementById('selected_class_container');
-        list.insertBefore(heading, list.childNodes[0]);
-        Selected_Class_Handles[0] = Selected_Class_Handles[0] + 1;
-        Selected_Class_Handles[Selected_Class_Handles[0]] = class_handle;
+        validate_selected_class(class_handle,rec_handle, heading);
+
+    }
+
+
+
+
+    function validate_selected_class(class_handle,rec_handle, heading){
+        var list;
+        var parent;
+        if (SELECTED_CLASS_HANDLES.length !=0 ) {
+            if (SELECTED_CLASS_HANDLES[rec_handle.REC_ID] != null) {
+                if (rec_handle.ID == SELECTED_CLASS_HANDLES[rec_handle.REC_ID].ID) {
+                    parent = document.getElementById('selected_container' + class_handle.ID).remove();
+                    SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = 0;
+                }
+                else if (rec_handle.REC_ID == SELECTED_CLASS_HANDLES[rec_handle.REC_ID].REC_ID) {
+                    SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = rec_handle;
+                }
+                else {
+                    //Add parent (with all children to html)
+                    list = document.getElementById('selected_class_container');
+                    list.insertBefore(heading, list.childNodes[0]);
+
+                    SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = rec_handle;
+                    NUM_SELECTED_CLASSES = NUM_SELECTED_CLASSES + 1;
+                }
+            }
+             else{
+                //Add parent (with all children to html)
+                list = document.getElementById('selected_class_container');
+                list.insertBefore(heading, list.childNodes[0]);
+
+                SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = rec_handle;
+                NUM_SELECTED_CLASSES = NUM_SELECTED_CLASSES + 1;
+            }
+        }
+        else{
+            //Add parent (with all children to html)
+            list = document.getElementById('selected_class_container');
+            list.insertBefore(heading, list.childNodes[0]);
+
+            SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = rec_handle;
+            NUM_SELECTED_CLASSES = NUM_SELECTED_CLASSES + 1;
+        }
     }
 </script>
 
@@ -241,8 +327,13 @@
 /----------------------------------------------------------*/
     function convertTimes(db_days,db_time){
         times = [];
+        for(var num=0;num<10;num++){
+            times[num] = " ";
+        }
+        if(db_time == 'TBA'){
+            return times;
+        }
         var split_time = db_time.split(" ");
-
         var round = split_time[3].split(":");
         if((round[1] == '10')||(round[1] == '20')){
             round[1] = '00';
@@ -786,11 +877,10 @@
     <script type ='text/javascript'>
         var g_Color = "#0c1Aff";
         var g_Border_Color = "Black";
-        /*
-        *
+
+        /*********************************************************
         *       Courses Class
-        *
-        */
+        *********************************************************/
         var UbClass = function(id,ubclass,department,section,type,days,time,building,room_number,location,professor,status,reserved,semester, recitation){
             this.ID = id;
             this.UBCLASS = ubclass;
@@ -811,23 +901,10 @@
 
         };
 
-        UbClass.prototype.get_id = function(){
-            console.log(this.ID);
-            return this.ID;
-        };
 
-        UbClass.prototype.set_id = function(new_id) {
-            this.ID = new_id;
-            return this.ID;
-        };
-
-
-
-        /*
-        *
+        /*********************************************************
         *       Recitation Class
-        *
-        */
+        *********************************************************/
         var UbRec = function(rec_class_id, rec_id, ubclass,section,type,days,time,building,room_number,location,status,reserved){
             this.ID = rec_class_id;
             this.REC_ID = rec_id;
@@ -843,25 +920,10 @@
             this.RESERVED = reserved;
         };
 
-        UbRec.prototype.get_id = function(){
-            console.log(this.ID);
-            return this.ID;
-        };
 
-        UbRec.prototype.set_id = function(new_id) {
-            this.ID = new_id;
-            return this.ID;
-        };
-
-
-
-
-
-        /***********************************
-        *
+        /*********************************************************
         *       Table Class
-        *
-        ************************************/
+        *********************************************************/
         var Table_Class = function() {
             var x = 0;
             this.table_cells = [];
@@ -914,7 +976,7 @@
         };
 
         /***********************************
-        *       Change Border Color
+        *       Change All Border Color
         ************************************/
         Table_Class.prototype.set_cell_border_color = function(cell_id, color) {
             var elem;
@@ -925,7 +987,9 @@
             }
         };
 
-
+        /***********************************
+        *       Change Bottom Border Color
+        ************************************/
         Table_Class.prototype.set_bottom_border_color = function(cell_id, color) {
             var elem;
             if (elem = document.getElementById(cell_id)) {
@@ -935,6 +999,9 @@
             }
         };
 
+        /***********************************
+        *       Change Top Border Color
+        ************************************/
         Table_Class.prototype.set_top_border_color = function(cell_id, color) {
             var elem;
             if (elem = document.getElementById(cell_id)) {
@@ -943,6 +1010,10 @@
                 }
             }
         };
+
+        /***********************************
+        *       Change Side Border Color
+        ************************************/
         Table_Class.prototype.set_side_borders_color = function(cell_id, color) {
             var elem;
             if (elem = document.getElementById(cell_id)) {
@@ -952,8 +1023,6 @@
                 }
             }
         };
-
-
 
         /***********************************
         *       Test for cell_Conflict
@@ -965,7 +1034,6 @@
             }
             return true;
         };
-
 
         /***********************************
         *       Set Cell Color and Text
@@ -986,9 +1054,8 @@
                 table1.clear_cells(rec_handle);
                 class_handle.REC_ID_selected = 0;
             }
-            populate_selected_class(class_handle);
+            populate_selected_class(class_handle,rec_handle);
         };
-
 
         /***********************************
         *       Change Visible Text
@@ -1082,69 +1149,12 @@
 
 
 
-
-    $.getJSON('/getfirstclassgroup', function(dat) {
-        var x = 0;
-        recitation = [];
-        while(dat.classes[x] != null) {
-            var id = dat.classes[x].ID;
-            var ubclass = dat.classes[x].UBCLASS;
-            var department = dat.classes[x].DEPARTMENT;
-            var section = dat.classes[x].SECTION;
-            var type = dat.classes[x].TYPE;
-            var days = dat.classes[x].DAYS;
-            var time = dat.classes[x].TIME;
-            var building = dat.classes[x].BUILDING;
-            var room_number = dat.classes[x].ROOM_NUMBER;
-            var location = dat.classes[x].LOCATION;
-            var professor = dat.classes[x].PROFESSOR;
-            var status = dat.classes[x].STATUS;
-            var reserved = dat.classes[x].RESERVED;
-            var semester = dat.classes[x].SEMESTER;
-            if(dat.classes[x].RECITATION.length != 0){
-                var index =0;
-                while(index<dat.classes[x].RECITATION.length) {
-                    var rec_class_id = dat.classes[x].RECITATION[index].ID;
-                    var rec_id = dat.classes[x].RECITATION[index].REC_ID;
-                    var ubclass1 = dat.classes[x].RECITATION[index].UBCLASS;
-                    var rec_section = dat.classes[x].RECITATION[index].SECTION;
-                    var rec_type = dat.classes[x].RECITATION[index].TYPE;
-                    var rec_days = dat.classes[x].RECITATION[index].DAYS;
-                    var rec_time = dat.classes[x].RECITATION[index].TIME;
-                    var rec_building = dat.classes[x].RECITATION[index].BUILDING;
-                    var rec_room = dat.classes[x].RECITATION[index].ROOM_NUMBER;
-                    var rec_location = dat.classes[x].RECITATION[index].LOCATION;
-                    var rec_status = dat.classes[x].RECITATION[index].STATUS;
-                    var rec_reserved = dat.classes[x].RECITATION[index].RESERVED;
-                    recitation[index] = new UbRec(rec_class_id, rec_id, ubclass1, rec_section, rec_type, rec_days, rec_time, rec_building, rec_room, rec_location, rec_status, rec_reserved);
-                    index++;
-                }
-            }
-
-
-            Class_Handles[x] = new UbClass(id,ubclass,department,section,type,days,time,building,room_number,location,professor,status,reserved,semester, recitation);
-            x = x + 1;
-            recitation = [];
-        }
-    });
-
-
-    /*
-    *       Example for creating new ubclass instance
-    */
-    //var ubclass1 = new UbClass(32,'CSE442','CSE','A','LEC','T R', '9:00 AM - 10:50 AM','442','NORTH','SCHINDLER', 'OPEN','No');
-
-    /*
-    *   New Table Instance
-    */
-    var table1 = new Table_Class();
-
-
+        /*********************************************************
+        *       Table Instance
+        *********************************************************/
+        var table1 = new Table_Class();
 
     </script>
-
-
-
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </body>
 {% endblock %}
