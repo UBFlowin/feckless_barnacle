@@ -90,44 +90,54 @@
                     remove_available_classes();
                     //Reset Class_Handles
                     reset_class_handles();
-                    while(dat.classes[x] != null) {
-                    var id = dat.classes[x].ID;
-                    var ubclass = dat.classes[x].UBCLASS;
-                    var title = dat.classes[x].TITLE;
-                    var department = dat.classes[x].DEPARTMENT;
-                    var section = dat.classes[x].SECTION;
-                    var type = dat.classes[x].TYPE;
-                    var days = dat.classes[x].DAYS;
-                    var time = dat.classes[x].TIME;
-                    var building = dat.classes[x].BUILDING;
-                    var room_number = dat.classes[x].ROOM_NUMBER;
-                    var location = dat.classes[x].LOCATION;
-                    var professor = dat.classes[x].PROFESSOR;
-                    var status = dat.classes[x].STATUS;
-                    var reserved = dat.classes[x].RESERVED;
-                    var semester = dat.classes[x].SEMESTER;
-                    if(dat.classes[x].RECITATION.length != 0){
-                        var index =0;
-                        while(index<dat.classes[x].RECITATION.length) {
-                            var rec_class_id = dat.classes[x].RECITATION[index].ID;
-                            var rec_id = dat.classes[x].RECITATION[index].REC_ID;
-                            var ubclass1 = dat.classes[x].RECITATION[index].UBCLASS;
-                            var rec_section = dat.classes[x].RECITATION[index].SECTION;
-                            var rec_type = dat.classes[x].RECITATION[index].TYPE;
-                            var rec_days = dat.classes[x].RECITATION[index].DAYS;
-                            var rec_time = dat.classes[x].RECITATION[index].TIME;
-                            var rec_building = dat.classes[x].RECITATION[index].BUILDING;
-                            var rec_room = dat.classes[x].RECITATION[index].ROOM_NUMBER;
-                            var rec_location = dat.classes[x].RECITATION[index].LOCATION;
-                            var rec_status = dat.classes[x].RECITATION[index].STATUS;
-                            var rec_reserved = dat.classes[x].RECITATION[index].RESERVED;
-                            recitation[index] = new UbRec(rec_class_id, rec_id, ubclass1, rec_section, rec_type, rec_days, rec_time, rec_building, rec_room, rec_location, rec_status, rec_reserved);
-                            index++;
-                        }
+
+                    if(dat.classes[0].UBCLASS == 'No Such Class'){
+                        var elem = document.getElementById('courseNum');
+                        elem.style.backgroundColor = 'Red';
+                        //alert("Class doesn't exist");
                     }
-                    CLASS_HANDLES[x] = new UbClass(id, ubclass, title, department,section,type,days,time,building,room_number,location,professor,status,reserved,semester, recitation);
-                    x = x + 1;
-                    recitation = [];
+                    else{
+                        while(dat.classes[x] != null) {
+                            var id = dat.classes[x].ID;
+                            var ubclass = dat.classes[x].UBCLASS;
+                            var title = dat.classes[x].TITLE;
+                            var department = dat.classes[x].DEPARTMENT;
+                            var section = dat.classes[x].SECTION;
+                            var type = dat.classes[x].TYPE;
+                            var days = dat.classes[x].DAYS;
+                            var time = dat.classes[x].TIME;
+                            var building = dat.classes[x].BUILDING;
+                            var room_number = dat.classes[x].ROOM_NUMBER;
+                            var location = dat.classes[x].LOCATION;
+                            var professor = dat.classes[x].PROFESSOR;
+                            var status = dat.classes[x].STATUS;
+                            var reserved = dat.classes[x].RESERVED;
+                            var semester = dat.classes[x].SEMESTER;
+                            if (dat.classes[x].RECITATION.length != 0) {
+                                var index = 0;
+                                while (index < dat.classes[x].RECITATION.length) {
+                                    var rec_class_id = dat.classes[x].RECITATION[index].ID;
+                                    var rec_id = dat.classes[x].RECITATION[index].REC_ID;
+                                    var ubclass1 = dat.classes[x].RECITATION[index].UBCLASS;
+                                    var rec_section = dat.classes[x].RECITATION[index].SECTION;
+                                    var rec_type = dat.classes[x].RECITATION[index].TYPE;
+                                    var rec_days = dat.classes[x].RECITATION[index].DAYS;
+                                    var rec_time = dat.classes[x].RECITATION[index].TIME;
+                                    var rec_building = dat.classes[x].RECITATION[index].BUILDING;
+                                    var rec_room = dat.classes[x].RECITATION[index].ROOM_NUMBER;
+                                    var rec_location = dat.classes[x].RECITATION[index].LOCATION;
+                                    var rec_status = dat.classes[x].RECITATION[index].STATUS;
+                                    var rec_reserved = dat.classes[x].RECITATION[index].RESERVED;
+                                    recitation[index] = new UbRec(rec_class_id, rec_id, ubclass1, rec_section, rec_type, rec_days, rec_time, rec_building, rec_room, rec_location, rec_status, rec_reserved);
+                                    index++;
+                                }
+                            }
+                            CLASS_HANDLES[x] = new UbClass(id, ubclass, title, department, section, type, days, time, building, room_number, location, professor, status, reserved, semester, recitation);
+                            x = x + 1;
+                            recitation = [];
+                            var courseNum = document.getElementById('courseNum');
+                            courseNum.style.backgroundColor = 'White';
+                        }
                 }
                 //repopulate list
                 make_available_classes();
@@ -842,14 +852,27 @@
                     clear_index = Table1.id_table.indexOf(clear_times[k]);
                     while (Table1.id_table[clear_index] != clear_times[k + 1]) {
                         if(Table1.cell_conflict(this.id_table[clear_index])){
-                            this.set_cell_value(this.id_table[clear_index],' ');
-                            this.set_cell_color(this.id_table[clear_index], "White");
-                            this.set_cell_border_color(this.id_table[clear_index], "#ddd");
-                            this.set_side_borders_color(this.id_table[clear_index], "#ddd");
-                            if(first_cell_of_block == 1) {
-                                this.changeText(this.id_table[clear_index], ' ');
-                                this.changeText(this.id_table[clear_index+1], ' ');
-                                first_cell_of_block = 0;
+                            if(this.get_cell_value(this.id_table[clear_index]) == class_handle.ID) {
+                                this.set_cell_value(this.id_table[clear_index], ' ');
+                                this.set_cell_color(this.id_table[clear_index], "White");
+                                this.set_cell_border_color(this.id_table[clear_index], "#ddd");
+                                this.set_side_borders_color(this.id_table[clear_index], "#ddd");
+                                if (first_cell_of_block == 1) {
+                                    this.changeText(this.id_table[clear_index], ' ');
+                                    this.changeText(this.id_table[clear_index + 1], ' ');
+                                    first_cell_of_block = 0;
+                                }
+                            }
+                            else{
+                                //this.set_cell_value(this.id_table[clear_index], ' ');
+                                this.set_cell_color(this.id_table[clear_index], g_Color);
+                                this.set_cell_border_color(this.id_table[clear_index], g_Color);
+                                this.set_side_borders_color(this.id_table[clear_index], g_Color);
+//                                if (first_cell_of_block == 1) {
+//                                    this.changeText(this.id_table[clear_index], ' ');
+//                                    this.changeText(this.id_table[clear_index + 1], ' ');
+//                                    first_cell_of_block = 0;
+//                                }
                             }
                         }
                         clear_index++;
@@ -873,11 +896,9 @@
                         if(!Table1.cell_conflict(Table1.id_table[paint_index])){
                             this.set_cell_value(this.id_table[paint_index],class_handle.ID);
                             this.set_cell_color(this.id_table[paint_index], g_Color);
-
                             this.set_side_borders_color(this.id_table[paint_index], g_Border_Color);
                             this.set_bottom_border_color(this.id_table[paint_index], g_Color);
 
-                            //this.set_cell_border_color(this.id_table[paint_index], g_Color);
                             if(first_cell_of_block == 1) {
                                 if(class_handle.REC_ID) {
                                     this.changeText(this.id_table[paint_index], class_handle.UBCLASS);
@@ -889,6 +910,11 @@
                                 first_cell_of_block = 0;
                                 this.set_top_border_color(this.id_table[paint_index], g_Border_Color);
                             }
+                        }
+                        else{
+                            this.set_cell_color(this.id_table[paint_index], "Red");
+                            this.set_side_borders_color(this.id_table[paint_index], "Red");
+                            this.set_bottom_border_color(this.id_table[paint_index], "Red");
                         }
                         paint_index++;
                     }

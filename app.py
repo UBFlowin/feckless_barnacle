@@ -296,47 +296,53 @@ def getSearch():
     if request.method == 'GET':
         results = UBClasses.query.all()
 
-    rec = {}
-    json_results = []
-    json_rec = []
-    for result in results:
-         recitations = UBRecitation.query.filter_by(RECITATION_ID=result.ID).all()
-         for recitation in recitations:
-              rec = {'ID': recitation.ID,
-                     'UBCLASS' : recitation.UBCLASS,
-                     'REC_ID': recitation.RECITATION_ID,
-                     'SECTION': recitation.SECTION,
-                     'TYPE': recitation.TYPE,
-                     'DAYS': recitation.DAYS,
-                     'TIME': recitation.TIME,
-                     'BUILDING': recitation.BUILDING,
-                     'ROOM_NUMBER': recitation.ROOM_NUMBER,
-                     'LOCATION': recitation.LOCATION,
-                     'STATUS': recitation.STATUS,
-                     'RESERVED': recitation.RESERVED,
-              }
-              json_rec.append(rec)
-         d = {'ID': result.ID,
-              'UBCLASS': result.UBCLASS,
-              'TITLE' : result.TITLE,
-              'DEPARTMENT': result.DEPARTMENT,
-              'SECTION': result.SECTION,
-              'TYPE': result.TYPE,
-              'DAYS': result.DAYS,
-              'TIME': result.TIME,
-              'BUILDING': result.BUILDING,
-              'ROOM_NUMBER': result.ROOM_NUMBER,
-              'LOCATION': result.LOCATION,
-              'PROFESSOR_ID': result.PROFESSOR_ID,
-              'PROFESSOR': result.PROFESSOR,
-              'STATUS': result.STATUS,
-              'RESERVED': result.RESERVED,
-              'SEMESTER': result.SEMESTER,
-              'RECITATION': json_rec
-            }
-         json_rec = []
-         json_results.append(d)
-    return jsonify(classes=json_results)
+    if len(results) == 0:
+        data = []
+        no_data = {'UBCLASS':"No Such Class"}
+        data.append(no_data)
+        return jsonify(classes=data)
+    else:
+        rec = {}
+        json_results = []
+        json_rec = []
+        for result in results:
+             recitations = UBRecitation.query.filter_by(RECITATION_ID=result.ID).all()
+             for recitation in recitations:
+                  rec = {'ID': recitation.ID,
+                         'UBCLASS' : recitation.UBCLASS,
+                         'REC_ID': recitation.RECITATION_ID,
+                         'SECTION': recitation.SECTION,
+                         'TYPE': recitation.TYPE,
+                         'DAYS': recitation.DAYS,
+                         'TIME': recitation.TIME,
+                         'BUILDING': recitation.BUILDING,
+                         'ROOM_NUMBER': recitation.ROOM_NUMBER,
+                         'LOCATION': recitation.LOCATION,
+                         'STATUS': recitation.STATUS,
+                         'RESERVED': recitation.RESERVED,
+                  }
+                  json_rec.append(rec)
+             d = {'ID': result.ID,
+                  'UBCLASS': result.UBCLASS,
+                  'TITLE' : result.TITLE,
+                  'DEPARTMENT': result.DEPARTMENT,
+                  'SECTION': result.SECTION,
+                  'TYPE': result.TYPE,
+                  'DAYS': result.DAYS,
+                  'TIME': result.TIME,
+                  'BUILDING': result.BUILDING,
+                  'ROOM_NUMBER': result.ROOM_NUMBER,
+                  'LOCATION': result.LOCATION,
+                  'PROFESSOR_ID': result.PROFESSOR_ID,
+                  'PROFESSOR': result.PROFESSOR,
+                  'STATUS': result.STATUS,
+                  'RESERVED': result.RESERVED,
+                  'SEMESTER': result.SEMESTER,
+                  'RECITATION': json_rec
+                }
+             json_rec = []
+             json_results.append(d)
+        return jsonify(classes=json_results)
 
 
 @app.route('/getnextclassgroup', methods=['GET'])

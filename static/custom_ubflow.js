@@ -133,8 +133,8 @@ function populate_selected_class(class_handle, rec_handle) {
     a.setAttribute('id', 'selected_container' + class_handle.ID);
     a.setAttribute('class', 'list-group-item');
 
-    var onmouseover = "shade('container" + class_handle.ID + "')";
-    var onmouseout = "unshade('container" + class_handle.ID + "')";
+    var onmouseover = "shade('selected_container" + class_handle.ID + "')";
+    var onmouseout = "unshade('selected_container" + class_handle.ID + "')";
     a.setAttribute('onmouseover', onmouseover);
     a.setAttribute('onmouseout', onmouseout);
     heading.appendChild(a);
@@ -152,7 +152,7 @@ function populate_selected_class(class_handle, rec_handle) {
     lock_icon_holder.appendChild(lock_icon);
 
     //add class name container
-    var class_name_holder = document.createElement("class_name_holder");
+    var class_name_holder = document.createElement("class_name_holder"+class_handle.ID);
     class_name_holder.setAttribute('class', 'col-md-4');
     a.appendChild(class_name_holder);
 
@@ -163,12 +163,12 @@ function populate_selected_class(class_handle, rec_handle) {
     class_name_holder.appendChild(p1);
 
     //class times container
-    var class_time_holder = document.createElement("class_time_holder");
+    var class_time_holder = document.createElement("class_time_holder"+class_handle.ID);
     class_time_holder.setAttribute('class', 'col-md-7');
     a.appendChild(class_time_holder);
 
     //add class times
-    var p2 = document.createElement('class_time');
+    var p2 = document.createElement('class_time'+class_handle.ID);
     var txt2 = document.createTextNode(class_handle.DAYS + ":" + class_handle.TIME);
     p2.appendChild(txt2);
     class_time_holder.appendChild(p2);
@@ -227,7 +227,25 @@ function validate_selected_class(class_handle,rec_handle, heading){
 *********************************************************************/
 function lock_in_course(id){
     var elem = document.getElementById(id);
-    elem.setAttribute('class','fa fa-lock');
+    var index = id.split('n');
+    var text = document.getElementById('selected_container' + index[1]);
+    if(elem.getAttribute('class') == 'fa fa-unlock') {
+        elem.setAttribute('class', 'fa fa-lock');
+        text.removeAttribute('onmouseout');
+        text.removeAttribute('onmouseover');
+        text.style.backgroundColor = "Gray";
+    }
+    else{
+        elem.setAttribute('class','fa fa-unlock');
+        var onmouseover = "shade('selected_container" + index[1] + "')";
+        var onmouseout = "unshade('selected_container" + index[1] + "')";
+        text.setAttribute('onmouseover', onmouseover);
+        text.setAttribute('onmouseout', onmouseout);
+        text.style.backgroundColor = "White";
+    }
+
+
+
 }
 
 
@@ -444,7 +462,7 @@ function unshade(id){
   var prefixes = ['webkit', 'Moz', 'ms', 'O'] /* Vendor prefixes */
     , animations = {} /* Animation rules keyed by their name */
     , useCssAnimations /* Whether to use CSS animations or setTimeout */
-    , sheet /* A stylesheet to hold the @keyframe or VML rules. */
+    , sheet; /* A stylesheet to hold the @keyframe or VML rules. */
 
   /**
    * Utility function to create elements. If no tag name is given,
