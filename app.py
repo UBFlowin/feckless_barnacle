@@ -281,10 +281,63 @@ def profile():
     x = len(result)
     for i in range(0,x):
         ClassOps[i] = result[i].UBCLASS
-
-
     #getFirstClassGroup()
     return render_template("profile.html",username="sethkara",)
+
+
+@app.route('/getnextclassgroup/search', methods=['GET','POST'])
+def getSearch():
+    if request.method == 'POST':
+        ubclass = request.json['course']
+        dept = request.json['dept']
+        results = UBClasses.query.filter_by(UBCLASS=ubclass).all()
+
+
+    if request.method == 'GET':
+        results = UBClasses.query.all()
+
+    rec = {}
+    json_results = []
+    json_rec = []
+    for result in results:
+         recitations = UBRecitation.query.filter_by(RECITATION_ID=result.ID).all()
+         for recitation in recitations:
+              rec = {'ID': recitation.ID,
+                     'UBCLASS' : recitation.UBCLASS,
+                     'REC_ID': recitation.RECITATION_ID,
+                     'SECTION': recitation.SECTION,
+                     'TYPE': recitation.TYPE,
+                     'DAYS': recitation.DAYS,
+                     'TIME': recitation.TIME,
+                     'BUILDING': recitation.BUILDING,
+                     'ROOM_NUMBER': recitation.ROOM_NUMBER,
+                     'LOCATION': recitation.LOCATION,
+                     'STATUS': recitation.STATUS,
+                     'RESERVED': recitation.RESERVED,
+              }
+              json_rec.append(rec)
+         d = {'ID': result.ID,
+              'UBCLASS': result.UBCLASS,
+              'TITLE' : result.TITLE,
+              'DEPARTMENT': result.DEPARTMENT,
+              'SECTION': result.SECTION,
+              'TYPE': result.TYPE,
+              'DAYS': result.DAYS,
+              'TIME': result.TIME,
+              'BUILDING': result.BUILDING,
+              'ROOM_NUMBER': result.ROOM_NUMBER,
+              'LOCATION': result.LOCATION,
+              'PROFESSOR_ID': result.PROFESSOR_ID,
+              'PROFESSOR': result.PROFESSOR,
+              'STATUS': result.STATUS,
+              'RESERVED': result.RESERVED,
+              'SEMESTER': result.SEMESTER,
+              'RECITATION': json_rec
+            }
+         json_rec = []
+         json_results.append(d)
+    return jsonify(classes=json_results)
+
 
 @app.route('/getnextclassgroup', methods=['GET'])
 def getClassGroup():
@@ -312,6 +365,7 @@ def getClassGroup():
               json_rec.append(rec)
          d = {'ID': result.ID,
               'UBCLASS': result.UBCLASS,
+              'TITLE' : result.TITLE,
               'DEPARTMENT': result.DEPARTMENT,
               'SECTION': result.SECTION,
               'TYPE': result.TYPE,
@@ -331,6 +385,8 @@ def getClassGroup():
          json_results.append(d)
 
     return jsonify(classes=json_results)
+
+
 
 
 @app.route('/getfirstclassgroup', methods=['GET'])
@@ -359,6 +415,7 @@ def getFirstClassGroup():
             json_rec.append(rec)
         d = {'ID': result.ID,
              'UBCLASS': result.UBCLASS,
+             'TITLE' : result.TITLE,
              'DEPARTMENT': result.DEPARTMENT,
              'SECTION': result.SECTION,
              'TYPE': result.TYPE,
@@ -379,39 +436,12 @@ def getFirstClassGroup():
     return jsonify(classes=json_results)
 
 
-def gen_time_slots(days, times):
-    slots = [' ', ' ', ' ', ' ', ' ', ' ']
-    if days == 'M W F':
-        slots[0] = 'Mon'
-        slots[1] = 'Wed'
-        slots[2] = 'Fri'
-    elif days == 'T R':
-        slots[0] = 'Tue'
-        slots[1] = 'Thu'
-    elif days == "M":
-        slots[0] = "Mon"
-    elif days == "T":
-        slots[0] = "Tue"
-    elif days == "R":
-        slots[0] = "Thu"
-    slots[0] = slots[0] + '_' + times
-    slots[1] = slots[1] + '_' + times
-    slots[2] = slots[2] + '_' + times
-    slots[3] = slots[3] + '_' + times
-    slots[4] = slots[4] + '_' + times
-    slots[5] = slots[5] + '_' + times
-    return slots
-
-
 '''-----------------------------------------------
       Error Handling Page
 -----------------------------------------------'''
 @app.route('/flowsheet')
 def flowsheet():
     return render_template("flowsheet.html")
-
-
-
 
 
 '''-----------------------------------------------
