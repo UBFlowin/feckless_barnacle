@@ -115,7 +115,7 @@ def isolate_data(info):
 
     #TODO for loop making an object and adding to the database
     max = 0
-    for z in range(0,30):
+    for z in range(0,60):
         UBCLASS = course_num[z]
         HUB_ID = course_id[z]
         TITLE = course_name[z]
@@ -131,7 +131,6 @@ def isolate_data(info):
         STATUS = status[z]
         RESERVED = "No"
         SEMESTER = "Fall"
-        RECITATION = 7
         PRE1 = "None"
         PRE2 = "None"
         PRE3 = "None"
