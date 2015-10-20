@@ -82,7 +82,7 @@ function make_available_classes() {
 
                     //Add spin wheel container
                     var sub_spin_wheel_holder = document.createElement("sub_spin_wheel_holder");
-                    sub_spin_wheel_holder.setAttribute('class', 'col-md-1 col-md-offset-2');
+                    sub_spin_wheel_holder.setAttribute('class', 'col-md-1 col-xs-offset-2');
                     sub_a.appendChild(sub_spin_wheel_holder);
 
                     //Add spin wheel
@@ -92,7 +92,7 @@ function make_available_classes() {
 
                     //class times container
                     var sub_class_time_holder = document.createElement("sub_class_time_holder");
-                    sub_class_time_holder.setAttribute('class', 'col-md-9');
+                    sub_class_time_holder.setAttribute('class', 'hidden-xs-9');
                     sub_a.appendChild(sub_class_time_holder);
 
                     //add class times
@@ -151,9 +151,21 @@ function populate_selected_class(class_handle, rec_handle) {
     lock_icon.setAttribute('onclick','lock_in_course("lock_icon'+class_handle.ID+'"'+')');
     lock_icon_holder.appendChild(lock_icon);
 
+    //Add trash container
+    var trash_icon_holder = document.createElement("trash_icon_holder");
+    trash_icon_holder.setAttribute('class', 'col-md-1');
+    a.appendChild(trash_icon_holder);
+
+    //Add trash icon
+    var trash_icon = document.createElement('trash_icon');
+    trash_icon.setAttribute('id','trash_icon'+class_handle.ID);
+    trash_icon.setAttribute('class', 'fa fa-trash-o');
+    //trash_icon.setAttribute('onclick','lock_in_course("trash_icon'+class_handle.ID+'"'+')');
+    trash_icon_holder.appendChild(trash_icon);
+
     //add class name container
     var class_name_holder = document.createElement("class_name_holder"+class_handle.ID);
-    class_name_holder.setAttribute('class', 'col-md-4');
+    class_name_holder.setAttribute('class', 'col-md-3');
     a.appendChild(class_name_holder);
 
     //add class name
@@ -187,6 +199,8 @@ function validate_selected_class(class_handle,rec_handle, heading){
         if (Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] != null) {
             if (rec_handle.ID == Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID].ID) {
                 parent = document.getElementById('selected_container' + class_handle.ID).remove();
+
+
                 Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = 0;
             }
             else if (rec_handle.REC_ID == Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID].REC_ID) {
