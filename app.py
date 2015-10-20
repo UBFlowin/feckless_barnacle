@@ -277,11 +277,7 @@ def login_user():
 @app.route('/profile', methods=['GET'])
 def profile():
     result = UBClasses.query.filter_by(TYPE="LEC").all()
-    ClassOps = [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ']
-    x = len(result)
-    for i in range(0,x):
-        ClassOps[i] = result[i].UBCLASS
-    #getFirstClassGroup()
+
     return render_template("profile.html",username="sethkara",)
 
 
@@ -398,7 +394,7 @@ def getClassGroup():
 @app.route('/getfirstclassgroup', methods=['GET'])
 def getFirstClassGroup():
     if request.method == 'GET':
-        results = UBClasses.query.filter_by(TYPE='LEC').all()
+        results = UBClasses.query.limit(10).offset(0).all()
     rec = {}
     json_results = []
     json_rec = []
