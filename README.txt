@@ -20,7 +20,7 @@ Notes for developers:
 
     Server Commands:
         SSH Login:
-            - ubflow@172.101.114.24
+            - ubflow@68.133.10.203
 
         MYSQL login:
             - root
