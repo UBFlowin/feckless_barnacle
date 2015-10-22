@@ -189,34 +189,32 @@ class UBSchedule(db.Model):
         DEGREE COURSE CLASS
 -----------------------------------------------'''
 class Degree(db.Model):
-    __tablename__ = 'course'
+    __tablename__ = 'degree'
 
     ID = db.Column(db.Integer, primary_key=True)
     UBCLASS = db.Column(db.String(50), nullable=False)
     TITLE = db.Column(db.String(50), nullable=False)
-    DEGREE = db.Column(db.String(50), nullable=False)
+    SEM_INDEX = db.Column(db.Integer, nullable=False)
+    LINK = db.Column(db.String(100), nullable=True)
     PRE_REQ1 = db.Column(db.String(50), nullable=True)
     PRE_REQ2 = db.Column(db.String(50), nullable=True)
     PRE_REQ3 = db.Column(db.String(50), nullable=True)
     PRE_REQ4 = db.Column(db.String(50), nullable=True)
     PRE_REQ5 = db.Column(db.String(50), nullable=True)
-    SEMESTER = db.Column(db.String(50), nullable=True)
-    YEAR = db.Column(db.String(50), nullable=True)
 
-    def __init__(self,ubclass,title,degree,pre1,pre2,pre3,pre4,pre5, semester,year):
+    def __init__(self,ubclass,title,sem_index,link,pre1,pre2,pre3,pre4,pre5):
         self.UBCLASS = ubclass
         self.TITLE = title
-        self.DEGREE = degree
-        self.PRE1 = pre1
-        self.PRE2 = pre2
-        self.PRE3 = pre3
-        self.PRE4 = pre4
-        self.PRE5 = pre5
-        self.SEMESTER = semester
-        self.YEAR = year
+        self.SEM_INDEX = sem_index
+        self.LINK = link
+        self.PRE_REQ1 = pre1
+        self.PRE_REQ2 = pre2
+        self.PRE_REQ3 = pre3
+        self.PRE_REQ4 = pre4
+        self.PRE_REQ5 = pre5
 
     def __repr__(self):
-        return '<title'.format(self.TITLE)
+        return '<degree'.format(self.UBCLASS)
 
 
 
@@ -278,7 +276,7 @@ def login_user():
 def profile():
     result = UBClasses.query.filter_by(TYPE="LEC").all()
 
-    return render_template("profile.html",username="sethkara",)
+    return render_template("profile.html",username="sethkara")
 
 
 @app.route('/getnextclassgroup/search', methods=['GET','POST'])
@@ -436,6 +434,21 @@ def getFirstClassGroup():
         json_rec = []
         json_results.append(d)
     return jsonify(classes=json_results)
+
+
+@app.route('/degreeinfo', methods=['GET'])
+def degree_info():
+    if request.method == 'GET':
+        courses = Degree.query.all()
+    json_results = []
+    for course in courses:
+        d = {'ID': course.ID,
+             'UBCLASS': course.UBCLASS,
+             'SEM_INDEX': course.SEM_INDEX,
+             'LINK': course.LINK}
+        json_results.append(d)
+    return jsonify(classes=json_results)
+
 
 
 '''-----------------------------------------------

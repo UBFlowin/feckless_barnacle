@@ -1,6 +1,27 @@
 {% extends "layout.html" %}
 {% block body %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
+<script>
+    var DEGREE_HANDLES= [];
+
+    $.getJSON('/degreeinfo', function(dat) {
+        console.log(dat);
+        var x = 0;
+        if(dat.classes) {
+            while (x< dat.classes.length) {
+                var id = dat.classes[x].ID;
+                var ubclass = dat.classes[x].UBCLASS;
+                var sem_index = dat.classes[x].SEM_INDEX;
+                var link = "link";
+                DEGREE_HANDLES[x] = new Degree(ubclass,sem_index,link);
+                x = x + 1;
+            }
+        }
+        populate_semesters();
+    });
+
+</script>
 <div class="col-lg-12">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -11,317 +32,92 @@
             <div class="panel-group" id="flowsheet_container">
                 <div class="row" align="center">
 
-                    <div id="year1" class="col-md-3">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading-ubflow">
-                                <h4>Freshman</h4>
-                            </div>
-                            <div  class="panel-body">
+                    <div id="year1" class="col-md-12">
+                        <div  class="panel-body">
+                            <div class="col-md-3">
                                 <div id="semester1" class="col-md-6" >
                                     <div class="panel panel-primary">
-                                        <div class="panel-heading-ubflow">
-                                            <h4>Fall 2015</h4>
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Fall 2015</h3>
                                         </div>
-                                        <div class="panel-body">
-                                            <div class="panel panel-info">
-                                                <div id="F1" class="panel-heading" onmouseover="show_info('F1','F1_pop')" onmouseout="hide_info('F1','F1_pop')">
-                                                    <h5>MTH141</h5>
-                                                    <div id="F1_pop" style="display: None">
-                                                        <h6> Calculus 1 </h6>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>CSE115</h5>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>CHE107</h5>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>UBE101</h5>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>Gen Ed</h5>
-                                                </div>
-                                            </div>
+                                        <div class="panel-body" id="sem1" style="padding:6px 4px;">
+
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-md-6">
+                                <div id="semester2" class="col-md-6" >
                                     <div class="panel panel-primary">
-                                        <div class="panel-heading-ubflow">
-                                            <h4>Spring 2016</h4>
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Fall 2015</h3>
                                         </div>
-                                        <div class="panel-body">
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>MTH142</h5>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>CSE116</h5>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>PHY107</h5>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>Gen Ed</h5>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>PHY157</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                        <div class="panel-body" id="sem2" style="padding:6px 4px;">
 
-                    <div class="col-md-3">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading-ubflow">
-                                <h4>Sophomore</h4>
-                            </div>
-                            <div class="panel-body">
-                                <div class="col-md-6">
-                                <div class="panel panel-primary">
-                                    <div class="panel-heading-ubflow">
-                                        <h4>Fall 2016</h4>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div class="panel panel-info">
-                                            <div class="panel-heading">
-                                                <h5>MTH306</h5>
-                                            </div>
-                                        </div>
-                                        <div class="panel panel-info">
-                                            <div class="panel-heading">
-                                                <h5>CSE191</h5>
-                                            </div>
-                                        </div>
-                                        <div class="panel panel-info">
-                                            <div class="panel-heading">
-                                                <h5>PHY108</h5>
-                                            </div>
-                                        </div>
-                                        <div class="panel panel-info">
-                                            <div class="panel-heading">
-                                                <h5>PHY158</h5>
-                                            </div>
-                                        </div>
-                                        <div class="panel panel-info">
-                                            <div class="panel-heading">
-                                                <h5>EE202</h5>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                                <div class="col-md-6">
-                                <div class="panel panel-primary">
-                                    <div class="panel-heading-ubflow">
-                                        <h4>Spring 2017</h4>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div class="panel panel-info">
-                                            <div class="panel-heading">
-                                                <h5>MTH241</h5>
-                                            </div>
-                                        </div>
-                                        <div class="panel panel-info">
-                                            <div class="panel-heading">
-                                                <h5>CSE241</h5>
-                                            </div>
-                                        </div>
-                                        <div class="panel panel-info">
-                                            <div class="panel-heading">
-                                                <h5>CSE250</h5>
-                                            </div>
-                                        </div>
-                                        <div class="panel panel-info">
-                                            <div class="panel-heading">
-                                                <h5>EE205</h5>
-                                            </div>
-                                        </div>
-                                        <div class="panel panel-info">
-                                            <div class="panel-heading">
-                                                <h5></h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading-ubflow">
-                                <h4>Junior</h4>
-                            </div>
-                            <div class="panel-body">
-                                <div class="col-md-6">
+                            <div class="col-md-3">
+                                <div id="semester3" class="col-md-6" >
                                     <div class="panel panel-primary">
-                                        <div class="panel-heading-ubflow">
-                                            <h4>Fall 2017</h4>
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Fall 2015</h3>
                                         </div>
-                                        <div class="panel-body">
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>CSE341</h5>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>CSE321</h5>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>EE310</h5>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>EE312</h5>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>Gen Ed</h5>
-                                                </div>
-                                            </div>
+                                        <div class="panel-body" id="sem3" style="padding:6px 4px;">
+
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div id="semester4" class="col-md-6" >
                                     <div class="panel panel-primary">
-                                        <div class="panel-heading-ubflow">
-                                            <h4>Spring 2018</h4>
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Fall 2015</h3>
                                         </div>
-                                        <div class="panel-body">
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>EAS305</h5>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>CSE379</h5>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>CSE380</h5>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>MTH309</h5>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>Gen Ed</h5>
-                                                </div>
-                                            </div>
+                                        <div class="panel-body" id="sem4" style="padding:6px 4px;">
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-3">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading-ubflow">
-                                <h4>Senior</h4>
-                            </div>
-                            <div class="panel-body">
-                                <div class="col-md-6">
+                            <div class="col-md-3">
+                                <div id="semester5" class="col-md-6" >
                                     <div class="panel panel-primary">
-                                        <div class="panel-heading-ubflow">
-                                            <h4>Fall 2018</h4>
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Fall 2015</h3>
                                         </div>
-                                        <div class="panel-body">
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>CSE442</h5>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>EAS207</h5>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>CSE4XX</h5>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>Gen Ed</h5>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>Gen Ed</h5>
-                                                </div>
-                                            </div>
+                                        <div class="panel-body" id="sem5" style="padding:6px 4px;">
+
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-md-6">
+                                <div id="semester6" class="col-md-6" >
                                     <div class="panel panel-primary">
-                                        <div class="panel-heading-ubflow">
-                                            <h4>Spring 2019</h4>
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Fall 2015</h3>
                                         </div>
-                                        <div class="panel-body">
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>CSE453</h5>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>CSE3XX</h5>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                    <h5>Gen Ed</h5>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
-                                                   <h5> CSE4XX</h5>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">
+                                        <div class="panel-body" id="sem6" style="padding:6px 4px;">
 
-                                                </div>
-                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div id="semester7" class="col-md-6" >
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Fall 2015</h3>
+                                        </div>
+                                        <div class="panel-body" id="sem7" style="padding:6px 4px;">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="semester8" class="col-md-6" >
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Fall 2015</h3>
+                                        </div>
+                                        <div class="panel-body" id="sem8" style="padding:6px 4px;">
+
                                         </div>
                                     </div>
                                 </div>
@@ -338,15 +134,72 @@
 </div>
 
 <script>
-    function show_info(id,child){
+    var Degree = function(ubclass, sem_index, link){
+        this.UBCLASS = ubclass;
+        this.SEM_INDEX = sem_index;
+        this.LINK = link;
+    };
+
+    function show_info(id){
         var elem = document.getElementById(id);
         elem.style.backgroundColor = "CornflowerBlue";
-        document.getElementById('F1_pop').style.display = 'block';
     }
-    function hide_info(id,child){
+    function hide_info(id){
         var elem = document.getElementById(id);
         elem.style.backgroundColor = "#d9edf7";
-         document.getElementById('F1_pop').style.display = 'none';
+    }
+
+    function populate_semesters(){
+        for(var sem=0;sem<9;sem++){
+            for(var i=0;i<DEGREE_HANDLES.length;i++) {
+                if (DEGREE_HANDLES[i].SEM_INDEX == sem) {
+                    create_new_course_block(sem, i);
+                }
+            }
+        }
+    }
+
+
+    function create_new_course_block(sem_index, num){
+        var course = document.createElement('sem'+String(sem_index)+'_course'+String(num));
+                var a = document.createElement('course' + String(num));
+                a.setAttribute('style', 'height: 80px; width: 150px; padding: 10px 2px;');
+                a.setAttribute('id', 'sem'+String(sem_index)+'_course'+String(num));
+                a.setAttribute('class', 'list-group-item');
+                var mouseover = "show_info('sem"+String(sem_index)+"_course" + String(num) + "')";
+                var mouseout = "hide_info('sem"+String(sem_index)+"_course" + String(num) + "')";
+                a.setAttribute('onmouseover', mouseover);
+                a.setAttribute('onmouseout', mouseout);
+                course.appendChild(a);
+
+                //course and cap box
+                var course_box = document.createElement("course_box");
+                course_box.setAttribute('class', 'col-xs-12');
+                a.appendChild(course_box);
+
+                //Add cap container
+                var cap_container = document.createElement("cap_container");
+                cap_container.setAttribute('class', 'col-xs-2');
+                course_box.appendChild(cap_container);
+
+                //Add grad cap
+                var grad_cap = document.createElement('grad_cap');
+                grad_cap.setAttribute('class', 'fa fa-graduation-cap');
+                cap_container.appendChild(grad_cap);
+
+                //Add course name container
+                var course_container = document.createElement("course_container");
+                course_container.setAttribute('class', 'col-xs-10');
+                course_box.appendChild(course_container);
+
+                //add course name
+                var course_name = document.createElement('course_text' + String(num));
+                var course_text = document.createTextNode(DEGREE_HANDLES[num].UBCLASS);
+                course_name.appendChild(course_text);
+                course_container.appendChild(course_name);
+
+                var list = document.getElementById('sem'+String(sem_index));
+                list.insertBefore(course, list.childNodes[0]);
     }
 
 
