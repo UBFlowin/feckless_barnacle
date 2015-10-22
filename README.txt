@@ -1,4 +1,12 @@
-UB Flowin: Hosted at 172.101.114.24
+UB Flowin: Hosted at 68.133.10.203
+
+
+TODO: 10/16
+    Username and password restrictions:
+        - more than 8 chars, at least 1 number, etc.
+    Add prerequistes to scraper to modify current database entries
+
+
 
 
 
