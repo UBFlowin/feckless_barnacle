@@ -1,13 +1,11 @@
 from flask import Flask, request, jsonify, render_template, abort, make_response, g, session, redirect, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager, UserMixin, login_user, logout_user, login_required
-#from flask.ext.httpauth import HTTPBasicAuth
 from passlib.apps import custom_app_context as pwd_context
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
 
 app = Flask(__name__)
 db = SQLAlchemy(app)
-#auth = HTTPBasicAuth()
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://ubflow:ubflow@localhost/ubflowdb'
 app.config['SECRET_KEY'] = 'The arsonist had oddly shaped feet'
 login_manager = LoginManager()
@@ -43,8 +41,6 @@ class User(db.Model):
     def is_anonymous(self):
         """False, as anonymous users aren't supported."""
         return False
-
-
 
 
     def hash_password(self, password):
@@ -245,9 +241,9 @@ class Degree(db.Model):
 -----------------------------------------------'''
 @app.route('/register', methods=['GET','POST'])
 def new_user():
-    if request.method=='GET':
-        return render_template("register.html")
-    if request.method=='POST':
+    if request.method == 'GET':
+        return render_template("register.html", input_error='')
+    if request.method == 'POST':
         username = request.form['USERNAME']
         password = request.form['PASSWORD']
         first_name = request.form['FIRST_NAME']
@@ -255,17 +251,19 @@ def new_user():
         degree = request.form['DEGREE']
 
         if username is None or password is None:
-            abort(400)  # missing arguments
-        if len(password) < 8:
-            abort(400)
+            return render_template('register.html', input_error='It seems you forgot something')
         if User.query.filter_by(USERNAME=username).first() is not None:
-            abort(400)  # existing user
+            return render_template('register.html', input_error='That Username already exists')
+        if len(password) < 8:
+            return render_template('register.html', input_error='Password must be at least 8 characters')
 
         temp_user = User(username,password,first_name,last_name,degree)
         temp_user.hash_password(password)
         db.session.add(temp_user)
         db.session.commit()
-        return redirect(url_for('profile'))
+        user = User.query.filter_by(USERNAME=username).first()
+        login_user(user)
+        return redirect(url_for('flowsheet'))
 
 
 '''-----------------------------------------------
@@ -282,20 +280,21 @@ def login():
         username = request.form['USERNAME']
         password = request.form['PASSWORD']
         if username is None or password is None:
-            abort(400)  # missing arguments
+            return render_template('login.html', input_error="You've missed something")
         user = User.query.filter_by(USERNAME=username).first()
         if user:
             if user.verify_password(password):
                 login_user(user)
                 return redirect(url_for('flowsheet'))
+            else:
+                return render_template('login.html', input_error='Incorrect Password')
         else:
-            return redirect(url_for('login'))
-
-    return profile()
+            return render_template('login.html', input_error='Sorry, Try Again or Register')
+    return redirect(url_for('profile'))
 
 
 '''----------------------------
-      Test if ogged In
+      Test if Logged In
 ----------------------------'''
 @login_manager.user_loader
 def load_user(user_id):
@@ -330,8 +329,6 @@ def secret():
 @app.route('/profile', methods=['GET'])
 @login_required
 def profile():
-    result = UBClasses.query.filter_by(TYPE="LEC").all()
-
     return render_template("profile.html",username="sethkara")
 
 

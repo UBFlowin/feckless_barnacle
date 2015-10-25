@@ -1,5 +1,11 @@
 {% extends "layout.html" %}
 {% block body %}
+<script>
+    var error = '{{ input_error }}';
+    if (elem = document.getElementById("panel_footer")){
+        elem.innerHTML = error;
+    }
+</script>
 <body>
     <div class="container">
         <div class="row">
@@ -35,6 +41,20 @@
                                 <input type="submit" class="btn btn-lg btn-success btn-block" value ="Register"/>
                             </fieldset>
                         </form>
+                    </div>
+                    <div class="panel-footer">
+                        <strong>
+                            <h3 id="panel_footer" class="panel-title" align="center">
+                                {% if input_error == '' %}
+                                {% else %}
+                                    <script>
+                                        if (elem = document.getElementById("panel_footer")){
+                                            elem.innerHTML = error;
+                                        }
+                                    </script>
+                                {% endif %}
+                            </h3>
+                        </strong>
                     </div>
                 </div>
             </div>

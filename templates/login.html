@@ -30,6 +30,8 @@
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
                                 <input type="submit" class="btn btn-lg btn-success btn-block" value ="Login"/>
+                                <br/>
+                                <input type="button" class="btn btn-med btn-success btn-block" onclick="location.href='/register';" value="Go Register Me" />
                                 <div class="panel-footer">
                                     <h3 id="panel_footer" class="panel-title" align="center">
                                         {% if input_error == '' %}
@@ -39,8 +41,6 @@
                                                     elem.innerHTML = error;
                                                 }
                                             </script>
-                                            <br/>
-                                            <input type="button" class="btn btn-med btn-success btn-block" onclick="location.href='/register';" value="Go Register Me" />
                                         {% endif %}
 
                                     </h3>
