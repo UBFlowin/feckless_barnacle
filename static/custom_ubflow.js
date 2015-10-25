@@ -57,6 +57,7 @@ function make_available_classes() {
             //add class times
             p2 = document.createElement('class_name_' + String(j));
             txt2 = document.createTextNode(CLASS_HANDLES[j].DAYS + ":" + CLASS_HANDLES[j].TIME);
+            //txt2.setAttribute('style','font-size: 9px;');
             p2.appendChild(txt2);
             class_time_holder.appendChild(p2);
 
