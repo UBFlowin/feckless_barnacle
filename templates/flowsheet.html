@@ -179,8 +179,10 @@
             iteration += 1;
         }
         if(elem.getAttribute('pre_req')){
-            next = elem.getAttribute('pre_req');
-            show_info(next,iteration);
+            if(elem.getAttribute('pre_req') != 'none') {
+                next = elem.getAttribute('pre_req');
+                show_info(next, iteration);
+            }
         }
     }
 
@@ -191,8 +193,10 @@
         elem = document.getElementById(id);
         elem.style.backgroundColor = "White";
         if(elem.getAttribute('pre_req')){
-            next = elem.getAttribute('pre_req');
-            hide_info(next,iteration);
+            if(elem.getAttribute('pre_req') != 'none') {
+                next = elem.getAttribute('pre_req');
+                hide_info(next, iteration);
+            }
         }
     }
 
