@@ -12,6 +12,7 @@ def get_flowsheet_info(flowsheet_url):
     refinedFlowsheetData = re.sub('(.*)Fall\n\nSpring\n\n', '', refinedFlowsheetData, flags=re.DOTALL)
     refinedFlowsheetData = re.sub('\n\n', '\nEND OF SEMESTER\n', refinedFlowsheetData, count=8)
     refinedFlowsheetData = refinedFlowsheetData.encode('ascii', 'ignore').decode('ascii')
+    print refinedFlowsheetData
     return refinedFlowsheetData
 
 # ssh into server

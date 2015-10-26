@@ -8,13 +8,23 @@ semester = []  # Integer 1...8
 course = []    # CSE115, MTH141, Gen Ed, etc.
 
 def isolate_flowsheet_data(flowsheet_info):
-    semesterCounter = 0;
-
     # split flowsheet_info into a large array, with elements delimited by \n.
-    # example: flowsheet_data = [CSE115 MTH141 ...]
+    # example: flowsheet_data = [CSE115 MTH141 ... END OF SEMESTER CSE116...]
     flowsheet_data = flowsheet_info.split("\n")
-    print flowsheet_data
 
+
+    semesterCounter = 1
+    for item in flowsheet_data:
+        if item != 'END OF SEMESTER':
+            semester.append(semesterCounter)
+            course.append(item)
+        else:
+            semesterCounter = semesterCounter+1
+            if semesterCounter == 9:
+                break
+    print '**************************************************\n\n'
+    print semester
+    print course
 
 
 
