@@ -13,7 +13,7 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 '''-----------------------------------------------
-        User Class
+        User Model
 --------------------------------------------------'''
 class User(db.Model):
     __tablename__ = 'user'
@@ -41,7 +41,6 @@ class User(db.Model):
     def is_anonymous(self):
         """False, as anonymous users aren't supported."""
         return False
-
 
     def hash_password(self, password):
         self.PASS_HASH = pwd_context.encrypt(password)
@@ -77,7 +76,7 @@ class User(db.Model):
 
 
 '''-----------------------------------------------
-        Professor Class
+        Professor Model
 -----------------------------------------------'''
 class Professor(db.Model):
     __tablename__ = "professor"
@@ -95,7 +94,7 @@ class Professor(db.Model):
 
 
 '''-----------------------------------------------
-        Classes Class
+        Classes Model
 -----------------------------------------------'''
 class UBClasses(db.Model):
     __tablename__ = "ubclasses"
@@ -151,7 +150,7 @@ class UBClasses(db.Model):
 
 
 '''-----------------------------------------------
-        Recitations Class
+        Recitations Model
 -----------------------------------------------'''
 class UBRecitation(db.Model):
     __tablename__ = "ubrecitations"
@@ -191,13 +190,56 @@ class UBRecitation(db.Model):
 
 
 '''-----------------------------------------------
-        Schedule Class
+        Classes_Taken_Helper_Table Model
 -----------------------------------------------'''
-class UBSchedule(db.Model):
-    __tablename__ = 'schedule'
+class Classes_Taken_Helper(db.Model):
+    __tablename__ = 'classes_taken_helper'
 
     ID = db.Column(db.Integer, primary_key=True)
     USER_ID = db.Column(db.Integer, db.ForeignKey('user.id'))
+    DEGREE_COURSE1 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE2 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE3 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE4 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE5 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE6 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE7 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE8 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE9 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE10 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE11 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE12 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE13 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE14 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE15 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE16 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE17 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE18 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE19 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE20 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE21 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE22 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE23 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE24 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE25 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE26 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE27 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE28 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE29 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE30 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE31 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE32 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE33 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE34 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE35 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE36 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE37 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE38 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE39 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE40 = db.Column(db.Integer, nullable=True)
+
+    def __init__(self, user_id):
+        self.USER_ID = user_id
 
 
 '''-----------------------------------------------
@@ -257,10 +299,18 @@ def new_user():
         if len(password) < 8:
             return render_template('register.html', input_error='Password must be at least 8 characters')
 
-        temp_user = User(username,password,first_name,last_name,degree)
-        temp_user.hash_password(password)
-        db.session.add(temp_user)
+        # Create New User Model and enter into database
+        new_user = User(username,password,first_name,last_name,degree)
+        new_user.hash_password(password)
+        db.session.add(new_user)
         db.session.commit()
+
+        # Load that user entry ID number and add row to helper table
+        curr_user = User.query.filter_by(USERNAME=username).first()
+        new_classes_taken_row = Classes_Taken_Helper(curr_user.id)
+        db.session.add(new_classes_taken_row)
+        db.session.commit()
+
         user = User.query.filter_by(USERNAME=username).first()
         login_user(user)
         return redirect(url_for('flowsheet'))
@@ -340,7 +390,6 @@ def getSearch():
         dept = request.json['dept']
         ubclass = dept+course_num
         results = UBClasses.query.filter_by(UBCLASS=ubclass).all()
-
 
     if request.method == 'GET':
         results = UBClasses.query.all()

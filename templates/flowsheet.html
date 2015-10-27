@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
-<!--script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script-->
-
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='custom_ubflow.js') }}"></script>
 <script>
     var DEGREE_HANDLES= [];
 
@@ -24,114 +24,120 @@
     });
 
 </script>
-<div class="col-xs-12">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h2> B.S. Computer Engineering </h2>
-        </div>
-        <!-- .panel-heading -->
-        <div class="panel-body">
-            <div class="panel-group" id="flowsheet_container">
-                <div class="row" align="center">
 
-                    <div id="year1" class="col-xs-12">
-                        <div  class="panel-body">
-                            <div class="col-xs-3">
-                                <div id="semester1" class="col-xs-6" >
-                                    <div class="panel panel-primary">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">Semester 1</h3>
+<div id="wrapper">
+    <div id="page-wrapper">
+        <div class="col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2> B.S. Computer Engineering </h2>
+                </div>
+                <!-- .panel-heading -->
+                <div class="panel-body">
+                    <div class="panel-group" id="flowsheet_container">
+                        <div class="row" align="center">
+
+                            <div id="year1" class="col-xs-12">
+                                <div  class="panel-body">
+                                    <div class="col-xs-3">
+                                        <div id="semester1" class="col-xs-6" >
+                                            <div class="panel panel-primary">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">Semester 1</h3>
+                                                </div>
+                                                <div class="panel-body" id="sem1" style="padding:6px 4px;">
+
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="panel-body" id="sem1" style="padding:6px 4px;">
+                                        <div id="semester2" class="col-xs-6" >
+                                            <div class="panel panel-primary">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">Semester 2</h3>
+                                                </div>
+                                                <div class="panel-body" id="sem2" style="padding:6px 4px;">
 
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div id="semester2" class="col-xs-6" >
-                                    <div class="panel panel-primary">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">Semester 2</h3>
-                                        </div>
-                                        <div class="panel-body" id="sem2" style="padding:6px 4px;">
+                                    <div class="col-xs-3">
+                                        <div id="semester3" class="col-xs-6" >
+                                            <div class="panel panel-primary">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">Semester 3</h3>
+                                                </div>
+                                                <div class="panel-body" id="sem3" style="padding:6px 4px;">
 
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="semester4" class="col-xs-6" >
+                                            <div class="panel panel-primary">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">Semester 4</h3>
+                                                </div>
+                                                <div class="panel-body" id="sem4" style="padding:6px 4px;">
+
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-3">
-                                <div id="semester3" class="col-xs-6" >
-                                    <div class="panel panel-primary">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">Semester 3</h3>
-                                        </div>
-                                        <div class="panel-body" id="sem3" style="padding:6px 4px;">
+                                    <div class="col-xs-3">
+                                        <div id="semester5" class="col-xs-6" >
+                                            <div class="panel panel-primary">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">Semester 5</h3>
+                                                </div>
+                                                <div class="panel-body" id="sem5" style="padding:6px 4px;">
 
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="semester6" class="col-xs-6" >
+                                            <div class="panel panel-primary">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">Semester 6</h3>
+                                                </div>
+                                                <div class="panel-body" id="sem6" style="padding:6px 4px;">
+
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div id="semester4" class="col-xs-6" >
-                                    <div class="panel panel-primary">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">Semester 4</h3>
-                                        </div>
-                                        <div class="panel-body" id="sem4" style="padding:6px 4px;">
+                                    <div class="col-xs-3">
+                                        <div id="semester7" class="col-xs-6" style="border: 1px;">
+                                            <div class="panel panel-primary">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">Semester 7</h3>
+                                                </div>
+                                                <div class="panel-body" id="sem7" style="padding:6px 4px;">
 
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-3">
-                                <div id="semester5" class="col-xs-6" >
-                                    <div class="panel panel-primary">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">Semester 5</h3>
-                                        </div>
-                                        <div class="panel-body" id="sem5" style="padding:6px 4px;">
+                                        <div id="semester8" class="col-xs-6" >
+                                            <div class="panel panel-primary">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">Semester 8</h3>
+                                                </div>
+                                                <div class="panel-body" id="sem8" style="padding:6px 4px;">
 
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="semester6" class="col-xs-6" >
-                                    <div class="panel panel-primary">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">Semester 6</h3>
-                                        </div>
-                                        <div class="panel-body" id="sem6" style="padding:6px 4px;">
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-3">
-                                <div id="semester7" class="col-xs-6" style="border: 1px;">
-                                    <div class="panel panel-primary">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">Semester 7</h3>
-                                        </div>
-                                        <div class="panel-body" id="sem7" style="padding:6px 4px;">
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="semester8" class="col-xs-6" >
-                                    <div class="panel panel-primary">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">Semester 8</h3>
-                                        </div>
-                                        <div class="panel-body" id="sem8" style="padding:6px 4px;">
-
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <br/>
                     </div>
                 </div>
-                <br/>
             </div>
         </div>
     </div>
 </div>
+
 
 <script>
     var Degree = function(ubclass, sem_index,title, link,pre1){
@@ -140,6 +146,14 @@
         this.LINK = link;
         this.TITLE = title;
         this.PRE_REQ1 = pre1;
+    };
+
+    var Helper_Table = function(user_id){
+        this.user_id = user_id;
+        this.classes_taken = [];
+        for(var x=0;x<40;x++){
+            this.classes_taken[x] = 0;
+        }
     };
 
     function show_info(id, iteration){
@@ -233,7 +247,7 @@
 
         //course and cap box
         var course_box = document.createElement("course_box");
-        course_box.setAttribute('class', 'col-xs-12')
+        course_box.setAttribute('class', 'col-xs-12');
         a.appendChild(course_box);
 
         //Add cap container
@@ -278,8 +292,6 @@
         var list = document.getElementById('sem'+String(sem_index));
         list.insertBefore(course, list.childNodes[0]);
     }
-
-
 </script>
 
 {% endblock %}
