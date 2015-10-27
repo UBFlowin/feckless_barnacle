@@ -336,8 +336,9 @@ def profile():
 @login_required
 def getSearch():
     if request.method == 'POST':
-        ubclass = request.json['course']
+        course_num = request.json['course']
         dept = request.json['dept']
+        ubclass = dept+course_num
         results = UBClasses.query.filter_by(UBCLASS=ubclass).all()
 
 
@@ -372,7 +373,7 @@ def getSearch():
                   json_rec.append(rec)
              d = {'ID': result.ID,
                   'UBCLASS': result.UBCLASS,
-                  'TITLE' : result.TITLE,
+                  'TITLE': result.TITLE,
                   'DEPARTMENT': result.DEPARTMENT,
                   'SECTION': result.SECTION,
                   'TYPE': result.TYPE,
