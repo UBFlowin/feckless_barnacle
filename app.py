@@ -238,20 +238,8 @@ class ClassesTakenHelper(db.Model):
     DEGREE_COURSE39 = db.Column(db.Integer, nullable=True)
     DEGREE_COURSE40 = db.Column(db.Integer, nullable=True)
 
-    def __init__(self, user_id,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12):
+    def __init__(self, user_id):
         self.USER_ID = user_id
-        self.DEGREE_COURSE1 = d1
-        self.DEGREE_COURSE2 = d2
-        self.DEGREE_COURSE3 = d3
-        self.DEGREE_COURSE4 = d4
-        self.DEGREE_COURSE5 = d5
-        self.DEGREE_COURSE6 = d6
-        self.DEGREE_COURSE7 = d7
-        self.DEGREE_COURSE8 = d8
-        self.DEGREE_COURSE9 = d9
-        self.DEGREE_COURSE10 = d10
-        self.DEGREE_COURSE11 = d11
-        self.DEGREE_COURSE12 = d12
 
 
 '''-----------------------------------------------
@@ -318,7 +306,9 @@ def new_user():
         db.session.commit()
 
         # Load that user entry ID number and add row to helper table
+
         curr_user = User.query.filter_by(USERNAME=username).first()
+        session['user'] = curr_user.id
         new_classes_taken_row = ClassesTakenHelper(curr_user.id)
         db.session.add(new_classes_taken_row)
         db.session.commit()
