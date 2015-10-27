@@ -14,7 +14,7 @@ function make_available_classes() {
     var available_class,a,mouseover,mouseout,spin_wheel_holder,spin_wheel,class_name_holder,p1,p2,txt1,txt2,class_time_holder;
     for (var j = 0; j < CLASS_HANDLES.length; j++) {
         if(CLASS_HANDLES[j] != null) {
-            available_class = document.createElement('available_class'+String(j));
+            available_class = document.createElement('available_class');//+String(j));
             a = document.createElement('Class' + String(j));
             a.setAttribute('style', 'height: 40px;');
             a.setAttribute('id', 'container' + String(j));
@@ -464,10 +464,10 @@ function unshade(id){
 (function (root, factory) {
 
   /* CommonJS */
-  if (typeof module == 'object' && module.exports) module.exports = factory()
+  if (typeof module == 'object' && module.exports) module.exports = factory();
 
   /* AMD module */
-  else if (typeof define == 'function' && define.amd) define(factory)
+  else if (typeof define == 'function' && define.amd) define(factory);
 
   /* Browser global */
   else root.Spinner = factory()
@@ -512,7 +512,7 @@ function unshade(id){
       , start = 0.01 + i/lines * 100
       , z = Math.max(1 - (1-alpha) / trail * (100-start), alpha)
       , prefix = useCssAnimations.substring(0, useCssAnimations.indexOf('Animation')).toLowerCase()
-      , pre = prefix && '-' + prefix + '-' || ''
+      , pre = prefix && '-' + prefix + '-' || '';
 
     if (!animations[name]) {
       sheet.insertRule(
@@ -522,7 +522,7 @@ function unshade(id){
         (start+0.01) + '%{opacity:1}' +
         (start+trail) % 100 + '%{opacity:' + alpha + '}' +
         '100%{opacity:' + z + '}' +
-        '}', sheet.cssRules.length)
+        '}', sheet.cssRules.length);
 
       animations[name] = 1
     }
@@ -562,7 +562,7 @@ function unshade(id){
    */
   function merge (obj) {
     for (var i = 1; i < arguments.length; i++) {
-      var def = arguments[i]
+      var def = arguments[i];
       for (var n in def) {
         if (obj[n] === undefined) obj[n] = def[n]
       }
