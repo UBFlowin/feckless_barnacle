@@ -9,6 +9,9 @@
 ---------------------------------------------------------------->
 <script>
     var CLASS_HANDLES = [];
+    var g_Color = "#0c1Aff";
+    var g_Border_Color = "Black";
+
     /*********************************************************
     *       Get First Class Information
     *********************************************************/
@@ -57,7 +60,6 @@
     });
 
 
-
     /*********************************************************
     *       Get Next Class Information
     *********************************************************/
@@ -65,19 +67,34 @@
         $("#SearchButton").click(function() {
             var x = 0;
             var recitation = [];
-            var times;
 
-            //Get Course # Input
+            //Get Input
             var elem = document.getElementById('courseNum');
-
-            //Get Department Input
             var department = document.getElementById('dept_button');
-            //alert(department.value);
+            var chk1 = document.getElementById('checkbox1');
+            var chk2 = document.getElementById('checkbox1');
+            var chk3 = document.getElementById('checkbox1');
+            var chk4 = document.getElementById('checkbox1');
+            var chk5 = document.getElementById('checkbox1');
 
-            var course = 'CSE'+elem.value;
+            var chk1_val = chk1.value;
+            var chk2_val = chk2.value;
+            var chk3_val = chk3.value;
+            var chk4_val = chk4.value;
+            var chk5_val = chk5.value;
+
+            alert(chk1_val);
+            //Construct UBCLASS dict
+            var course = elem.value;
+            var dept = department.value;
             var data = {
                 'course':course,
-                'dept':department.value
+                'dept': dept,
+                'Mon' : chk1_val,
+                'Tue' : chk2_val,
+                'Wed' : chk3_val,
+                'Thu' : chk4_val,
+                'Fri' : chk5_val
             };
 
             $.ajax({
@@ -92,9 +109,10 @@
                     reset_class_handles();
 
                     if(dat.classes[0].UBCLASS == 'No Such Class'){
-                        var elem = document.getElementById('courseNum');
+                        var elem = document.getElementById('dept_button');
                         elem.style.backgroundColor = 'Red';
-                        //alert("Class doesn't exist");
+                        elem = document.getElementById('courseNum');
+                        elem.style.backgroundColor = 'Red';
                     }
                     else{
                         while(dat.classes[x] != null) {
@@ -162,66 +180,63 @@
                         <div class="panel-heading">
                             <i class="fa fa-book"></i> Course Search...
                         </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
+                        <div class="panel-body" style="padding:2px;">
                             <div class="list-group">
-                                <h6>*Required:</h6>
-                                <div class="dropdown">
-                                <button id="dept_button" name="Sbutton" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">*Department
-                                    <span class="caret"></span>
-                                </button>
-                                    <ul class="dropdown-menu scrollable-menu" role="menu">
-                                        <li><a href="#">CIE</a></li>
-                                        <li><a href="#">CSE</a></li>
-                                        <li><a href="#">EAS</a></li>
-                                        <li><a href="#">EE</a></li>
-                                        <li><a href="#">MAE</a></li>
-                                    </ul>
-                                </div>
-                                <div class="dropdown">
-                                    <form class="form-horizontal" role="form">
-                                        <div class="form-group">
-                                            <br>
-                                            <label for="courseNum" class="col-sm- col-xs-7 control-label">*Course #</label>
-                                            <div class="col-sm-4 col-xs-5">
-                                                <input type="text" class="form-control" id="courseNum" placeholder="###">
+                                <form role="form">
+                                    <div class="form-group">
+                                        <label for="dept_button" class="col-xs-12">Department list:</label>
+                                        <select class="form-control" id="dept_button" onclick="unshade('dept_button')">
+                                            <option>CIE</option>
+                                            <option>CSE</option>
+                                            <option>EAS</option>
+                                            <option>EE</option>
+                                            <option>MAE</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label  for="courseNum"  class="col-xs-12">Course #:</label>
+                                        <div class="col-xs-12">
+                                            <input type="text" class="form-control" id="courseNum" style='max-width:55px;' placeholder="###" onclick="unshade('courseNum')">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <br/>
+                                        <br/>
+                                        <br/>
+                                        <br/>
+                                        <label  for="courseNum"  class="col-xs-12">Block Days:</label>
+                                        <div class="col-xs-12">
+                                            <input id="checkbox1" name="checkbox1" type="hidden" value="0"/>
+                                            <input id="checkbox2" name="checkbox2" type="hidden" value="0"/>
+                                            <input id="checkbox3" name="checkbox3" type="hidden" value="0"/>
+                                            <input id="checkbox4" name="checkbox4" type="hidden" value="0"/>
+                                            <input id="checkbox5" name="checkbox5" type="hidden" value="0"/>
+                                            <div class="btn-group" data-toggle="buttons">
+                                                <button id='monday_button' type="button" class="btn btn-default"
+                                                        style="padding: 6px; min-width: 30px;" onclick="shadeDay('monday_button')"
+                                                        data-checkbox-name="checkbox1">M</button>
+                                                <button id='tuesday_button' type="button" class="btn btn-default"
+                                                        style="padding: 6px; min-width: 30px;" onclick="shadeDay('tuesday_button')"
+                                                        data-checkbox-name="checkbox2">T</button>
+                                                <button id='wednesday_button' type="button" class="btn btn-default"
+                                                        style="padding: 6px; min-width: 30px;" onclick="shadeDay('wednesday_button')"
+                                                        data-checkbox-name="checkbox3">W</button>
+                                                <button id='thursday_button' type="button" class="btn btn-default"
+                                                        style="padding: 6px; min-width: 30px;" onclick="shadeDay('thursday_button')"
+                                                        data-checkbox-name="checkbox4">R</button>
+                                                <button id='friday_button' type="button" class="btn btn-default"
+                                                        style="padding: 6px; min-width: 30px;" onclick="shadeDay('friday_button')"
+                                                        data-checkbox-name="checkbox5">F</button>
                                             </div>
                                         </div>
-                                    </form>
-                                    <form>
-                                        <div class="dropdown">
-                                            <br>
-                                            <br>
-                                            <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">Filters
-                                                <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu scrollable-menu" role="menu" style="padding-left:5px; max-height:200px; overflow:hidden; overflow-y:auto">
-                                                <li class="dropdown-header"><i>Days</i></li>
-                                                    <li><label><input type="checkbox" value=""> MWF</label></li>
-                                                    <li><label><input type="checkbox" value=""> TR</label></li>
-                                                    <li><label><input type="checkbox" value=""> MW</label></li>
-                                                <li class="dropdown-header"><i>Times</i></li>
-                                                    <li><label><input type="checkbox" value=""> 8:00AM</label></li>
-                                                    <li><label><input type="checkbox" value=""> 9:00AM</label></li>
-                                                    <li><label><input type="checkbox" value=""> 10:00AM</label></li>
-                                                    <li><label><input type="checkbox" value=""> 11:00AM</label></li>
-                                                    <li><label><input type="checkbox" value=""> 12:00PM</label></li>
-                                                    <li><label><input type="checkbox" value=""> 1:00PM</label></li>
-                                                    <li><label><input type="checkbox" value=""> 2:00PM</label></li>
-                                                    <li><label><input type="checkbox" value=""> 3:00PM</label></li>
-                                                    <li><label><input type="checkbox" value=""> 4:00PM</label></li>
-                                                    <li><label><input type="checkbox" value=""> 5:00PM</label></li>
-                                                    <li><label><input type="checkbox" value=""> 6:00PM</label></li>
-                                                    <li><label><input type="checkbox" value=""> 7:00PM</label></li>
-                                                    <li><label><input type="checkbox" value=""> 8:00PM</label></li>
-                                            </ul>
-                                        </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                </form>
                             </div>
-                            <!-- /.list-group -->
-                            <a href="#" id="SearchButton" class="btn btn-default btn-block">Search</a>
                         </div>
+                        <br/>
+                        <a href="#" id="SearchButton" class="btn btn-default btn-block">Search</a>
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
@@ -522,7 +537,7 @@
                                                     };
                                        var target = document.getElementById('timeout_wheel');
                                        var spinner = new Spinner(opts).spin(target);
-                                       window.setTimeout(switch_avail_classes,1000);
+                                       window.setTimeout(switch_avail_classes,2000);
                                     </script>
                                 </div>
                             </div>
@@ -879,12 +894,19 @@
         var Selected_Classes = new Selected_Class();
 
 
+    /*********************************************************
+    *       Reset Class Handles Array  to None
+    *********************************************************/
     function reset_class_handles(){
         for(var i=0;i<CLASS_HANDLES.length;i++){
             CLASS_HANDLES[i] = null;
         }
     }
 
+
+    /*********************************************************
+    *       Remove All Available Classes Currently Visible
+    *********************************************************/
     function remove_available_classes(){
         var list = document.getElementById('accordion-body');
         var i =0;
@@ -902,6 +924,52 @@
             i++;
         }
     }
+
+
+    /*********************************************************
+    *       Shade the Day Button
+    *********************************************************/
+    function shadeDay(id) {
+        var box;
+        var button = document.getElementById(id);
+        if(id == 'monday_button'){
+            box = document.getElementById('checkbox1');
+        }
+        else if(id == 'tuesday_button'){
+            box = document.getElementById('checkbox2');
+        }
+        else if(id == 'wednesday_button'){
+            box = document.getElementById('checkbox3');
+        }
+        else if(id == 'thursday_button'){
+            box = document.getElementById('checkbox4');
+        }
+        else if(id == 'friday_button'){
+            box = document.getElementById('checkbox5');
+        }
+//        else if(id == 'saturday_button'){
+//            box = document.getElementById('checkbox6');
+//        }
+        if(box.value == 0){
+            button.style.backgroundColor = "#f78181";
+        }
+        else{
+            button.style.backgroundColor = "White";
+        }
+    }
+
+    $('.btn[data-radio-name]').click(function() {
+        $('.btn[data-radio-name="'+$(this).data('radioName')+'"]').removeClass('active');
+        $('input[name="'+$(this).data('radioName')+'"]').val(
+            $(this).text()
+        );
+    });
+
+    $('.btn[data-checkbox-name]').click(function() {
+        $('input[name="'+$(this).data('checkboxName')+'"]').val(
+            $(this).hasClass('active') ? 0 : 1
+        );
+    });
 
     </script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
