@@ -192,7 +192,7 @@ class UBRecitation(db.Model):
 '''-----------------------------------------------
         Classes_Taken_Helper_Table Model
 -----------------------------------------------'''
-class Classes_Taken_Helper(db.Model):
+class ClassesTakenHelper(db.Model):
     __tablename__ = 'classes_taken_helper'
 
     ID = db.Column(db.Integer, primary_key=True)
@@ -238,8 +238,20 @@ class Classes_Taken_Helper(db.Model):
     DEGREE_COURSE39 = db.Column(db.Integer, nullable=True)
     DEGREE_COURSE40 = db.Column(db.Integer, nullable=True)
 
-    def __init__(self, user_id):
+    def __init__(self, user_id,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12):
         self.USER_ID = user_id
+        self.DEGREE_COURSE1 = d1
+        self.DEGREE_COURSE2 = d2
+        self.DEGREE_COURSE3 = d3
+        self.DEGREE_COURSE4 = d4
+        self.DEGREE_COURSE5 = d5
+        self.DEGREE_COURSE6 = d6
+        self.DEGREE_COURSE7 = d7
+        self.DEGREE_COURSE8 = d8
+        self.DEGREE_COURSE9 = d9
+        self.DEGREE_COURSE10 = d10
+        self.DEGREE_COURSE11 = d11
+        self.DEGREE_COURSE12 = d12
 
 
 '''-----------------------------------------------
@@ -307,7 +319,7 @@ def new_user():
 
         # Load that user entry ID number and add row to helper table
         curr_user = User.query.filter_by(USERNAME=username).first()
-        new_classes_taken_row = Classes_Taken_Helper(curr_user.id)
+        new_classes_taken_row = ClassesTakenHelper(curr_user.id)
         db.session.add(new_classes_taken_row)
         db.session.commit()
 
@@ -335,6 +347,7 @@ def login():
         if user:
             if user.verify_password(password):
                 login_user(user)
+                session['user'] = user.id
                 return redirect(url_for('flowsheet'))
             else:
                 return render_template('login.html', input_error='Incorrect Password')
@@ -371,11 +384,21 @@ def secret():
     return render_template('index.html')
 
 
+@app.route('/userid')
+@login_required
+def passuserid():
+    json_results = []
+    if request.method == 'GET':
+        json_results = []
+        user = session['user']
+        d = {'ID':user}
+        json_results.append(d)
+    return jsonify(classes=json_results)
+
 
 '''-----------------------------------------------
       ROUTE: Profile
 -----------------------------------------------'''
-
 @app.route('/profile', methods=['GET'])
 @login_required
 def profile():
@@ -443,6 +466,54 @@ def getSearch():
         return jsonify(classes=json_results)
 
 
+@app.route('/getfirstclassgroup', methods=['GET'])
+@login_required
+def getFirstClassGroup():
+    if request.method == 'GET':
+        results = UBClasses.query.limit(10).offset(0).all()
+    rec = {}
+    json_results = []
+    json_rec = []
+    for result in results:
+        recitations = UBRecitation.query.filter_by(RECITATION_ID=result.ID).all()
+        for recitation in recitations:
+            rec = {'ID': recitation.ID,
+                   'REC_ID': recitation.RECITATION_ID,
+                   'UBCLASS' : recitation.UBCLASS,
+                   'SECTION': recitation.SECTION,
+                   'TYPE': recitation.TYPE,
+                   'DAYS': recitation.DAYS,
+                   'TIME': recitation.TIME,
+                   'BUILDING': recitation.BUILDING,
+                   'ROOM_NUMBER': recitation.ROOM_NUMBER,
+                   'LOCATION': recitation.LOCATION,
+                   'STATUS': recitation.STATUS,
+                   'RESERVED': recitation.RESERVED,
+            }
+            json_rec.append(rec)
+        d = {'ID': result.ID,
+             'UBCLASS': result.UBCLASS,
+             'TITLE' : result.TITLE,
+             'DEPARTMENT': result.DEPARTMENT,
+             'SECTION': result.SECTION,
+             'TYPE': result.TYPE,
+             'DAYS': result.DAYS,
+             'TIME': result.TIME,
+             'BUILDING': result.BUILDING,
+             'ROOM_NUMBER': result.ROOM_NUMBER,
+             'LOCATION': result.LOCATION,
+             'PROFESSOR_ID': result.PROFESSOR_ID,
+             'PROFESSOR': result.PROFESSOR,
+             'STATUS': result.STATUS,
+             'RESERVED': result.RESERVED,
+             'SEMESTER': result.SEMESTER,
+             'RECITATION': json_rec
+            }
+        json_rec = []
+        json_results.append(d)
+    return jsonify(classes=json_results)
+
+
 @app.route('/getnextclassgroup', methods=['GET'])
 @login_required
 def getClassGroup():
@@ -492,54 +563,6 @@ def getClassGroup():
     return jsonify(classes=json_results)
 
 
-@app.route('/getfirstclassgroup', methods=['GET'])
-@login_required
-def getFirstClassGroup():
-    if request.method == 'GET':
-        results = UBClasses.query.limit(10).offset(0).all()
-    rec = {}
-    json_results = []
-    json_rec = []
-    for result in results:
-        recitations = UBRecitation.query.filter_by(RECITATION_ID=result.ID).all()
-        for recitation in recitations:
-            rec = {'ID': recitation.ID,
-                   'REC_ID': recitation.RECITATION_ID,
-                   'UBCLASS' : recitation.UBCLASS,
-                   'SECTION': recitation.SECTION,
-                   'TYPE': recitation.TYPE,
-                   'DAYS': recitation.DAYS,
-                   'TIME': recitation.TIME,
-                   'BUILDING': recitation.BUILDING,
-                   'ROOM_NUMBER': recitation.ROOM_NUMBER,
-                   'LOCATION': recitation.LOCATION,
-                   'STATUS': recitation.STATUS,
-                   'RESERVED': recitation.RESERVED,
-            }
-            json_rec.append(rec)
-        d = {'ID': result.ID,
-             'UBCLASS': result.UBCLASS,
-             'TITLE' : result.TITLE,
-             'DEPARTMENT': result.DEPARTMENT,
-             'SECTION': result.SECTION,
-             'TYPE': result.TYPE,
-             'DAYS': result.DAYS,
-             'TIME': result.TIME,
-             'BUILDING': result.BUILDING,
-             'ROOM_NUMBER': result.ROOM_NUMBER,
-             'LOCATION': result.LOCATION,
-             'PROFESSOR_ID': result.PROFESSOR_ID,
-             'PROFESSOR': result.PROFESSOR,
-             'STATUS': result.STATUS,
-             'RESERVED': result.RESERVED,
-             'SEMESTER': result.SEMESTER,
-             'RECITATION': json_rec
-            }
-        json_rec = []
-        json_results.append(d)
-    return jsonify(classes=json_results)
-
-
 @app.route('/degreeinfo', methods=['GET'])
 @login_required
 def degree_info():
@@ -554,6 +577,68 @@ def degree_info():
              'LINK': course.LINK,
              'PRE_REQ1':course.PRE_REQ1}
         json_results.append(d)
+    return jsonify(classes=json_results)
+
+
+@app.route('/degreeinfo/<int:user_id>', methods=['GET'])
+@login_required
+def degree_info_user(user_id):
+    json_results = []
+    d ={}
+    if request.method == 'GET':
+        user_classes = ClassesTakenHelper.query.filter_by(USER_ID=user_id).first()
+        if user_classes is not None:
+            degree_array = [user_classes.DEGREE_COURSE1,
+                            user_classes.DEGREE_COURSE2,
+                            user_classes.DEGREE_COURSE3,
+                            user_classes.DEGREE_COURSE4,
+                            user_classes.DEGREE_COURSE5,
+                            user_classes.DEGREE_COURSE6,
+                            user_classes.DEGREE_COURSE7,
+                            user_classes.DEGREE_COURSE8,
+                            user_classes.DEGREE_COURSE9,
+                            user_classes.DEGREE_COURSE10,
+                            user_classes.DEGREE_COURSE11,
+                            user_classes.DEGREE_COURSE12,
+                            user_classes.DEGREE_COURSE13,
+                            user_classes.DEGREE_COURSE14,
+                            user_classes.DEGREE_COURSE15,
+                            user_classes.DEGREE_COURSE16,
+                            user_classes.DEGREE_COURSE17,
+                            user_classes.DEGREE_COURSE18,
+                            user_classes.DEGREE_COURSE19,
+                            user_classes.DEGREE_COURSE20,
+                            user_classes.DEGREE_COURSE21,
+                            user_classes.DEGREE_COURSE22,
+                            user_classes.DEGREE_COURSE23,
+                            user_classes.DEGREE_COURSE24,
+                            user_classes.DEGREE_COURSE25,
+                            user_classes.DEGREE_COURSE26,
+                            user_classes.DEGREE_COURSE27,
+                            user_classes.DEGREE_COURSE28,
+                            user_classes.DEGREE_COURSE29,
+                            user_classes.DEGREE_COURSE30,
+                            user_classes.DEGREE_COURSE31,
+                            user_classes.DEGREE_COURSE32,
+                            user_classes.DEGREE_COURSE33,
+                            user_classes.DEGREE_COURSE34,
+                            user_classes.DEGREE_COURSE35,
+                            user_classes.DEGREE_COURSE36,
+                            user_classes.DEGREE_COURSE37,
+                            user_classes.DEGREE_COURSE38,
+                            user_classes.DEGREE_COURSE39,
+                            user_classes.DEGREE_COURSE40]
+            for x in range(0,39):
+                if degree_array[x] is not None:
+                    course = Degree.query.filter_by(ID=degree_array[x]).first()
+                    if course is not None:
+                        d = {'ID': course.ID,
+                         'UBCLASS': course.UBCLASS,
+                         'SEM_INDEX': course.SEM_INDEX,
+                         'TITLE': course.TITLE,
+                         'LINK': course.LINK,
+                         'PRE_REQ1':course.PRE_REQ1}
+                        json_results.append(d)
     return jsonify(classes=json_results)
 
 

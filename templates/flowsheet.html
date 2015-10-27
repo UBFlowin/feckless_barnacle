@@ -4,24 +4,69 @@
 <script type="text/javascript" src="{{ url_for('static', filename='custom_ubflow.js') }}"></script>
 <script>
     var DEGREE_HANDLES= [];
+    var USER_ID =0;
 
-    $.getJSON('/degreeinfo', function(dat) {
+    /*
+     *  Gets the current User ID so the flowsheet can adjust according to their history
+     */
+    $.getJSON('/userid', function(dat) {
+        var handle_index = 0;
         console.log(dat);
-        var x = 0;
-        if(dat.classes) {
-            while (x< dat.classes.length) {
-                var id = dat.classes[x].ID;
-                var ubclass = dat.classes[x].UBCLASS;
-                var sem_index = dat.classes[x].SEM_INDEX;
-                var link = "link";
-                var title = dat.classes[x].TITLE;
-                var pre1 = dat.classes[x].PRE_REQ1;
-                DEGREE_HANDLES[x] = new Degree(ubclass,sem_index,title,link,pre1);
-                x = x + 1;
+        if (dat.classes) {
+            USER_ID = dat.classes[0].ID;
+            $.getJSON('/degreeinfo/' + String(USER_ID), function (dat) {
+                console.log(dat);
+                if (dat.classes) {
+                    var x = 0;
+                    while (x < dat.classes.length) {
+                        var id = dat.classes[x].ID;
+                        var ubclass = dat.classes[x].UBCLASS;
+                        var sem_index = dat.classes[x].SEM_INDEX;
+                        var link = "link";
+                        var title = dat.classes[x].TITLE;
+                        var pre1 = dat.classes[x].PRE_REQ1;
+                        DEGREE_HANDLES[handle_index] = new Degree(ubclass, sem_index, title, link, pre1, 1);
+                        handle_index += 1;
+                        x = x + 1;
+                    }
+                }
+            });
+
+            /* Get All Courses, but don't include repeats */
+            $.getJSON('/degreeinfo', function(dat) {
+                console.log(dat);
+                if(dat.classes) {
+                    var x = 0;
+                    while (x< dat.classes.length) {
+                        var id = dat.classes[x].ID;
+                        var ubclass = dat.classes[x].UBCLASS;
+                        var sem_index = dat.classes[x].SEM_INDEX;
+                        var link = "link";
+                        var title = dat.classes[x].TITLE;
+                        var pre1 = dat.classes[x].PRE_REQ1;
+                        if(!search_degree_for_repeats(ubclass)) {
+                            DEGREE_HANDLES[handle_index] = new Degree(ubclass, sem_index, title, link, pre1, 0);
+                            handle_index += 1;
+                        }
+                        x = x + 1;
+                    }
+                }
+                populate_semesters();
+            });
+        }
+    });
+
+    /* Checkes for repeats in DEGREE_HANDLES */
+    function search_degree_for_repeats(id){
+        for(var p=0;p<DEGREE_HANDLES.length;p++){
+            if( id == DEGREE_HANDLES[p].UBCLASS){
+                return true;
             }
         }
-        populate_semesters();
-    });
+        return false;
+    }
+
+
 
 </script>
 
@@ -30,16 +75,20 @@
         <div class="col-xs-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h2> B.S. Computer Engineering </h2>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <h2> B.S. Computer Engineering </h2>
+                        </div>
+                    </div>
                 </div>
                 <!-- .panel-heading -->
-                <div class="panel-body">
+                <div class="panel-body" style="padding:6px;">
                     <div class="panel-group" id="flowsheet_container">
                         <div class="row" align="center">
 
-                            <div id="year1" class="col-xs-12">
-                                <div  class="panel-body">
-                                    <div class="col-xs-3">
+                            <div class="col-xs-12">
+                                <div  class="panel-body" style="padding:6px;">
+                                    <div id="year1" class="col-xs-3">
                                         <div id="semester1" class="col-xs-6" >
                                             <div class="panel panel-primary">
                                                 <div class="panel-heading">
@@ -61,7 +110,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-3">
+                                    <div id="year2" class="col-xs-3">
                                         <div id="semester3" class="col-xs-6" >
                                             <div class="panel panel-primary">
                                                 <div class="panel-heading">
@@ -83,7 +132,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-3">
+                                    <div id="year3" class="col-xs-3">
                                         <div id="semester5" class="col-xs-6" >
                                             <div class="panel panel-primary">
                                                 <div class="panel-heading">
@@ -105,7 +154,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-3">
+                                    <div id="year4" class="col-xs-3">
                                         <div id="semester7" class="col-xs-6" style="border: 1px;">
                                             <div class="panel panel-primary">
                                                 <div class="panel-heading">
@@ -140,12 +189,13 @@
 
 
 <script>
-    var Degree = function(ubclass, sem_index,title, link,pre1){
+    var Degree = function(ubclass, sem_index,title, link, pre1, user_took){
         this.UBCLASS = ubclass;
         this.SEM_INDEX = sem_index;
         this.LINK = link;
         this.TITLE = title;
         this.PRE_REQ1 = pre1;
+        this.TAKEN = user_took
     };
 
     var Helper_Table = function(user_id){
@@ -215,6 +265,10 @@
     }
 
     function populate_semesters(){
+        //populate course that the user has taken
+
+
+        //populate remaining courses
         for(var sem=0;sem<9;sem++){
             for(var i=0;i<DEGREE_HANDLES.length;i++) {
                 if (DEGREE_HANDLES[i].SEM_INDEX == sem) {
@@ -226,12 +280,21 @@
 
 
     function create_new_course_block(sem_index, num){
-        var course = document.createElement('sem'+String(sem_index)+'_course'+String(num));
-        var a = document.createElement('course' + String(num));
-        a.setAttribute('style', 'height: 80px; min-width: 110px; padding: 10px 2px; ' +
-                'border-top-left-radius: 8px;border-top-right-radius: 8px;' +
-                'border-bottom-left-radius: 8px;border-bottom-right-radius: 8px;' +
-                'border-color: #1f6485');
+        var course = document.createElement('semester'+String(sem_index));
+        var a = document.createElement('course');
+        if(DEGREE_HANDLES[num].TAKEN == 1) {
+            a.setAttribute('style', 'height: 80px; min-width: 95px; padding: 10px 2px; ' +
+                    'border-top-left-radius: 8px;border-top-right-radius: 8px;' +
+                    'border-bottom-left-radius: 8px;border-bottom-right-radius: 8px;' +
+                    'border-color: #334455;'+'font-size:11px;font-style:italic;');
+        }
+        else{
+            a.setAttribute('style', 'height: 80px; min-width: 95px; padding: 10px 2px; ' +
+                    'border-top-left-radius: 8px;border-top-right-radius: 8px;' +
+                    'border-bottom-left-radius: 8px;border-bottom-right-radius: 8px;' +
+                    'border-color: #1f6485;');
+            a.setAttribute('background', "url('/static/Mid_Cell.jpg')");
+        }
         a.setAttribute('id',String(DEGREE_HANDLES[num].UBCLASS));
         a.setAttribute('class', 'list-group-item');
 
@@ -248,6 +311,7 @@
         //course and cap box
         var course_box = document.createElement("course_box");
         course_box.setAttribute('class', 'col-xs-12');
+        course_box.setAttribute('style', 'padding:3px;');
         a.appendChild(course_box);
 
         //Add cap container
@@ -277,14 +341,14 @@
         course_box.appendChild(span);
 
         //course title
-        var course_title_container = document.createElement("course_title");
+        var course_title_container = document.createElement("course_title_box");
         course_title_container.setAttribute('class', 'col-xs-12');
         course_title_container.setAttribute('style', 'font-size:11px;font-style:italic;');
         course_title_container.setAttribute('font-family', 'Agency fb');
         a.appendChild(course_title_container);
 
         //add course name
-        var course_title1 = document.createElement('course_title' + String(num));
+        var course_title1 = document.createElement('course_title');
         var course_text_title = document.createTextNode(DEGREE_HANDLES[num].TITLE);
         course_title1.appendChild(course_text_title);
         course_title_container.appendChild(course_title1);
@@ -292,6 +356,28 @@
         var list = document.getElementById('sem'+String(sem_index));
         list.insertBefore(course, list.childNodes[0]);
     }
+
+
+    jQuery.fn.shake = function() {
+        this.each(function(i) {
+            $(this).css({ "position" : "relative" });
+            for (var x = 1; x <= 3; x++) {
+                $(this).animate({left:-5},5).animate({ left:0},10).animate({left:5},5).animate({left:0},10);
+            }
+        });
+        return this;
+    };
+
+    $("#sem8").click(function() {
+        $("#sem1").shake();
+        $("#sem2").shake();
+        $("#sem3").shake();
+        $("#sem4").shake();
+        $("#sem5").shake();
+        $("#sem6").shake();
+        $("#sem7").shake();
+        $("#sem8").shake();
+    });
 </script>
 
 {% endblock %}
