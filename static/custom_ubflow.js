@@ -277,14 +277,17 @@ function convertTimes(db_days,db_time){
     for(var num=0;num<10;num++){
         times[num] = " ";
     }
-    if(db_time == 'TBA'){
+    /* Check non-time entries */
+    if((db_time == 'TBA')||(db_time == 'ARR')){
         return times;
     }
+    /* Split Time to round */
     var split_time = db_time.split(" ");
     var round = split_time[3].split(":");
     if((round[1] == '10')||(round[1] == '20')){
         round[1] = '00';
     }
+    /* Round */
     if((round[1] == '40')||(round[1] == '50')){
         round[1] = '00';
         if(round[0] == '1'){round[0]="2";}
@@ -313,106 +316,33 @@ function convertTimes(db_days,db_time){
     split_time[3] = round[0]+":"+round[1];
     var start_time = split_time[0]+split_time[1];
     var end_time = split_time[3]+split_time[4];
-    switch(db_days) {
-        case "M W F":
-            times[0] = "M" + start_time;
-            times[1] = "M" + end_time;
-            times[2] = " ";
-            times[3] = " ";
-            times[4] = "W" + start_time;
-            times[5] = "W" + end_time;
-            times[6] = " ";
-            times[7] = " ";
-            times[8] = "F" + start_time;
-            times[9] = "F" + end_time;
-            break;
-        case "M W":
-            times[0] = "M" + start_time;
-            times[1] = "M" + end_time;
-            times[2] = " ";
-            times[3] = " ";
-            times[4] = "W" + start_time;
-            times[5] = "W" + end_time;
-            times[6] = " ";
-            times[7] = " ";
-            times[8] = " ";
-            times[9] = " ";
-            break;
-        case "M":
-            times[0] = "M" + start_time;
-            times[1] = "M" + end_time;
-            times[2] = " ";
-            times[3] = " ";
-            times[4] = " ";
-            times[5] = " ";
-            times[6] = " ";
-            times[7] = " ";
-            times[8] = " ";
-            times[9] = " ";
-            break;
-        case "W":
-            times[0] = " ";
-            times[1] = " ";
-            times[2] = " ";
-            times[3] = " ";
-            times[4] = "W" + start_time;
-            times[5] = "W" + end_time;
-            times[6] = " ";
-            times[7] = " ";
-            times[8] = " ";
-            times[9] = " ";
-            break;
-        case "F":
-            times[0] = " ";
-            times[1] = " ";
-            times[2] = " ";
-            times[3] = " ";
-            times[4] = " ";
-            times[5] = " ";
-            times[6] = " ";
-            times[7] = " ";
-            times[8] = "F" + start_time;
-            times[9] = "F" + end_time;
-            break;
-        case "T R":
-            times[0] = " ";
-            times[1] = " ";
-            times[2] = "T" + start_time;
-            times[3] = "T" + end_time;
-            times[4] = " ";
-            times[5] = " ";
-            times[6] = "R" + start_time;
-            times[7] = "R" + end_time;
-            times[8] = " ";
-            times[9] = " ";
-            break;
-        case "T":
-            times[0] = " ";
-            times[1] = " ";
-            times[2] = "T" + start_time;
-            times[3] = "T" + end_time;
-            times[4] = " ";
-            times[5] = " ";
-            times[6] = " ";
-            times[7] = " ";
-            times[8] = " ";
-            times[9] = " ";
-            break;
-        case "R":
-            times[0] = " ";
-            times[1] = " ";
-            times[2] = " ";
-            times[3] = " ";
-            times[4] = " ";
-            times[5] = " ";
-            times[6] = "R" + start_time;
-            times[7] = "R" + end_time;
-            times[8] = " ";
-            times[9] = " ";
-            break;
-        default:
-            break;
+
+    /* Analyze and enter times in the correct day slot */
+    if(db_days.indexOf('M') != -1){
+        times[0] = "M" + start_time;
+        times[1] = "M" + end_time;
     }
+    if(db_days.indexOf('T') != -1){
+        times[2] = "T" + start_time;
+        times[3] = "T" + end_time;
+    }
+    if(db_days.indexOf('W') != -1){
+        times[4] = "W" + start_time;
+        times[5] = "W" + end_time;
+    }
+    if(db_days.indexOf('R') != -1){
+        times[6] = "R" + start_time;
+        times[7] = "R" + end_time;
+    }
+    if(db_days.indexOf('F') != -1){
+        times[8] = "F" + start_time;
+        times[9] = "F" + end_time;
+    }
+    /* Saturdays not implemented yet */
+    //if(db_days.indexOf('S') != -1){
+    //    times[10] = "F" + start_time;
+    //    times[11] = "F" + end_time;
+    //}
     return times;
 }
 
