@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="1839475008">
-    <data-source source="LOCAL" name="MySQL - ubflowdb@localhost" uuid="a16dfaab-9c55-4715-9959-2bdaca100ac6">
+  <component name="DataSourceManagerImpl" format="xml" hash="3095554206">
+    <data-source source="LOCAL" name="MySQL - ubflowdb@localhost" uuid="09968188-8afb-4e17-8185-8301777f7b4b">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
