@@ -1,6 +1,213 @@
 /**
  * Created by Seth on 10/11/2015.
  */
+
+function make_available_classes2() {
+    var available_class, a, mouseover, mouseout, chevron_holder, chevron, type_container, type_text, text, txt1, txt2, container1;
+    for (var j = 0; j < CLASS_HANDLES.length; j++) {
+        if (CLASS_HANDLES[j] != null) {
+            available_class = document.createElement('available_class');
+            a = document.createElement('Class' + String(j));
+            a.setAttribute('style', 'height: 45px; padding:4px; border-bottom-left-radius:9px; border-bottom-right-radius:9px; border-top-left-radius:9px; border-top-right-radius:9px');
+            a.setAttribute('id', 'container' + String(j));
+            a.setAttribute('class', 'list-group-item');
+            a.setAttribute('data-toggle', 'collapse');
+            a.setAttribute('data-parent', '#accordion');
+            a.setAttribute('href', '#collapse' + String(j));
+            mouseover = "shade('container" + String(j) + "')";
+            mouseout = "unshade('container" + String(j) + "')";
+            a.setAttribute('onmouseover', mouseover);
+            a.setAttribute('onmouseout', mouseout);
+            available_class.appendChild(a);
+
+            //Add chevron_holder
+            chevron_holder = document.createElement("chevron_holder");
+            chevron_holder.setAttribute('class', 'col-xs-1');
+            a.appendChild(chevron_holder);
+
+            //Add chevron
+            chevron = document.createElement('chevron');
+            chevron.setAttribute('class', 'fa fa-chevron-circle-down');
+            chevron_holder.appendChild(chevron);
+
+
+            //Add container
+            container = document.createElement("container");
+            container.setAttribute('class', 'col-xs-11');
+            container.setAttribute('style', 'font-size: 13px;');
+            a.appendChild(container);
+
+             //add class name container
+            class_name_holder = document.createElement("name_holder_container");
+            class_name_holder.setAttribute('class', 'col-xs-8');
+            class_name_holder.setAttribute('style', 'font-size: 14px; font-weight: bold; height: 20px;');
+            container.appendChild(class_name_holder);
+
+            //add class name
+            p1 = document.createElement('class_name_' + String(j));
+            txt1 = document.createTextNode(CLASS_HANDLES[j].UBCLASS);
+            p1.appendChild(txt1);
+            class_name_holder.appendChild(p1);
+
+            //Add type container
+            type_container = document.createElement("type_container");
+            type_container.setAttribute('class', 'col-xs-4');
+            type_container.setAttribute('style', 'font-size: 14px; font-weight: bold;');
+            container.appendChild(type_container);
+
+            //add type
+            type_text = document.createElement('type');
+            text = document.createTextNode(CLASS_HANDLES[j].TYPE);
+            type_text.appendChild(text);
+            type_container.appendChild(type_text);
+
+            //Add container
+            container1 = document.createElement("container2");
+            container1.setAttribute('class', 'col-xs-12');
+            container1.setAttribute('style', 'font-size: 11px; text-align: right');
+            container.appendChild(container1);
+
+            //add class times
+            p2 = document.createElement('class_name_' + String(j));
+            txt2 = document.createTextNode(CLASS_HANDLES[j].DAYS + ":" + CLASS_HANDLES[j].TIME);
+
+            p2.appendChild(txt2);
+            container1.appendChild(p2);
+
+
+            if (CLASS_HANDLES[j].RECITATION.length != 0) {
+                var sub_group = document.createElement('sub_group');
+                sub_group.setAttribute('id', 'collapse' + String(j));
+                sub_group.setAttribute('class', 'panel-collapse collapse');
+                sub_group.setAttribute('style', 'padding: 4px;');
+                var k;
+                for (k = 0; k < CLASS_HANDLES[j].RECITATION.length; k++) {
+                    var sub_heading = document.createElement('sub_heading');
+                    var sub_a = document.createElement('availableClass' + String(j));
+                    sub_a.setAttribute('id', 'collapser' + String(j) + String(k));
+                    sub_a.setAttribute('style', 'height: 35px; padding:4px; border-bottom-left-radius:9px; border-bottom-right-radius:9px; border-top-left-radius:9px; border-top-right-radius:9px');
+                    sub_a.setAttribute('class', 'list-group-item');
+                    sub_a.setAttribute('onclick', 'Table1.clicked_class(CLASS_HANDLES[' + String(j) + '].RECITATION[' + String(k) + '], CLASS_HANDLES[' + String(j) + '])');
+                    sub_a.setAttribute('href', '#');
+                    var sub_mouseover = "shade('collapser" + String(j) + String(k) + "')";
+                    var sub_mouseout = "unshade('collapser" + String(j) + String(k) + "')";
+                    sub_a.setAttribute('onmouseover', sub_mouseover);
+                    sub_a.setAttribute('onmouseout', sub_mouseout);
+                    sub_heading.appendChild(sub_a);
+
+                    //Add spin wheel container
+                    var sub_spin_wheel_holder = document.createElement("spin_wheel_holder");
+                    sub_spin_wheel_holder.setAttribute('class', 'col-xs-1');
+                    sub_a.appendChild(sub_spin_wheel_holder);
+
+                    //Add spin wheel
+                    var sub_spin_wheel = document.createElement('spin_wheel');
+                    sub_spin_wheel.setAttribute('class', 'fa fa-plus-square');
+                    sub_spin_wheel_holder.appendChild(sub_spin_wheel);
+
+
+                    //Add container
+                    var sub_container = document.createElement("container");
+                    sub_container.setAttribute('class', 'col-xs-11');
+                    sub_container.setAttribute('style', 'font-size: 12px;');
+                    sub_a.appendChild(sub_container);
+
+                    //Add type container
+                    var sub_type_container = document.createElement("type_container");
+                    sub_type_container.setAttribute('class', 'col-xs-2');
+                    sub_container.appendChild(sub_type_container);
+
+                    //add type
+                    var sub_type_text = document.createElement('type');
+                    var sub_text = document.createTextNode(CLASS_HANDLES[j].RECITATION[k].TYPE);
+                    sub_type_text.appendChild(sub_text);
+                    sub_type_container.appendChild(sub_type_text);
+
+                     //add class name container
+                    var sub_class_name_holder = document.createElement("name_holder_container");
+                    sub_class_name_holder.setAttribute('class', 'col-xs-10');
+                    sub_container.appendChild(sub_class_name_holder);
+
+                    //add class name
+                    var sub_p1 = document.createElement('name_' + String(j));
+                    var sub_txt1 = document.createTextNode(CLASS_HANDLES[j].RECITATION[k].DAYS + ":" + CLASS_HANDLES[j].RECITATION[k].TIME);
+                    sub_p1.appendChild(sub_txt1);
+                    sub_class_name_holder.appendChild(sub_p1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    //var sub_heading = document.createElement('sub_heading');
+                    //var sub_a = document.createElement('availableClass' + String(j));
+                    //sub_a.setAttribute('id', 'collapser' + String(j) + String(k));
+                    //sub_a.setAttribute('style', 'height: 40px;');
+                    //sub_a.setAttribute('class', 'list-group-item');
+                    //sub_a.setAttribute('onclick', 'Table1.clicked_class(CLASS_HANDLES[' + String(j) + '].RECITATION[' + String(k) + '], CLASS_HANDLES[' + String(j) + '])');
+                    //sub_a.setAttribute('href', '#');
+                    //var sub_mouseover = "shade('collapser" + String(j) + String(k) + "')";
+                    //var sub_mouseout = "unshade('collapser" + String(j) + String(k) + "')";
+                    //sub_a.setAttribute('onmouseover', sub_mouseover);
+                    //sub_a.setAttribute('onmouseout', sub_mouseout);
+                    //sub_heading.appendChild(sub_a);
+                    //
+                    ////Add spin wheel container
+                    //var sub_spin_wheel_holder = document.createElement("sub_spin_wheel_holder");
+                    //sub_spin_wheel_holder.setAttribute('class', 'col-md-1 col-xs-offset-2');
+                    //sub_a.appendChild(sub_spin_wheel_holder);
+                    //
+                    ////Add spin wheel
+                    //var sub_spin_wheel = document.createElement('sub_spin_wheel');
+                    //sub_spin_wheel.setAttribute('class', 'fa fa-cog fa-spin');
+                    //sub_spin_wheel_holder.appendChild(sub_spin_wheel);
+                    //
+                    ////class times container
+                    //var sub_class_time_holder = document.createElement("sub_class_time_holder");
+                    //sub_class_time_holder.setAttribute('class', 'hidden-xs-9');
+                    //sub_a.appendChild(sub_class_time_holder);
+                    //
+                    ////add class times
+                    //var p4 = document.createElement('class_name_' + String(j));
+                    //var txt4 = document.createTextNode(CLASS_HANDLES[j].RECITATION[k].DAYS + ":" + CLASS_HANDLES[j].RECITATION[k].TIME);
+                    //p4.appendChild(txt4);
+                    //sub_class_time_holder.appendChild(p4);
+
+                    sub_group.appendChild(sub_heading);
+                }
+                available_class.appendChild(sub_group);
+            }
+
+
+
+
+
+            //Add parent (with all children to html)
+            var list = document.getElementById('accordion-body');
+            list.insertBefore(available_class, list.childNodes[0]);
+        }
+    }
+}
+
+
+
+
+
 /********************************************************************
 *               Add container to Available Classes
 *********************************************************************
@@ -120,7 +327,7 @@ function make_available_classes() {
 function switch_avail_classes(){
     var wheel = document.getElementById("timeout_wheel");
     wheel.style.display = "none";
-    make_available_classes();
+    make_available_classes2();
 }
 
 

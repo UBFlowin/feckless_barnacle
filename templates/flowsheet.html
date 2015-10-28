@@ -175,6 +175,9 @@
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='custom_ubflow.js') }}"></script>
+
+
+
 <script>
     var DEGREE_HANDLES= [];
     var USER_ID =0;
@@ -183,6 +186,7 @@
     /*
      *  Gets the current User ID so the flowsheet can adjust according to their history
      */
+
     window.onload = function() {
         $.getJSON('/userid', function (dat) {
             var handle_index = 0;
@@ -231,22 +235,17 @@
                     }
                     var total_courses = NUM_COURSES_IN_DEGREE + NUM_USER_CLASSES_APPLIED;
                     var percentage = (NUM_USER_CLASSES_APPLIED / total_courses) * 100;
-
                     var progress_bar = document.getElementById('prog_bar');
                     progress_bar.style.width = String(percentage) + '%';
-
                     var progress_bar_text = document.getElementById('prog_bar_num');
-
                     progress_bar_text.innerText = String(percentage).substring(0, 4) + '%';
-
-
                     populate_semesters();
-
-
                 });
             }
         });
     }
+
+
 </script>
 
 <script type="text/javascript" src="{{ url_for('static', filename='custom_ubflow.js') }}"></script>
