@@ -380,8 +380,7 @@ def passuserid():
     json_results = []
     if request.method == 'GET':
         json_results = []
-        user = session['user']
-        d = {'ID':user}
+        d = {'ID':session['user']}
         json_results.append(d)
     return jsonify(classes=json_results)
 
@@ -618,7 +617,7 @@ def degree_info_user(user_id):
                             user_classes.DEGREE_COURSE38,
                             user_classes.DEGREE_COURSE39,
                             user_classes.DEGREE_COURSE40]
-            for x in range(0,39):
+            for x in range(0,35):
                 if degree_array[x] is not None:
                     course = Degree.query.filter_by(ID=degree_array[x]).first()
                     if course is not None:
