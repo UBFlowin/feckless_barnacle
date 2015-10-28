@@ -134,26 +134,6 @@ function make_available_classes2() {
                     sub_p1.appendChild(sub_txt1);
                     sub_class_name_holder.appendChild(sub_p1);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     //var sub_heading = document.createElement('sub_heading');
                     //var sub_a = document.createElement('availableClass' + String(j));
                     //sub_a.setAttribute('id', 'collapser' + String(j) + String(k));
@@ -192,19 +172,12 @@ function make_available_classes2() {
                 }
                 available_class.appendChild(sub_group);
             }
-
-
-
-
-
             //Add parent (with all children to html)
             var list = document.getElementById('accordion-body');
             list.insertBefore(available_class, list.childNodes[0]);
         }
     }
 }
-
-
 
 
 
@@ -337,7 +310,9 @@ function switch_avail_classes(){
 function populate_selected_class(class_handle, rec_handle) {
     var heading = document.createElement('heading' + class_handle.ID);
     var a = document.createElement('availableClass');
-    a.setAttribute('style', 'height: 40px;');
+    a.setAttribute('style', 'height: 45px; padding:4px; ' +
+        'border-bottom-left-radius:9px; border-bottom-right-radius:9px; ' +
+        'border-top-left-radius:9px; border-top-right-radius:9px; vertical-align: middle;' );
     a.setAttribute('id', 'selected_container' + class_handle.ID);
     a.setAttribute('class', 'list-group-item');
 
@@ -350,6 +325,7 @@ function populate_selected_class(class_handle, rec_handle) {
     //Add spin wheel container
     var lock_icon_holder = document.createElement("lock_icon_holder");
     lock_icon_holder.setAttribute('class', 'col-md-1');
+    lock_icon_holder.setAttribute('style', 'height: 40px; vertical-align: middle;');
     a.appendChild(lock_icon_holder);
 
     //Add spin wheel
@@ -368,30 +344,63 @@ function populate_selected_class(class_handle, rec_handle) {
     var trash_icon = document.createElement('trash_icon');
     trash_icon.setAttribute('id','trash_icon'+class_handle.ID);
     trash_icon.setAttribute('class', 'fa fa-trash-o');
+    trash_icon.setAttribute('style', 'vertical-align: middle;');
     //trash_icon.setAttribute('onclick','lock_in_course("trash_icon'+class_handle.ID+'"'+')');
     trash_icon_holder.appendChild(trash_icon);
 
-    //add class name container
-    var class_name_holder = document.createElement("class_name_holder"+class_handle.ID);
-    class_name_holder.setAttribute('class', 'col-md-3');
-    a.appendChild(class_name_holder);
+
+    //Add container
+    container = document.createElement("container");
+    container.setAttribute('class', 'col-xs-10');
+    container.setAttribute('style', 'font-size: 13px;');
+    a.appendChild(container);
+
+     //add class name container
+    class_name_holder = document.createElement("name_holder_container");
+    class_name_holder.setAttribute('class', 'col-xs-12');
+    class_name_holder.setAttribute('style', 'font-size: 14px; font-weight: bold; height: 20px;');
+    container.appendChild(class_name_holder);
 
     //add class name
-    var p1 = document.createElement('class_name');
-    var txt1 = document.createTextNode(class_handle.UBCLASS);
+    p1 = document.createElement('class_name');
+    txt1 = document.createTextNode(class_handle.UBCLASS);
     p1.appendChild(txt1);
     class_name_holder.appendChild(p1);
 
-    //class times container
-    var class_time_holder = document.createElement("class_time_holder"+class_handle.ID);
-    class_time_holder.setAttribute('class', 'col-md-7');
-    a.appendChild(class_time_holder);
+    //Add container
+    container1 = document.createElement("class_time_holder"+class_handle.ID);
+    container1.setAttribute('class', 'col-xs-12');
+    container1.setAttribute('style', 'font-size: 11px;');
+    container.appendChild(container1);
 
     //add class times
-    var p2 = document.createElement('class_time'+class_handle.ID);
-    var txt2 = document.createTextNode(class_handle.DAYS + ":" + class_handle.TIME);
+    p2 = document.createElement('class_time'+class_handle.ID);
+    txt2 = document.createTextNode(class_handle.DAYS + ":" + class_handle.TIME);
     p2.appendChild(txt2);
-    class_time_holder.appendChild(p2);
+    container1.appendChild(p2);
+
+
+    ////add class name container
+    //var class_name_holder = document.createElement("class_name_holder"+class_handle.ID);
+    //class_name_holder.setAttribute('class', 'col-md-3');
+    //a.appendChild(class_name_holder);
+    //
+    ////add class name
+    //var p1 = document.createElement('class_name');
+    //var txt1 = document.createTextNode(class_handle.UBCLASS);
+    //p1.appendChild(txt1);
+    //class_name_holder.appendChild(p1);
+    //
+    ////class times container
+    //var class_time_holder = document.createElement("class_time_holder"+class_handle.ID);
+    //class_time_holder.setAttribute('class', 'col-md-7');
+    //a.appendChild(class_time_holder);
+    //
+    ////add class times
+    //var p2 = document.createElement('class_time'+class_handle.ID);
+    //var txt2 = document.createTextNode(class_handle.DAYS + ":" + class_handle.TIME);
+    //p2.appendChild(txt2);
+    //class_time_holder.appendChild(p2);
 
     validate_selected_class(class_handle,rec_handle, heading);
 }
@@ -403,22 +412,24 @@ function populate_selected_class(class_handle, rec_handle) {
 function validate_selected_class(class_handle,rec_handle, heading){
     var list;
     var parent;
+    //If there is something in the last, check for duplicates or updates
     if (Selected_Classes.SELECTED_CLASS_HANDLES.length !=0 ) {
+        //check if it already exists in the list
         if (Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] != null) {
+            //If the recitation id == the recitation of the class at that index, remove it
             if (rec_handle.ID == Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID].ID) {
                 parent = document.getElementById('selected_container' + class_handle.ID).remove();
-
-
                 Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = 0;
             }
+            //If the recitation is of the same class, but its not the same recitation, update it
             else if (rec_handle.REC_ID == Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID].REC_ID) {
                 Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = rec_handle;
             }
+            //else, just add it to the list
             else {
                 //Add parent (with all children to html)
                 list = document.getElementById('selected_class_container');
                 list.insertBefore(heading, list.childNodes[0]);
-
                 Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = rec_handle;
                 Selected_Classes.NUM_SELECTED_CLASSES = Selected_Classes.NUM_SELECTED_CLASSES + 1;
             }
@@ -427,16 +438,15 @@ function validate_selected_class(class_handle,rec_handle, heading){
             //Add parent (with all children to html)
             list = document.getElementById('selected_class_container');
             list.insertBefore(heading, list.childNodes[0]);
-
             Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = rec_handle;
             Selected_Classes.NUM_SELECTED_CLASSES = Selected_Classes.NUM_SELECTED_CLASSES + 1;
         }
     }
+    //Nothing is in the list, just add it as the first element entered
     else{
-        //Add parent (with all children to html)
+        // Add to selected classes list
         list = document.getElementById('selected_class_container');
         list.insertBefore(heading, list.childNodes[0]);
-
         Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = rec_handle;
         Selected_Classes.NUM_SELECTED_CLASSES = Selected_Classes.NUM_SELECTED_CLASSES + 1;
     }
