@@ -72,10 +72,10 @@
             var elem = document.getElementById('courseNum');
             var department = document.getElementById('dept_button');
             var chk1 = document.getElementById('checkbox1');
-            var chk2 = document.getElementById('checkbox1');
-            var chk3 = document.getElementById('checkbox1');
-            var chk4 = document.getElementById('checkbox1');
-            var chk5 = document.getElementById('checkbox1');
+            var chk2 = document.getElementById('checkbox2');
+            var chk3 = document.getElementById('checkbox3');
+            var chk4 = document.getElementById('checkbox4');
+            var chk5 = document.getElementById('checkbox5');
 
             var chk1_val = chk1.value;
             var chk2_val = chk2.value;
@@ -83,7 +83,6 @@
             var chk4_val = chk4.value;
             var chk5_val = chk5.value;
 
-            alert(chk1_val);
             //Construct UBCLASS dict
             var course = elem.value;
             var dept = department.value;
@@ -96,7 +95,7 @@
                 'Thu' : chk4_val,
                 'Fri' : chk5_val
             };
-
+            console.log(data);
             $.ajax({
                 type : "POST",
                 url : '/getnextclassgroup/search',
@@ -158,7 +157,7 @@
                         }
                 }
                 //repopulate list
-                make_available_classes();
+                make_available_classes2();
                 console.log(dat);
                 }
             });
@@ -176,16 +175,16 @@
             <br/>
             <div class="row">
                 <div class="col-xs-2">
-                    <div class="panel panel-default">
+                    <div class="panel panel-default col-xs-12">
                         <div class="panel-heading">
-                            <i class="fa fa-book"></i> Course Search...
+                            <i class="fa fa-book"></i> Course Search
                         </div>
-                        <div class="panel-body" style="padding:2px;">
+                        <div class="panel-body col-xs-12" style="padding:2px;">
                             <div class="list-group">
                                 <form role="form">
                                     <div class="form-group">
-                                        <label for="dept_button" class="col-xs-12">Department list:</label>
-                                        <select class="form-control" id="dept_button" onclick="unshade('dept_button')">
+                                        <label for="dept_button" class="col-xs-12">Departments:</label>
+                                        <select class="form-control col-xs-offset-1 col-xs-5" style="width:50%" id="dept_button" onclick="unshade('dept_button')">
                                             <option>CIE</option>
                                             <option>CSE</option>
                                             <option>EAS</option>
@@ -195,9 +194,9 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label  for="courseNum"  class="col-xs-12">Course #:</label>
+                                        <label  for="courseNum"  class="col-xs-12 ">Course #:</label>
                                         <div class="col-xs-12">
-                                            <input type="text" class="form-control" id="courseNum" style='max-width:55px;' placeholder="###" onclick="unshade('courseNum')">
+                                            <input type="text" class="form-control col-xs-offset-1 col-xs-6" id="courseNum" style='max-width:55px;' placeholder="###" onclick="unshade('courseNum')">
                                         </div>
                                     </div>
 
@@ -208,35 +207,41 @@
                                         <br/>
                                         <label  for="courseNum"  class="col-xs-12">Block Days:</label>
                                         <div class="col-xs-12">
-                                            <input id="checkbox1" name="checkbox1" type="hidden" value="0"/>
+                                            <input id="checkbox1" name="checkbox1" type="checkbox" style="display: none;"value="0"/>
                                             <input id="checkbox2" name="checkbox2" type="hidden" value="0"/>
                                             <input id="checkbox3" name="checkbox3" type="hidden" value="0"/>
                                             <input id="checkbox4" name="checkbox4" type="hidden" value="0"/>
                                             <input id="checkbox5" name="checkbox5" type="hidden" value="0"/>
-                                            <div class="btn-group" data-toggle="buttons">
+                                            <div class="btn-group col-xs-offset-1" data-toggle="buttons">
                                                 <button id='monday_button' type="button" class="btn btn-default"
-                                                        style="padding: 6px; min-width: 30px;" onclick="shadeDay('monday_button')"
+                                                        style="padding: 6px; min-width: 30px;" onclick="check_uncheck_buttons('checkbox1','monday_button')"
                                                         data-checkbox-name="checkbox1">M</button>
                                                 <button id='tuesday_button' type="button" class="btn btn-default"
-                                                        style="padding: 6px; min-width: 30px;" onclick="shadeDay('tuesday_button')"
+                                                        style="padding: 6px; min-width: 30px;" onclick="check_uncheck_buttons('checkbox2','tuesday_button')"
                                                         data-checkbox-name="checkbox2">T</button>
                                                 <button id='wednesday_button' type="button" class="btn btn-default"
-                                                        style="padding: 6px; min-width: 30px;" onclick="shadeDay('wednesday_button')"
+                                                        style="padding: 6px; min-width: 30px;" onclick="check_uncheck_buttons('checkbox3','wednesday_button')"
                                                         data-checkbox-name="checkbox3">W</button>
                                                 <button id='thursday_button' type="button" class="btn btn-default"
-                                                        style="padding: 6px; min-width: 30px;" onclick="shadeDay('thursday_button')"
+                                                        style="padding: 6px; min-width: 30px;" onclick="check_uncheck_buttons('checkbox4','thursday_button')"
                                                         data-checkbox-name="checkbox4">R</button>
                                                 <button id='friday_button' type="button" class="btn btn-default"
-                                                        style="padding: 6px; min-width: 30px;" onclick="shadeDay('friday_button')"
+                                                        style="padding: 6px; min-width: 30px;" onclick="check_uncheck_buttons('checkbox5','friday_button')"
                                                         data-checkbox-name="checkbox5">F</button>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
                             </div>
+                            <br/>
+                            <div class="col-xs-offset-1 col-xs-10">
+                                <br/>
+                                <a href="#" id="SearchButton" class="btn btn-primary btn-block">Search</a>
+                                <br/>
+                            </div>
                         </div>
                         <br/>
-                        <a href="#" id="SearchButton" class="btn btn-default btn-block">Search</a>
+
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
@@ -505,12 +510,12 @@
                 <!-- /.col-lg-9 -->
                 <div class="col-xs-3">
                     <div class="panel panel-default">
-                        <div id = "head" class="panel-heading">
+                        <div id="head" class="panel-heading">
                             <i class="fa fa-bell fa-fw"></i> Available Classes
                         </div>
                         <!-- /.panel-heading -->
-                        <div id="accordion-body" class="panel-body">
-                            <div class="panel-group" id="accordion" >
+                        <div id="accordion-body" class="panel-body" style="padding:4px;">
+                            <div class="panel-group" id="accordion">
                                 <div id="timeout_wheel" class="panel panel-default"  style="display: block; height: 175px; background-color: #b0bed9; border: solid 4px;" >
                                     <h3 align="center">Finding Your Classes...</h3>
                                     <script>
@@ -926,50 +931,26 @@
     }
 
 
-    /*********************************************************
-    *       Shade the Day Button
-    *********************************************************/
-    function shadeDay(id) {
-        var box;
-        var button = document.getElementById(id);
-        if(id == 'monday_button'){
-            box = document.getElementById('checkbox1');
-        }
-        else if(id == 'tuesday_button'){
-            box = document.getElementById('checkbox2');
-        }
-        else if(id == 'wednesday_button'){
-            box = document.getElementById('checkbox3');
-        }
-        else if(id == 'thursday_button'){
-            box = document.getElementById('checkbox4');
-        }
-        else if(id == 'friday_button'){
-            box = document.getElementById('checkbox5');
-        }
-//        else if(id == 'saturday_button'){
-//            box = document.getElementById('checkbox6');
-//        }
-        if(box.value == 0){
+
+    function check_uncheck_buttons(checkbox_id, button_id){
+        var checkbox = document.getElementById(checkbox_id);
+        var button = document.getElementById(button_id);
+        if(checkbox.value == "0"){
+            checkbox.value = "1";
             button.style.backgroundColor = "#f78181";
         }
         else{
+            checkbox.value = "0";
             button.style.backgroundColor = "White";
         }
     }
 
-    $('.btn[data-radio-name]').click(function() {
-        $('.btn[data-radio-name="'+$(this).data('radioName')+'"]').removeClass('active');
-        $('input[name="'+$(this).data('radioName')+'"]').val(
-            $(this).text()
-        );
-    });
 
-    $('.btn[data-checkbox-name]').click(function() {
-        $('input[name="'+$(this).data('checkboxName')+'"]').val(
-            $(this).hasClass('active') ? 0 : 1
-        );
-    });
+//    $('.btn[data-checkbox-name]').click(function() {
+//        $('input[name="'+$(this).data('checkboxName')+'"]').val(
+//            $(this).hasClass('active') ? 0 : 1
+//        );
+//    });
 
     </script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>

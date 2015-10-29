@@ -8,7 +8,9 @@ function make_available_classes2() {
         if (CLASS_HANDLES[j] != null) {
             available_class = document.createElement('available_class');
             a = document.createElement('Class' + String(j));
-            a.setAttribute('style', 'height: 45px; padding:4px; border-bottom-left-radius:9px; border-bottom-right-radius:9px; border-top-left-radius:9px; border-top-right-radius:9px');
+            a.setAttribute('style', 'height: 45px; padding:4px; border-bottom-left-radius:9px; ' +
+                'border-bottom-right-radius:9px; border-top-left-radius:9px; ' +
+                'border-top-right-radius:9px; border-width:2px;');
             a.setAttribute('id', 'container' + String(j));
             a.setAttribute('class', 'list-group-item');
             a.setAttribute('data-toggle', 'collapse');
@@ -39,7 +41,7 @@ function make_available_classes2() {
 
              //add class name container
             class_name_holder = document.createElement("name_holder_container");
-            class_name_holder.setAttribute('class', 'col-xs-8');
+            class_name_holder.setAttribute('class', 'col-xs-4');
             class_name_holder.setAttribute('style', 'font-size: 14px; font-weight: bold; height: 20px;');
             container.appendChild(class_name_holder);
 
@@ -51,13 +53,15 @@ function make_available_classes2() {
 
             //Add type container
             type_container = document.createElement("type_container");
-            type_container.setAttribute('class', 'col-xs-4');
-            type_container.setAttribute('style', 'font-size: 14px; font-weight: bold;');
+            type_container.setAttribute('class', 'col-xs-8');
+            type_container.setAttribute('style', 'font-size: 14px; font-weight: bold; text-align: right');
             container.appendChild(type_container);
 
             //add type
             type_text = document.createElement('type');
-            text = document.createTextNode(CLASS_HANDLES[j].TYPE);
+            var str1 = CLASS_HANDLES[j].DAYS;
+            str1 = str1.replace(/\s+/g, '');
+            text = document.createTextNode(str1+ ': '+CLASS_HANDLES[j].TYPE);
             type_text.appendChild(text);
             type_container.appendChild(type_text);
 
@@ -69,7 +73,7 @@ function make_available_classes2() {
 
             //add class times
             p2 = document.createElement('class_name_' + String(j));
-            txt2 = document.createTextNode(CLASS_HANDLES[j].DAYS + ":" + CLASS_HANDLES[j].TIME);
+            txt2 = document.createTextNode(CLASS_HANDLES[j].TIME);
 
             p2.appendChild(txt2);
             container1.appendChild(p2);
@@ -85,7 +89,7 @@ function make_available_classes2() {
                     var sub_heading = document.createElement('sub_heading');
                     var sub_a = document.createElement('availableClass' + String(j));
                     sub_a.setAttribute('id', 'collapser' + String(j) + String(k));
-                    sub_a.setAttribute('style', 'height: 35px; padding:4px; border-bottom-left-radius:9px; border-bottom-right-radius:9px; border-top-left-radius:9px; border-top-right-radius:9px');
+                    sub_a.setAttribute('style', 'height: 40px; padding:4px; border-bottom-left-radius:9px; border-bottom-right-radius:9px; border-top-left-radius:9px; border-top-right-radius:9px');
                     sub_a.setAttribute('class', 'list-group-item');
                     sub_a.setAttribute('onclick', 'Table1.clicked_class(CLASS_HANDLES[' + String(j) + '].RECITATION[' + String(k) + '], CLASS_HANDLES[' + String(j) + '])');
                     sub_a.setAttribute('href', '#');
@@ -96,78 +100,46 @@ function make_available_classes2() {
                     sub_heading.appendChild(sub_a);
 
                     //Add spin wheel container
-                    var sub_spin_wheel_holder = document.createElement("spin_wheel_holder");
-                    sub_spin_wheel_holder.setAttribute('class', 'col-xs-1');
-                    sub_a.appendChild(sub_spin_wheel_holder);
+                    var plus_square_holder = document.createElement("plus_square_holder");
+                    plus_square_holder.setAttribute('class', 'col-xs-1 col-xs-offset-1');
+                    sub_a.appendChild(plus_square_holder);
 
-                    //Add spin wheel
-                    var sub_spin_wheel = document.createElement('spin_wheel');
-                    sub_spin_wheel.setAttribute('class', 'fa fa-plus-square');
-                    sub_spin_wheel_holder.appendChild(sub_spin_wheel);
+                    //Add plus-square
+                    var plus_square = document.createElement('plus_square');
+                    plus_square.setAttribute('class', 'fa fa-chevron-circle-right');
+                    plus_square_holder.appendChild(plus_square);
 
 
                     //Add container
                     var sub_container = document.createElement("container");
-                    sub_container.setAttribute('class', 'col-xs-11');
+                    sub_container.setAttribute('class', 'col-xs-10');
                     sub_container.setAttribute('style', 'font-size: 12px;');
                     sub_a.appendChild(sub_container);
 
                     //Add type container
                     var sub_type_container = document.createElement("type_container");
-                    sub_type_container.setAttribute('class', 'col-xs-2');
+                    sub_type_container.setAttribute('class', 'col-xs-10');
+                    sub_type_container.setAttribute('style', 'font-size: 13px; font-weight: bold; text-align: right');
                     sub_container.appendChild(sub_type_container);
 
                     //add type
                     var sub_type_text = document.createElement('type');
-                    var sub_text = document.createTextNode(CLASS_HANDLES[j].RECITATION[k].TYPE);
+                    var sub_text = document.createTextNode(CLASS_HANDLES[j].RECITATION[k].DAYS+ " : " +CLASS_HANDLES[j].RECITATION[k].TYPE);
                     sub_type_text.appendChild(sub_text);
                     sub_type_container.appendChild(sub_type_text);
 
                      //add class name container
                     var sub_class_name_holder = document.createElement("name_holder_container");
-                    sub_class_name_holder.setAttribute('class', 'col-xs-10');
+                    sub_class_name_holder.setAttribute('class', 'col-xs-11');
+                    sub_class_name_holder.setAttribute('style', 'font-size: 11px; text-align: right');
                     sub_container.appendChild(sub_class_name_holder);
 
                     //add class name
                     var sub_p1 = document.createElement('name_' + String(j));
-                    var sub_txt1 = document.createTextNode(CLASS_HANDLES[j].RECITATION[k].DAYS + ":" + CLASS_HANDLES[j].RECITATION[k].TIME);
+                    var sub_txt1 = document.createTextNode(CLASS_HANDLES[j].RECITATION[k].TIME);
                     sub_p1.appendChild(sub_txt1);
                     sub_class_name_holder.appendChild(sub_p1);
 
-                    //var sub_heading = document.createElement('sub_heading');
-                    //var sub_a = document.createElement('availableClass' + String(j));
-                    //sub_a.setAttribute('id', 'collapser' + String(j) + String(k));
-                    //sub_a.setAttribute('style', 'height: 40px;');
-                    //sub_a.setAttribute('class', 'list-group-item');
-                    //sub_a.setAttribute('onclick', 'Table1.clicked_class(CLASS_HANDLES[' + String(j) + '].RECITATION[' + String(k) + '], CLASS_HANDLES[' + String(j) + '])');
-                    //sub_a.setAttribute('href', '#');
-                    //var sub_mouseover = "shade('collapser" + String(j) + String(k) + "')";
-                    //var sub_mouseout = "unshade('collapser" + String(j) + String(k) + "')";
-                    //sub_a.setAttribute('onmouseover', sub_mouseover);
-                    //sub_a.setAttribute('onmouseout', sub_mouseout);
-                    //sub_heading.appendChild(sub_a);
-                    //
-                    ////Add spin wheel container
-                    //var sub_spin_wheel_holder = document.createElement("sub_spin_wheel_holder");
-                    //sub_spin_wheel_holder.setAttribute('class', 'col-md-1 col-xs-offset-2');
-                    //sub_a.appendChild(sub_spin_wheel_holder);
-                    //
-                    ////Add spin wheel
-                    //var sub_spin_wheel = document.createElement('sub_spin_wheel');
-                    //sub_spin_wheel.setAttribute('class', 'fa fa-cog fa-spin');
-                    //sub_spin_wheel_holder.appendChild(sub_spin_wheel);
-                    //
-                    ////class times container
-                    //var sub_class_time_holder = document.createElement("sub_class_time_holder");
-                    //sub_class_time_holder.setAttribute('class', 'hidden-xs-9');
-                    //sub_a.appendChild(sub_class_time_holder);
-                    //
-                    ////add class times
-                    //var p4 = document.createElement('class_name_' + String(j));
-                    //var txt4 = document.createTextNode(CLASS_HANDLES[j].RECITATION[k].DAYS + ":" + CLASS_HANDLES[j].RECITATION[k].TIME);
-                    //p4.appendChild(txt4);
-                    //sub_class_time_holder.appendChild(p4);
-
                     sub_group.appendChild(sub_heading);
                 }
                 available_class.appendChild(sub_group);
@@ -179,119 +151,6 @@ function make_available_classes2() {
     }
 }
 
-
-
-/********************************************************************
-*               Add container to Available Classes
-*********************************************************************
-*        ______ ________________ _______________________
-*       |      |                |                       |
-*       |  S   |      CSE442    |  9:00 AM - 9:50 AM    |
-*       |______|________________|_______________________|
-*
-*-------------------------------------------------------------------*/
-function make_available_classes() {
-    var available_class,a,mouseover,mouseout,spin_wheel_holder,spin_wheel,class_name_holder,p1,p2,txt1,txt2,class_time_holder;
-    for (var j = 0; j < CLASS_HANDLES.length; j++) {
-        if(CLASS_HANDLES[j] != null) {
-            available_class = document.createElement('available_class');//+String(j));
-            a = document.createElement('Class' + String(j));
-            a.setAttribute('style', 'height: 40px;');
-            a.setAttribute('id', 'container' + String(j));
-            a.setAttribute('class', 'list-group-item');
-            a.setAttribute('data-toggle', 'collapse');
-            a.setAttribute('data-parent', '#accordion');
-            a.setAttribute('href', '#collapse' + String(j));
-            mouseover = "shade('container" + String(j) + "')";
-            mouseout = "unshade('container" + String(j) + "')";
-            a.setAttribute('onmouseover', mouseover);
-            a.setAttribute('onmouseout', mouseout);
-            available_class.appendChild(a);
-
-            //Add spin wheel container
-            spin_wheel_holder = document.createElement("spin_wheel_holder");
-            spin_wheel_holder.setAttribute('class', 'col-md-1');
-            a.appendChild(spin_wheel_holder);
-
-            //Add spin wheel
-            spin_wheel = document.createElement('spin_wheel');
-            spin_wheel.setAttribute('class', 'fa fa-cog fa-spin');
-            spin_wheel_holder.appendChild(spin_wheel);
-
-            //add class name container
-            class_name_holder = document.createElement("class_name_holder");
-            class_name_holder.setAttribute('class', 'col-md-4');
-            a.appendChild(class_name_holder);
-
-            //add class name
-            p1 = document.createElement('class_name_' + String(j));
-            txt1 = document.createTextNode(CLASS_HANDLES[j].UBCLASS);
-            p1.appendChild(txt1);
-            class_name_holder.appendChild(p1);
-
-            //class times container
-            class_time_holder = document.createElement("class_time_holder");
-            class_time_holder.setAttribute('class', 'col-md-7');
-            a.appendChild(class_time_holder);
-
-            //add class times
-            p2 = document.createElement('class_name_' + String(j));
-            txt2 = document.createTextNode(CLASS_HANDLES[j].DAYS + ":" + CLASS_HANDLES[j].TIME);
-            //txt2.setAttribute('style','font-size: 9px;');
-            p2.appendChild(txt2);
-            class_time_holder.appendChild(p2);
-
-            if (CLASS_HANDLES[j].RECITATION.length != 0) {
-                var sub_group = document.createElement('sub_group');
-                sub_group.setAttribute('id', 'collapse' + String(j));
-                sub_group.setAttribute('class', 'panel-collapse collapse');
-                sub_group.setAttribute('style', 'padding: 4px;');
-                var k;
-                for (k = 0; k < CLASS_HANDLES[j].RECITATION.length; k++) {
-                    var sub_heading = document.createElement('sub_heading');
-                    var sub_a = document.createElement('availableClass' + String(j));
-                    sub_a.setAttribute('id', 'collapser' + String(j) + String(k));
-                    sub_a.setAttribute('style', 'height: 40px;');
-                    sub_a.setAttribute('class', 'list-group-item');
-                    sub_a.setAttribute('onclick', 'Table1.clicked_class(CLASS_HANDLES[' + String(j) + '].RECITATION[' + String(k) + '], CLASS_HANDLES[' + String(j) + '])');
-                    sub_a.setAttribute('href', '#');
-                    var sub_mouseover = "shade('collapser" + String(j) + String(k) + "')";
-                    var sub_mouseout = "unshade('collapser" + String(j) + String(k) + "')";
-                    sub_a.setAttribute('onmouseover', sub_mouseover);
-                    sub_a.setAttribute('onmouseout', sub_mouseout);
-                    sub_heading.appendChild(sub_a);
-
-                    //Add spin wheel container
-                    var sub_spin_wheel_holder = document.createElement("sub_spin_wheel_holder");
-                    sub_spin_wheel_holder.setAttribute('class', 'col-md-1 col-xs-offset-2');
-                    sub_a.appendChild(sub_spin_wheel_holder);
-
-                    //Add spin wheel
-                    var sub_spin_wheel = document.createElement('sub_spin_wheel');
-                    sub_spin_wheel.setAttribute('class', 'fa fa-cog fa-spin');
-                    sub_spin_wheel_holder.appendChild(sub_spin_wheel);
-
-                    //class times container
-                    var sub_class_time_holder = document.createElement("sub_class_time_holder");
-                    sub_class_time_holder.setAttribute('class', 'hidden-xs-9');
-                    sub_a.appendChild(sub_class_time_holder);
-
-                    //add class times
-                    var p4 = document.createElement('class_name_' + String(j));
-                    var txt4 = document.createTextNode(CLASS_HANDLES[j].RECITATION[k].DAYS + ":" + CLASS_HANDLES[j].RECITATION[k].TIME);
-                    p4.appendChild(txt4);
-                    sub_class_time_holder.appendChild(p4);
-
-                    sub_group.appendChild(sub_heading);
-                }
-                available_class.appendChild(sub_group);
-            }
-            //Add parent (with all children to html)
-            var list = document.getElementById('accordion-body');
-            list.insertBefore(available_class, list.childNodes[0]);
-        }
-    }
-}
 
 
 /********************************************************************
@@ -363,7 +222,7 @@ function populate_selected_class(class_handle, rec_handle) {
 
     //add class name
     p1 = document.createElement('class_name');
-    txt1 = document.createTextNode(class_handle.UBCLASS);
+    txt1 = document.createTextNode(class_handle.UBCLASS + ' : ' + class_handle.DAYS);
     p1.appendChild(txt1);
     class_name_holder.appendChild(p1);
 
@@ -375,32 +234,9 @@ function populate_selected_class(class_handle, rec_handle) {
 
     //add class times
     p2 = document.createElement('class_time'+class_handle.ID);
-    txt2 = document.createTextNode(class_handle.DAYS + ":" + class_handle.TIME);
+    txt2 = document.createTextNode(class_handle.TIME);
     p2.appendChild(txt2);
     container1.appendChild(p2);
-
-
-    ////add class name container
-    //var class_name_holder = document.createElement("class_name_holder"+class_handle.ID);
-    //class_name_holder.setAttribute('class', 'col-md-3');
-    //a.appendChild(class_name_holder);
-    //
-    ////add class name
-    //var p1 = document.createElement('class_name');
-    //var txt1 = document.createTextNode(class_handle.UBCLASS);
-    //p1.appendChild(txt1);
-    //class_name_holder.appendChild(p1);
-    //
-    ////class times container
-    //var class_time_holder = document.createElement("class_time_holder"+class_handle.ID);
-    //class_time_holder.setAttribute('class', 'col-md-7');
-    //a.appendChild(class_time_holder);
-    //
-    ////add class times
-    //var p2 = document.createElement('class_time'+class_handle.ID);
-    //var txt2 = document.createTextNode(class_handle.DAYS + ":" + class_handle.TIME);
-    //p2.appendChild(txt2);
-    //class_time_holder.appendChild(p2);
 
     validate_selected_class(class_handle,rec_handle, heading);
 }
