@@ -418,21 +418,20 @@ function unshade(id){
 function create_new_course_block(sem_index, num){
     var course = document.createElement('semester'+String(sem_index));
     var a = document.createElement('course');
+    a.setAttribute('style', 'height: 80px; min-width: 95px; padding: 10px 2px; ' +
+            'border-top-left-radius: 8px;border-top-right-radius: 8px;' +
+            'border-bottom-left-radius: 8px;border-bottom-right-radius: 8px;' +
+            'border-color: #334455;' );
     if(DEGREE_HANDLES[num].TAKEN == 1) {
-        a.setAttribute('style', 'height: 80px; min-width: 95px; padding: 10px 2px; ' +
-                'border-top-left-radius: 8px;border-top-right-radius: 8px;' +
-                'border-bottom-left-radius: 8px;border-bottom-right-radius: 8px;' +
-                'border-color: #334455;'+'font-size:11px;font-style:italic;');
-    }
-    else{
-        a.setAttribute('style', 'height: 80px; min-width: 95px; padding: 10px 2px; ' +
-                'border-top-left-radius: 8px;border-top-right-radius: 8px;' +
-                'border-bottom-left-radius: 8px;border-bottom-right-radius: 8px;' +
-                'border-color: #1f6485;');
-        a.setAttribute('background', "url('/static/Mid_Cell.jpg')");
+
+        var image = document.createElement('img');
+        image.setAttribute('src', 'static/blue_check.png');
+        image.setAttribute('style', 'position:absolute; top:0px; left:0px;');
+        a.appendChild(image);
     }
     a.setAttribute('id',String(DEGREE_HANDLES[num].UBCLASS));
     a.setAttribute('class', 'list-group-item');
+    //a.setAttribute('onclick',"edit('"+String(DEGREE_HANDLES[num].UBCLASS)+"')");
 
     //Set Change Color on Hover
     var mouseover = "show_info('"+String(DEGREE_HANDLES[num].UBCLASS)+"',"+String(0)+")";
@@ -441,8 +440,13 @@ function create_new_course_block(sem_index, num){
     a.setAttribute('onmouseout', mouseout);
 
     //Add pre-req & co-req
-    a.setAttribute('pre_req',DEGREE_HANDLES[num].PRE_REQ1);
+    a.setAttribute('pre_req1',DEGREE_HANDLES[num].PRE_REQ1);
+    a.setAttribute('pre_req2',DEGREE_HANDLES[num].PRE_REQ2);
+    a.setAttribute('pre_req3',DEGREE_HANDLES[num].PRE_REQ3);
+    //a.setAttribute('co_req1',DEGREE_HANDLES[num].CO_REQ1);
+    //a.setAttribute('co_req2',DEGREE_HANDLES[num].CO_REQ2);
     course.appendChild(a);
+
 
     //course and cap box
     var course_box = document.createElement("course_box");
@@ -450,19 +454,13 @@ function create_new_course_block(sem_index, num){
     course_box.setAttribute('style', 'padding:3px;');
     a.appendChild(course_box);
 
-    //Add cap container
-    var cap_container = document.createElement("cap_container");
-    cap_container.setAttribute('class', 'col-xs-2');
-    course_box.appendChild(cap_container);
-
-    //Add grad cap
-    var grad_cap = document.createElement('grad_cap');
-    grad_cap.setAttribute('class', 'fa fa-graduation-cap');
-    cap_container.appendChild(grad_cap);
 
     //Add course name container
     var course_container = document.createElement("course_container");
-    course_container.setAttribute('class', 'col-xs-10');
+    course_container.setAttribute('class', 'col-xs-12');
+    course_container.setAttribute('style','font-family: Arial Rounded MT Bold, ' +
+        'Helvetica Rounded, Arial, sans-serif; font-style: normal; line-height:' +
+        ' 23px; font-weight: bold; font-size: 17px;');
     course_box.appendChild(course_container);
 
     //add course name
@@ -546,9 +544,24 @@ function show_info(id, iteration){
         elem.style.backgroundColor = "#add6c2";
         iteration += 1;
     }
-    if(elem.getAttribute('pre_req')){
-        if(elem.getAttribute('pre_req') != 'none') {
-            next = elem.getAttribute('pre_req');
+    if(elem == null){
+        return;
+    }
+    if(elem.getAttribute('pre_req1')){
+        if(elem.getAttribute('pre_req1') != 'none') {
+            next = elem.getAttribute('pre_req1');
+            show_info(next, iteration);
+        }
+    }
+    if(elem.getAttribute('pre_req2')){
+        if(elem.getAttribute('pre_req2') != 'none') {
+            next = elem.getAttribute('pre_req2');
+            show_info(next, iteration);
+        }
+    }
+    if(elem.getAttribute('pre_req3')){
+        if(elem.getAttribute('pre_req3') != 'none') {
+            next = elem.getAttribute('pre_req3');
             show_info(next, iteration);
         }
     }
@@ -562,9 +575,21 @@ function hide_info(id,iteration){
     var next;
     elem = document.getElementById(id);
     elem.style.backgroundColor = "White";
-    if(elem.getAttribute('pre_req')){
-        if(elem.getAttribute('pre_req') != 'none') {
-            next = elem.getAttribute('pre_req');
+    if(elem.getAttribute('pre_req1')){
+        if(elem.getAttribute('pre_req1') != 'none') {
+            next = elem.getAttribute('pre_req1');
+            hide_info(next, iteration);
+        }
+    }
+    if(elem.getAttribute('pre_req2')){
+        if(elem.getAttribute('pre_req2') != 'none') {
+            next = elem.getAttribute('pre_req2');
+            hide_info(next, iteration);
+        }
+    }
+    if(elem.getAttribute('pre_req3')){
+        if(elem.getAttribute('pre_req3') != 'none') {
+            next = elem.getAttribute('pre_req3');
             hide_info(next, iteration);
         }
     }

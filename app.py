@@ -3,11 +3,16 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager, UserMixin, login_user, logout_user, login_required
 from passlib.apps import custom_app_context as pwd_context
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
+from itsdangerous import URLSafeTimedSerializer
+from datetime import timedelta
 
 app = Flask(__name__)
 db = SQLAlchemy(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://ubflow:ubflow@localhost/ubflowdb'
 app.config['SECRET_KEY'] = 'The arsonist had oddly shaped feet'
+app.config["REMEMBER_COOKIE_DURATION"] = timedelta(days=1)
+login_serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -48,9 +53,8 @@ class User(db.Model):
     def verify_password(self, password):
         return pwd_context.verify(password, self.PASS_HASH)
 
-    def generate_auth_token(self, expiration=600):
-        s = Serializer(app.config['SECRET_KEY'], expires_in=expiration)
-        return s.dumps({'id': self.id})
+    def get_auth_token(self, expiration=600):
+        return login_serializer.dumps({'id': self.id})
 
     @staticmethod
     def verify_auth_token(token):
@@ -74,6 +78,17 @@ class User(db.Model):
     def __repr__(self):
         return '<user {}'.format(self.id)
 
+
+@login_manager.token_loader
+def load_token(token):
+    max_age = app.config["REMEMBER_COOKIE_DURATION"].total_seconds()
+    data = login_serializer.loads(token, max_age=max_age)
+
+    #Check Password and return user or None
+    user_check = User.query.filter_by(id=data[0])
+    if user_check.count() == 1:
+        return user_check.one()
+    return None
 
 '''-----------------------------------------------
         Professor Model
@@ -296,9 +311,9 @@ def new_user():
             return render_template('register.html', input_error='It seems you forgot something')
         if User.query.filter_by(USERNAME=username).first() is not None:
             return render_template('register.html', input_error='That Username already exists')
+        # Check Password Length #
         if len(password) < 8:
             return render_template('register.html', input_error='Password must be at least 8 characters')
-
         # Create New User Model and enter into database
         new_user = User(username,password,first_name,last_name,degree)
         new_user.hash_password(password)
@@ -356,14 +371,16 @@ def load_user(user_id):
         return user_check.one()
     return None
 
+
 '''----------------------------
-      Logout USer
+      Logout User
 ----------------------------'''
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('login'))
+
 
 '''----------------------------
       Test Login Page
@@ -383,6 +400,25 @@ def passuserid():
         d = {'ID':session['user']}
         json_results.append(d)
     return jsonify(classes=json_results)
+
+
+@app.route('/resource')
+@login_required
+def get_resource():
+    """FOR AUTHENTICATION TESTING"""
+    return jsonify({'data': 'Hello, %s!' % g.user.username})
+
+
+def verify_password(username_or_token, password):
+    # first try to authenticate by token
+    user = User.verify_auth_token(username_or_token)
+    if not user:
+        # try to authenticate with username/password
+        user = User.query.filter_by(username=username_or_token).first()
+        if not user or not user.verify_password(password):
+            return False
+    g.user = user
+    return True
 
 
 '''-----------------------------------------------
@@ -564,7 +600,9 @@ def degree_info():
              'SEM_INDEX': course.SEM_INDEX,
              'TITLE': course.TITLE,
              'LINK': course.LINK,
-             'PRE_REQ1':course.PRE_REQ1}
+             'PRE_REQ1':course.PRE_REQ1,
+             'PRE_REQ2':course.PRE_REQ2,
+             'PRE_REQ3':course.PRE_REQ3}
         json_results.append(d)
     return jsonify(classes=json_results)
 
@@ -626,10 +664,11 @@ def degree_info_user(user_id):
                          'SEM_INDEX': course.SEM_INDEX,
                          'TITLE': course.TITLE,
                          'LINK': course.LINK,
-                         'PRE_REQ1':course.PRE_REQ1}
+                         'PRE_REQ1':course.PRE_REQ1,
+                         'PRE_REQ2':course.PRE_REQ2,
+                         'PRE_REQ3':course.PRE_REQ3}
                         json_results.append(d)
     return jsonify(classes=json_results)
-
 
 
 '''-----------------------------------------------
@@ -704,31 +743,6 @@ def get_classes():
              'SEMESTER': result.SEMESTER}
         json_results.append(d)
     return jsonify(classes=json_results)
-
-
-'''-----------------------------------------------
-      Token Generator
------------------------------------------------'''
-@app.route('/api/token')
-def get_auth_token():
-    """Generate Authentication Token to send instead of username and password"""
-    token = g.user.generate_auth_token()
-    return jsonify({'token': token.decode('ascii')})
-
-
-'''-----------------------------------------------
-      Verify Password/Username
------------------------------------------------'''
-def verify_password(username_or_token, password):
-    # first try to authenticate by token
-    user = User.verify_auth_token(username_or_token)
-    if not user:
-        # try to authenticate with username/password
-        user = User.query.filter_by(USERNAME=username_or_token).first()
-        if not user or not user.verify_password(password):
-            return False
-    g.user = user
-    return True
 
 
 '''-----------------------------------------------

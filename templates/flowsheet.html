@@ -120,6 +120,13 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-xs-3 col-xs-offset-9">
+                                    <div class="col-xs-6 col-xs-offset-6">
+                                    <div id="edit_button" class="btn btn-lg btn-primary btn-block">
+                                        Edit
+                                    </div>
+                                </div>
+                                </div>
                             </div>
                         </div>
                         <br/>
@@ -134,13 +141,17 @@
 <script>
 
     /* Degree Class Model Definition */
-    var Degree = function(ubclass, sem_index,title, link, pre1, user_took){
+    var Degree = function(ubclass, sem_index,title, link, pre1, pre2, pre3, user_took){
         this.UBCLASS = ubclass;
         this.SEM_INDEX = sem_index;
         this.LINK = link;
         this.TITLE = title;
         this.PRE_REQ1 = pre1;
-        this.TAKEN = user_took
+        this.PRE_REQ2 = pre2;
+        this.PRE_REQ3 = pre3;
+//        this.CO_REQ1 = co1;
+//        this.CO_REQ2 = co2;
+        this.TAKEN = user_took;
     };
     /* Helper_Table Class Model Definition */
     var Helper_Table = function(user_id){
@@ -151,26 +162,7 @@
         }
     };
 
-    jQuery.fn.shake = function() {
-        this.each(function(i) {
-            $(this).css({ "position" : "relative" });
-            for (var x = 1; x <= 3; x++) {
-                $(this).animate({left:-5},5).animate({ left:0},10).animate({left:5},5).animate({left:0},10);
-            }
-        });
-        return this;
-    };
 
-    $("#sem8").click(function() {
-        $("#sem1").shake();
-        $("#sem2").shake();
-        $("#sem3").shake();
-        $("#sem4").shake();
-        $("#sem5").shake();
-        $("#sem6").shake();
-        $("#sem7").shake();
-        $("#sem8").shake();
-    });
 </script>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -190,7 +182,7 @@
     window.onload = function() {
         $.getJSON('/userid', function (dat) {
             var handle_index = 0;
-            var id, ubclass, sem_index, link, title, pre1;
+            var id, ubclass, sem_index, link, title, pre1, pre2, pre3;
             console.log(dat);
             if (dat.classes) {
                 USER_ID = dat.classes[0].ID;
@@ -205,7 +197,11 @@
                             link = "link";
                             title = dat.classes[x].TITLE;
                             pre1 = dat.classes[x].PRE_REQ1;
-                            DEGREE_HANDLES[handle_index] = new Degree(ubclass, sem_index, title, link, pre1, 1);
+                            pre2 = dat.classes[x].PRE_REQ2;
+                            pre3 = dat.classes[x].PRE_REQ3;
+//                            co_req1 = dat.classes[x].CO_REQ1;
+//                            co_req2 = dat.classes[x].CO_REQ2;
+                            DEGREE_HANDLES[handle_index] = new Degree(ubclass, sem_index, title, link, pre1, pre2, pre3, 1);
                             handle_index += 1;
                             NUM_USER_CLASSES_APPLIED += 1;
                             x = x + 1;
@@ -225,8 +221,12 @@
                             link = "link";
                             title = dat.classes[x].TITLE;
                             pre1 = dat.classes[x].PRE_REQ1;
+                            pre2 = dat.classes[x].PRE_REQ2;
+                            pre3 = dat.classes[x].PRE_REQ3;
+//                            co_req1 = dat.classes[x].CO_REQ1;
+//                            co_req2 = dat.classes[x].CO_REQ2;
                             if (!search_degree_for_repeats(ubclass)) {
-                                DEGREE_HANDLES[handle_index] = new Degree(ubclass, sem_index, title, link, pre1, 0);
+                                DEGREE_HANDLES[handle_index] = new Degree(ubclass, sem_index, title, link, pre1, pre2, pre3, 0);
                                 handle_index += 1;
                                 NUM_COURSES_IN_DEGREE += 1;
                             }
@@ -254,6 +254,27 @@
         var progress_bar_text = document.getElementById('prog_bar_num');
         progress_bar_text.innerText = String(percentage).substring(0, 4) + '%';
     }
+
+    jQuery.fn.shake = function() {
+        this.each(function(i) {
+            $(this).css({ "position" : "relative" });
+            for (var x = 1; x <= 3; x++) {
+                $(this).animate({left:-5},5).animate({ left:0},10).animate({left:5},5).animate({left:0},10);
+            }
+        });
+        return this;
+    };
+
+    $("#edit_button").click(function() {
+        $("#sem1").shake();
+        $("#sem2").shake();
+        $("#sem3").shake();
+        $("#sem4").shake();
+        $("#sem5").shake();
+        $("#sem6").shake();
+        $("#sem7").shake();
+        $("#sem8").shake();
+    });
 </script>
 <script type="text/javascript" src="{{ url_for('static', filename='custom_ubflow.js') }}"></script>
 {% endblock %}
