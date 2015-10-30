@@ -454,6 +454,10 @@ function create_new_course_block(sem_index, num){
     course_box.setAttribute('style', 'padding:3px;');
     a.appendChild(course_box);
 
+var span = document.createElement("span");
+    span.setAttribute('style', 'height:15px');
+    span.setAttribute('class', 'col-xs-12');
+    course_box.appendChild(span);
 
     //Add course name container
     var course_container = document.createElement("course_container");
@@ -469,10 +473,7 @@ function create_new_course_block(sem_index, num){
     course_name.appendChild(course_name_text);
     course_container.appendChild(course_name);
 
-    var span = document.createElement("span");
-    span.setAttribute('style', 'height:25px');
-    span.setAttribute('class', 'col-xs-12');
-    course_box.appendChild(span);
+
 
     //course title
     var course_title_container = document.createElement("course_title_box");
