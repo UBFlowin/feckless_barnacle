@@ -133,11 +133,11 @@ class UBClasses(db.Model):
     PRE_REQ1 = db.Column(db.String(50), nullable=True)
     PRE_REQ2 = db.Column(db.String(50), nullable=True)
     PRE_REQ3 = db.Column(db.String(50), nullable=True)
-    PRE_REQ4 = db.Column(db.String(50), nullable=True)
-    PRE_REQ5 = db.Column(db.String(50), nullable=True)
+    CO_REQ1 = db.Column(db.String(50), nullable=True)
+    CO_REQ2 = db.Column(db.String(50), nullable=True)
     DEGREE = db.Column(db.String(50), nullable=True)
 
-    def __init__(self, ubclass, title, department, section, type, days, time, building, room_number, location, professor, status, reserved, semester,pre1,pre2,pre3,pre4,pre5,degree):
+    def __init__(self, ubclass, title, department, section, type, days, time, building, room_number, location, professor, status, reserved, semester,pre1,pre2,pre3,co1,co2,degree):
 
         self.UBCLASS = ubclass
         self.TITLE = title
@@ -156,8 +156,8 @@ class UBClasses(db.Model):
         self.PRE_REQ1 = pre1
         self.PRE_REQ2 = pre2
         self.PRE_REQ3 = pre3
-        self.PRE_REQ4 = pre4
-        self.PRE_REQ5 = pre5
+        self.CO_REQ1 = co1
+        self.CO_REQ2 = co2
         self.DEGREE = degree
 
     def __repr__(self):
@@ -272,11 +272,11 @@ class Degree(db.Model):
     PRE_REQ1 = db.Column(db.String(50), nullable=True)
     PRE_REQ2 = db.Column(db.String(50), nullable=True)
     PRE_REQ3 = db.Column(db.String(50), nullable=True)
-    PRE_REQ4 = db.Column(db.String(50), nullable=True)
-    PRE_REQ5 = db.Column(db.String(50), nullable=True)
+    CO_REQ1 = db.Column(db.String(50), nullable=True)
+    CO_REQ2 = db.Column(db.String(50), nullable=True)
     CREDITS = db.Column(db.Integer, nullable=True)
 
-    def __init__(self,degree_name,ubclass,title,sem_index,link,pre1,pre2,pre3,pre4,pre5,credits):
+    def __init__(self,degree_name,ubclass,title,sem_index,link,pre1,pre2,pre3,co1,co2,credits):
         self.DEGREE_NAME = degree_name
         self.UBCLASS = ubclass
         self.TITLE = title
@@ -285,8 +285,8 @@ class Degree(db.Model):
         self.PRE_REQ1 = pre1
         self.PRE_REQ2 = pre2
         self.PRE_REQ3 = pre3
-        self.PRE_REQ4 = pre4
-        self.PRE_REQ5 = pre5
+        self.CO_REQ1 = co1
+        self.CO_REQ2 = co2
         self.CREDITS = credits
 
     def __repr__(self):
@@ -602,7 +602,10 @@ def degree_info():
              'LINK': course.LINK,
              'PRE_REQ1':course.PRE_REQ1,
              'PRE_REQ2':course.PRE_REQ2,
-             'PRE_REQ3':course.PRE_REQ3}
+             'PRE_REQ3':course.PRE_REQ3,
+             'CO_REQ1':course.CO_REQ1,
+             'CO_REQ2':course.CO_REQ2,
+             }
         json_results.append(d)
     return jsonify(classes=json_results)
 
@@ -660,13 +663,15 @@ def degree_info_user(user_id):
                     course = Degree.query.filter_by(ID=degree_array[x]).first()
                     if course is not None:
                         d = {'ID': course.ID,
-                         'UBCLASS': course.UBCLASS,
-                         'SEM_INDEX': course.SEM_INDEX,
-                         'TITLE': course.TITLE,
-                         'LINK': course.LINK,
-                         'PRE_REQ1':course.PRE_REQ1,
-                         'PRE_REQ2':course.PRE_REQ2,
-                         'PRE_REQ3':course.PRE_REQ3}
+                             'UBCLASS': course.UBCLASS,
+                             'SEM_INDEX': course.SEM_INDEX,
+                             'TITLE': course.TITLE,
+                             'LINK': course.LINK,
+                             'PRE_REQ1':course.PRE_REQ1,
+                             'PRE_REQ2':course.PRE_REQ2,
+                             'PRE_REQ3':course.PRE_REQ3,
+                             'CO_REQ1':course.CO_REQ1,
+                             'CO_REQ2':course.CO_REQ2}
                         json_results.append(d)
     return jsonify(classes=json_results)
 

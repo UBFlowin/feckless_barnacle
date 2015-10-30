@@ -443,8 +443,8 @@ function create_new_course_block(sem_index, num){
     a.setAttribute('pre_req1',DEGREE_HANDLES[num].PRE_REQ1);
     a.setAttribute('pre_req2',DEGREE_HANDLES[num].PRE_REQ2);
     a.setAttribute('pre_req3',DEGREE_HANDLES[num].PRE_REQ3);
-    //a.setAttribute('co_req1',DEGREE_HANDLES[num].CO_REQ1);
-    //a.setAttribute('co_req2',DEGREE_HANDLES[num].CO_REQ2);
+    a.setAttribute('co_req1',DEGREE_HANDLES[num].CO_REQ1);
+    a.setAttribute('co_req2',DEGREE_HANDLES[num].CO_REQ2);
     course.appendChild(a);
 
 

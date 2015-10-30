@@ -141,7 +141,7 @@
 <script>
 
     /* Degree Class Model Definition */
-    var Degree = function(ubclass, sem_index,title, link, pre1, pre2, pre3, user_took){
+    var Degree = function(ubclass, sem_index,title, link, pre1, pre2, pre3, co1, co2,  user_took){
         this.UBCLASS = ubclass;
         this.SEM_INDEX = sem_index;
         this.LINK = link;
@@ -149,8 +149,8 @@
         this.PRE_REQ1 = pre1;
         this.PRE_REQ2 = pre2;
         this.PRE_REQ3 = pre3;
-//        this.CO_REQ1 = co1;
-//        this.CO_REQ2 = co2;
+        this.CO_REQ1 = co1;
+        this.CO_REQ2 = co2;
         this.TAKEN = user_took;
     };
     /* Helper_Table Class Model Definition */
@@ -199,9 +199,9 @@
                             pre1 = dat.classes[x].PRE_REQ1;
                             pre2 = dat.classes[x].PRE_REQ2;
                             pre3 = dat.classes[x].PRE_REQ3;
-//                            co_req1 = dat.classes[x].CO_REQ1;
-//                            co_req2 = dat.classes[x].CO_REQ2;
-                            DEGREE_HANDLES[handle_index] = new Degree(ubclass, sem_index, title, link, pre1, pre2, pre3, 1);
+                            co1 = dat.classes[x].CO_REQ1;
+                            co2 = dat.classes[x].CO_REQ2;
+                            DEGREE_HANDLES[handle_index] = new Degree(ubclass, sem_index, title, link, pre1, pre2, pre3, co1, co2, 1);
                             handle_index += 1;
                             NUM_USER_CLASSES_APPLIED += 1;
                             x = x + 1;
@@ -223,10 +223,10 @@
                             pre1 = dat.classes[x].PRE_REQ1;
                             pre2 = dat.classes[x].PRE_REQ2;
                             pre3 = dat.classes[x].PRE_REQ3;
-//                            co_req1 = dat.classes[x].CO_REQ1;
-//                            co_req2 = dat.classes[x].CO_REQ2;
+                            co1 = dat.classes[x].CO_REQ1;
+                            co2 = dat.classes[x].CO_REQ2;
                             if (!search_degree_for_repeats(ubclass)) {
-                                DEGREE_HANDLES[handle_index] = new Degree(ubclass, sem_index, title, link, pre1, pre2, pre3, 0);
+                                DEGREE_HANDLES[handle_index] = new Degree(ubclass, sem_index, title, link, pre1, pre2, pre3, co1, co2, 0);
                                 handle_index += 1;
                                 NUM_COURSES_IN_DEGREE += 1;
                             }
