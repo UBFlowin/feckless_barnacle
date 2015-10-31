@@ -122,6 +122,36 @@
                             var section = dat.classes[x].SECTION;
                             var type = dat.classes[x].TYPE;
                             var days = dat.classes[x].DAYS;
+                            if(chk1_val=="1") {
+                                if (days.indexOf("M") != -1) {
+                                    x=x+1;
+                                    continue;
+                                }
+                            }
+                            if(chk2_val=="1") {
+                                if (days.indexOf("T") != -1) {
+                                    x=x+1;
+                                    continue;
+                                }
+                            }
+                            if(chk3_val=="1") {
+                                if (days.indexOf("W") != -1) {
+                                    x=x+1;
+                                    continue;
+                                }
+                            }
+                            if(chk4_val=="1") {
+                                if (days.indexOf("R") != -1) {
+                                    x=x+1;
+                                    continue;
+                                }
+                            }
+                            if(chk5_val=="1") {
+                                if (days.indexOf("F") != -1) {
+                                    x=x+1;
+                                    continue;
+                                }
+                            }
                             var time = dat.classes[x].TIME;
                             var building = dat.classes[x].BUILDING;
                             var room_number = dat.classes[x].ROOM_NUMBER;
@@ -139,6 +169,36 @@
                                     var rec_section = dat.classes[x].RECITATION[index].SECTION;
                                     var rec_type = dat.classes[x].RECITATION[index].TYPE;
                                     var rec_days = dat.classes[x].RECITATION[index].DAYS;
+                                    if(chk1_val=="1") {
+                                        if (rec_days.indexOf("M") != -1) {
+                                            index=index+1;
+                                            continue;
+                                        }
+                                    }
+                                    if(chk2_val=="1") {
+                                        if (rec_days.indexOf("T") != -1) {
+                                            index=index+1;
+                                            continue;
+                                        }
+                                    }
+                                    if(chk3_val=="1") {
+                                        if (rec_days.indexOf("W") != -1) {
+                                            index=index+1;
+                                            continue;
+                                        }
+                                    }
+                                    if(chk4_val=="1") {
+                                        if (rec_days.indexOf("R") != -1) {
+                                            index=index+1;
+                                            continue;
+                                        }
+                                    }
+                                    if(chk5_val=="1") {
+                                        if (rec_days.indexOf("F") != -1) {
+                                            index=index+1;
+                                            continue;
+                                        }
+                                    }
                                     var rec_time = dat.classes[x].RECITATION[index].TIME;
                                     var rec_building = dat.classes[x].RECITATION[index].BUILDING;
                                     var rec_room = dat.classes[x].RECITATION[index].ROOM_NUMBER;
