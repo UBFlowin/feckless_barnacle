@@ -591,8 +591,21 @@
     <!--bootstrap and custom bootstrap js files-->
     <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap-sb-admin-2-1.0.7/dist/js/sb-admin-2.js') }}"></script>
     <script type ='text/javascript'>
-        var g_Color = "#0c1Aff";
+        var g_Color = "#8FC8FF";
         var g_Border_Color = "Black";
+
+
+        /* Get Current User */
+        window.onload = function() {
+            $.getJSON('/userid', function (dat) {
+                if (dat.classes) {
+                    USER_ID = dat.classes[0].ID;
+                    console.log(dat);
+                }
+            });
+        };
+
+
 
         /*********************************************************
         *       Courses Class
@@ -861,7 +874,7 @@
                             this.set_bottom_border_color(this.id_table[paint_index], g_Color);
 
                             //elem = document.getElementById(this.id_table[paint_index]);
-                            //elem.style.backgroundImage = "url('/static/Mid_Cell.jpg')";
+                            //elem.style.backgroundImage = "url('/static/Checkmark.jpg')";
 
                             if(first_cell_of_block == 1) {
                                 if(class_handle.REC_ID) {
