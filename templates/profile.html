@@ -122,6 +122,36 @@
                             var section = dat.classes[x].SECTION;
                             var type = dat.classes[x].TYPE;
                             var days = dat.classes[x].DAYS;
+                            if(chk1_val=="1") {
+                                if (days.indexOf("M") != -1) {
+                                    x=x+1;
+                                    continue;
+                                }
+                            }
+                            if(chk2_val=="1") {
+                                if (days.indexOf("T") != -1) {
+                                    x=x+1;
+                                    continue;
+                                }
+                            }
+                            if(chk3_val=="1") {
+                                if (days.indexOf("W") != -1) {
+                                    x=x+1;
+                                    continue;
+                                }
+                            }
+                            if(chk4_val=="1") {
+                                if (days.indexOf("R") != -1) {
+                                    x=x+1;
+                                    continue;
+                                }
+                            }
+                            if(chk5_val=="1") {
+                                if (days.indexOf("F") != -1) {
+                                    x=x+1;
+                                    continue;
+                                }
+                            }
                             var time = dat.classes[x].TIME;
                             var building = dat.classes[x].BUILDING;
                             var room_number = dat.classes[x].ROOM_NUMBER;
@@ -139,6 +169,36 @@
                                     var rec_section = dat.classes[x].RECITATION[index].SECTION;
                                     var rec_type = dat.classes[x].RECITATION[index].TYPE;
                                     var rec_days = dat.classes[x].RECITATION[index].DAYS;
+                                    if(chk1_val=="1") {
+                                        if (rec_days.indexOf("M") != -1) {
+                                            index=index+1;
+                                            continue;
+                                        }
+                                    }
+                                    if(chk2_val=="1") {
+                                        if (rec_days.indexOf("T") != -1) {
+                                            index=index+1;
+                                            continue;
+                                        }
+                                    }
+                                    if(chk3_val=="1") {
+                                        if (rec_days.indexOf("W") != -1) {
+                                            index=index+1;
+                                            continue;
+                                        }
+                                    }
+                                    if(chk4_val=="1") {
+                                        if (rec_days.indexOf("R") != -1) {
+                                            index=index+1;
+                                            continue;
+                                        }
+                                    }
+                                    if(chk5_val=="1") {
+                                        if (rec_days.indexOf("F") != -1) {
+                                            index=index+1;
+                                            continue;
+                                        }
+                                    }
                                     var rec_time = dat.classes[x].RECITATION[index].TIME;
                                     var rec_building = dat.classes[x].RECITATION[index].BUILDING;
                                     var rec_room = dat.classes[x].RECITATION[index].ROOM_NUMBER;
@@ -591,8 +651,21 @@
     <!--bootstrap and custom bootstrap js files-->
     <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap-sb-admin-2-1.0.7/dist/js/sb-admin-2.js') }}"></script>
     <script type ='text/javascript'>
-        var g_Color = "#0c1Aff";
+        var g_Color = "#8FC8FF";
         var g_Border_Color = "Black";
+
+
+        /* Get Current User */
+        window.onload = function() {
+            $.getJSON('/userid', function (dat) {
+                if (dat.classes) {
+                    USER_ID = dat.classes[0].ID;
+                    console.log(dat);
+                }
+            });
+        };
+
+
 
         /*********************************************************
         *       Courses Class
@@ -861,7 +934,7 @@
                             this.set_bottom_border_color(this.id_table[paint_index], g_Color);
 
                             //elem = document.getElementById(this.id_table[paint_index]);
-                            //elem.style.backgroundImage = "url('/static/Mid_Cell.jpg')";
+                            //elem.style.backgroundImage = "url('/static/Checkmark.jpg')";
 
                             if(first_cell_of_block == 1) {
                                 if(class_handle.REC_ID) {

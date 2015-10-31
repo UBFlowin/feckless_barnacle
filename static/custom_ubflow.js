@@ -422,16 +422,26 @@ function create_new_course_block(sem_index, num){
             'border-top-left-radius: 8px;border-top-right-radius: 8px;' +
             'border-bottom-left-radius: 8px;border-bottom-right-radius: 8px;' +
             'border-color: #334455;' );
-    if(DEGREE_HANDLES[num].TAKEN == 1) {
 
-        var image = document.createElement('img');
+    /* Add Blue checkmark if taken, otherwise add a gray hidden mark */
+    var image = document.createElement('img');
+    image.setAttribute('id',String(DEGREE_HANDLES[num].UBCLASS)+'_check');
+    if(DEGREE_HANDLES[num].TAKEN == 1) {
         image.setAttribute('src', 'static/blue_check.png');
         image.setAttribute('style', 'position:absolute; top:0px; left:0px;');
-        a.appendChild(image);
     }
+    else{
+        image.setAttribute('src', 'static/grayscale_check.png');
+        image.setAttribute('style', 'position:absolute; top:0px; left:0px; display:none;');
+
+    }
+    a.appendChild(image);
+
     a.setAttribute('id',String(DEGREE_HANDLES[num].UBCLASS));
     a.setAttribute('class', 'list-group-item');
-    //a.setAttribute('onclick',"edit('"+String(DEGREE_HANDLES[num].UBCLASS)+"')");
+    var check_string = "switch_check_type('"+String(DEGREE_HANDLES[num].UBCLASS)+"')";
+    a.setAttribute('onclick',check_string);
+
 
     //Set Change Color on Hover
     var mouseover = "show_info('"+String(DEGREE_HANDLES[num].UBCLASS)+"',"+String(0)+")";
@@ -454,7 +464,7 @@ function create_new_course_block(sem_index, num){
     course_box.setAttribute('style', 'padding:3px;');
     a.appendChild(course_box);
 
-var span = document.createElement("span");
+    var span = document.createElement("span");
     span.setAttribute('style', 'height:15px');
     span.setAttribute('class', 'col-xs-12');
     course_box.appendChild(span);
@@ -505,6 +515,50 @@ function search_degree_for_repeats(id){
 }
 
 
+/********************************************************************
+*        FLOWSHEET - Show Untaken classes with gray checkmark
+*********************************************************************/
+function switch_check_visibility(id){
+    id = id + '_check';
+    var elem = document.getElementById(id);
+    if(EDITABLE == 1) {
+        if (elem.style.display == "none") {
+            elem.style.display = "block";
+        }
+        else {
+            elem.style.display = "none";
+        }
+    }
+}
+
+
+/********************************************************************
+*        FLOWSHEET - Changes checkmark displayed & Indicates as taken
+*********************************************************************/
+/*  */
+function switch_check_type(id){
+    var i;
+    var image_id = id + '_check';
+    var elem = document.getElementById(image_id);
+    if(EDITABLE == 1) {
+        for(i=0;i<DEGREE_HANDLES.length;i++){
+            if(id == DEGREE_HANDLES[i].UBCLASS) {
+                if(elem.getAttribute('src') == 'static/blue_check.png') {
+                    elem.setAttribute('src', 'static/grayscale_check.png');
+                    DEGREE_HANDLES[i].TAKEN = 0;
+                    NUM_USER_CLASSES_APPLIED -= 1;
+                }
+                else{
+                    elem.setAttribute('src', 'static/blue_check.png');
+                    DEGREE_HANDLES[i].TAKEN = 1;
+                    NUM_USER_CLASSES_APPLIED += 1;
+                }
+                break;
+            }
+        }
+    }
+}
+
 
 /********************************************************************
 *        FLOWSHEET - Color Dependencies
@@ -514,35 +568,35 @@ function show_info(id, iteration){
     var next;
     elem = document.getElementById(id);
     if(iteration == 0){
-        elem.style.backgroundColor = "CornflowerBlue";
+        elem.style.backgroundColor = "#8FC8FF";
         iteration += 1;
     }
     else if(iteration == 1){
-        elem.style.backgroundColor = "#339966";
+        elem.style.backgroundColor = "#FFD700";
         iteration += 1;
     }
     else if(iteration == 2){
-        elem.style.backgroundColor = "#47a375";
+        elem.style.backgroundColor = "#E6C200";
         iteration += 1;
     }
     else if(iteration == 3){
-        elem.style.backgroundColor = "#5cad85";
+        elem.style.backgroundColor = "#CCAC00";
         iteration += 1;
     }
     else if(iteration == 4){
-        elem.style.backgroundColor = "#70b894";
+        elem.style.backgroundColor = "#B39600";
         iteration += 1;
     }
     else if(iteration == 5){
-        elem.style.backgroundColor = "#86c2a3";
+        elem.style.backgroundColor = "#998100";
         iteration += 1;
     }
     else if(iteration == 6){
-        elem.style.backgroundColor = "#99ccb2";
+        elem.style.backgroundColor = "#806C00";
         iteration += 1;
     }
     else if(iteration == 7){
-        elem.style.backgroundColor = "#add6c2";
+        elem.style.backgroundColor = "#665600";
         iteration += 1;
     }
     if(elem == null){

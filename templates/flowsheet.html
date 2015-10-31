@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
-<body>
+<script type="stylesheet" src="{{ url_for('static', filename='custom_ubflow.css') }}"></script>
 <div id="wrapper">
     <div id="page-wrapper">
         <div class="col-xs-12">
@@ -9,15 +9,20 @@
                     <div class="row">
                         <div class="col-xs-9">
                             <h2> B.S. Computer Engineering </h2>
+                            <div class="col-xs-4">
+                                <div class="col-xs-12">
+                                    <div class="col-xs-9 progress progress-striped active" style="background-color: slategray; padding:0px;">
+                                        <div class="progress-bar progress-bar-success" id="prog_bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                                        </div>
+                                    </div>
+                                    <span id="prog_bar_num" class="col-xs-3 pull-right text-muted">0%</span>
+                                </div>
+                            </div>
                         </div>
-                         <div class="col-xs-3">
-                             <p>
-                                <strong>Degree Progress</strong>
-                                <span id="prog_bar_num" class="pull-right text-muted">0%</span>
-                            </p>
-                            <div class="progress progress-striped active" style="background-color: slategray">
-                                <div class="progress-bar progress-bar-success" id="prog_bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
-                                    <span class="sr-only">0% Complete (warning)</span>
+                        <div class="col-xs-3">
+                            <div class="col-xs-4 col-xs-offset-8">
+                                <div id="edit_button" class="btn btn-lg btn-primary btn-block" onclick="switch_edit_mode()">
+                                    Edit
                                 </div>
                             </div>
                         </div>
@@ -120,13 +125,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xs-3 col-xs-offset-9">
-                                    <div class="col-xs-6 col-xs-offset-6">
-                                    <div id="edit_button" class="btn btn-lg btn-primary btn-block">
-                                        Edit
-                                    </div>
-                                </div>
-                                </div>
                             </div>
                         </div>
                         <br/>
@@ -170,15 +168,17 @@
 
 
 
+
 <script>
     var DEGREE_HANDLES= [];
     var USER_ID =0;
     var NUM_USER_CLASSES_APPLIED = 0;
     var NUM_COURSES_IN_DEGREE = 0;
+    var EDITABLE = 0;
+
     /*
      *  Gets the current User ID so the flowsheet can adjust according to their history
      */
-
     window.onload = function() {
         $.getJSON('/userid', function (dat) {
             var handle_index = 0;
@@ -212,6 +212,7 @@
                 /* Get All Courses, but don't include repeats */
                 $.getJSON('/degreeinfo', function (dat) {
                     console.log(dat);
+                    NUM_COURSES_IN_DEGREE = NUM_COURSES_IN_DEGREE + NUM_USER_CLASSES_APPLIED;
                     if (dat.classes) {
                         var x = 0;
                         while (x < dat.classes.length) {
@@ -233,26 +234,46 @@
                             x = x + 1;
                         }
                     }
-
                     populate_semesters();
                 });
             }
         });
-    }
+    };
 
-
-
-
-</script>
-<script>
     window.setTimeout(update_progress_bar,500);
     function update_progress_bar(){
-        var total_courses = NUM_COURSES_IN_DEGREE + NUM_USER_CLASSES_APPLIED;
-        var percentage = (NUM_USER_CLASSES_APPLIED / total_courses) * 100;
+        var percentage = (NUM_USER_CLASSES_APPLIED / NUM_COURSES_IN_DEGREE) * 100;
         var progress_bar = document.getElementById('prog_bar');
         progress_bar.style.width = String(percentage) + '%';
         var progress_bar_text = document.getElementById('prog_bar_num');
         progress_bar_text.innerText = String(percentage).substring(0, 4) + '%';
+    }
+
+    /* Switches a Bool indicating whether editting funcitons are enable/disabled */
+    function switch_edit_mode(){
+        var x;
+        var elem = document.getElementById('edit_button');
+        if(EDITABLE == 0){
+            EDITABLE = 1;
+            elem.style.backgroundColor = "red";
+            elem.innerText = "Submit Changes";
+            for(x=0;x<DEGREE_HANDLES.length;x++){
+                if(DEGREE_HANDLES[x].TAKEN == 0){
+                    switch_check_visibility(DEGREE_HANDLES[x].UBCLASS);
+                }
+            }
+        }
+        else{
+            elem.style.backgroundColor = "#337ab7";
+            elem.innerText = "Edit";
+            for(x=0;x<DEGREE_HANDLES.length;x++){
+                if(DEGREE_HANDLES[x].TAKEN == 0){
+                    switch_check_visibility(DEGREE_HANDLES[x].UBCLASS);
+                }
+            }
+            EDITABLE = 0;
+        }
+        update_progress_bar();
     }
 
     jQuery.fn.shake = function() {
@@ -265,20 +286,16 @@
         return this;
     };
 
-    $("#edit_button").click(function() {
-        $("#sem1").shake();
-        $("#sem2").shake();
-        $("#sem3").shake();
-        $("#sem4").shake();
-        $("#sem5").shake();
-        $("#sem6").shake();
-        $("#sem7").shake();
-        $("#sem8").shake();
-    });
+//    $("#edit_button").click(function() {
+//        $("#sem1").shake();
+//        $("#sem2").shake();
+//        $("#sem3").shake();
+//        $("#sem4").shake();
+//        $("#sem5").shake();
+//        $("#sem6").shake();
+//        $("#sem7").shake();
+//        $("#sem8").shake();
+//    });
 </script>
 <script type="text/javascript" src="{{ url_for('static', filename='custom_ubflow.js') }}"></script>
-
-<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-</body>
 {% endblock %}
