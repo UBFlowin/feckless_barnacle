@@ -688,7 +688,33 @@
             this.SEMESTER = semester;
             this.RECITATION = recitation;
             this.REC_ID_selected = 0;
-
+        };
+        UbClass.prototype.get_id = function(){
+            return this.ID;
+        };
+        UbClass.prototype.get_ubclass = function(){
+            return this.UBCLASS;
+        };
+        UbClass.prototype.get_title = function(){
+            return this.TITLE;
+        };
+        UbClass.prototype.get_recitation = function(){
+            return this.RECITATION;
+        };
+        UbClass.prototype.get_rec_selected = function(){
+            return this.REC_ID_selected;
+        };
+        UbClass.prototype.set_rec_selected = function(rec){
+            this.REC_ID_selected = rec;
+        };
+        UbClass.prototype.get_type = function(){
+            return this.TYPE;
+        };
+        UbClass.prototype.get_days = function(){
+            return this.DAYS;
+        };
+        UbClass.prototype.get_time = function(){
+            return this.TIME;
         };
 
 
@@ -709,7 +735,24 @@
             this.STATUS = status;
             this.RESERVED = reserved;
         };
-
+        UbRec.prototype.get_id = function(){
+            return this.ID;
+        };
+        UbRec.prototype.get_ubclass = function(){
+            return this.UBCLASS;
+        };
+        UbRec.prototype.get_title = function(){
+            return this.TITLE;
+        };
+        UbRec.prototype.get_type = function(){
+            return this.TYPE;
+        };
+        UbRec.prototype.get_days = function(){
+            return this.DAYS;
+        };
+        UbRec.prototype.get_time = function(){
+            return this.TIME;
+        };
 
         /*********************************************************
         *       Table Class
@@ -915,11 +958,19 @@
             }
         };
 
+        Table_Class.prototype.num_cells = function(){
+            return 135;
+        };
+
+        Table_Class.prototype.cells_per_col = function(){
+            return 27;
+        };
+
         /***************************************
         *       Paint Cells
         ****************************************/
         Table_Class.prototype.paint_cells = function(class_handle) {
-            var paint_times = convertTimes(class_handle.DAYS, class_handle.TIME);
+            var paint_times = convertTimes(class_handle.get_days(), class_handle.get_time());
             var paint_index;
             var first_cell_of_block;
             for(var w=0;w<10;w=w+2) {
@@ -928,7 +979,7 @@
                     paint_index = Table1.id_table.indexOf(paint_times[w]);
                     while (Table1.id_table[paint_index] != paint_times[w + 1]) {
                         if(!Table1.cell_conflict(Table1.id_table[paint_index])){
-                            this.set_cell_value(this.id_table[paint_index],class_handle.ID);
+                            this.set_cell_value(this.id_table[paint_index],class_handle.get_id());
                             this.set_cell_color(this.id_table[paint_index], g_Color);
                             this.set_side_borders_color(this.id_table[paint_index], g_Border_Color);
                             this.set_bottom_border_color(this.id_table[paint_index], g_Color);
@@ -938,11 +989,11 @@
 
                             if(first_cell_of_block == 1) {
                                 if(class_handle.REC_ID) {
-                                    this.changeText(this.id_table[paint_index], class_handle.UBCLASS);
-                                    this.changeText(this.id_table[paint_index+1], class_handle.TYPE);
+                                    this.changeText(this.id_table[paint_index], class_handle.get_ubclass());
+                                    this.changeText(this.id_table[paint_index+1], class_handle.get_type());
                                 }
                                 else{
-                                    this.changeText(this.id_table[paint_index], class_handle.UBCLASS);
+                                    this.changeText(this.id_table[paint_index], class_handle.get_ubclass());
                                 }
                                 first_cell_of_block = 0;
                                 this.set_top_border_color(this.id_table[paint_index], g_Border_Color);
@@ -992,9 +1043,9 @@
             while(i<CLASS_HANDLES.length){
                 if(CLASS_HANDLES[i]){
                     list = document.getElementById('container' + i).remove();
-                    if(CLASS_HANDLES[i].RECITATION){
+                    if(CLASS_HANDLES[i].get_recitation()){
                         var str;
-                        for(var r=0;r<CLASS_HANDLES[i].RECITATION.length;r++){
+                        for(var r=0;r<CLASS_HANDLES[i].get_recitation().length;r++){
                             str = String(i)+ String(r);
                             parent = document.getElementById('collapser' + str).remove();
                         }
@@ -1007,27 +1058,27 @@
 
 
         function check_uncheck_buttons(checkbox_id, button_id){
-            var x;
-            if(button_id == 'monday_button'){x=0;}
-            if(button_id == 'tuesday_button'){x=27;}
-            if(button_id == 'wednesday_button'){x=54;}
-            if(button_id == 'thursday_button'){x=81;}
-            if(button_id == 'friday_button'){x=108;}
-            limit = x+26;
+            var num_cells;
+            if(button_id == 'monday_button'){num_cells=Table1.num_cells() - Table1.cells_per_col()*5;}
+            if(button_id == 'tuesday_button'){num_cells=Table1.num_cells() - Table1.cells_per_col()*4;}
+            if(button_id == 'wednesday_button'){num_cells=Table1.num_cells() - Table1.cells_per_col()*3;}
+            if(button_id == 'thursday_button'){num_cells=Table1.num_cells() - Table1.cells_per_col()*2;}
+            if(button_id == 'friday_button'){num_cells=Table1.num_cells() - Table1.cells_per_col()*1;}
+            limit = num_cells + Table1.cells_per_col()-1;
             var checkbox = document.getElementById(checkbox_id);
             var button = document.getElementById(button_id);
             if(checkbox.value == "0"){
                 checkbox.value = "1";
                 button.style.backgroundColor = "#f78181";
-                for(x;x<limit;x++){
-                    Table1.set_cell_color(Table1.id_table[x],"#F78181");
+                for(num_cells;num_cells<limit;num_cells++){
+                    Table1.set_cell_color(Table1.id_table[num_cells],"#F78181");
                 }
             }
             else{
                 checkbox.value = "0";
                 button.style.backgroundColor = "White";
-                for(x;x<limit;x++){
-                    Table1.set_cell_color(Table1.id_table[x],"White");
+                for(num_cells;num_cells<limit;num_cells++){
+                    Table1.set_cell_color(Table1.id_table[num_cells],"White");
                 }
             }
         }

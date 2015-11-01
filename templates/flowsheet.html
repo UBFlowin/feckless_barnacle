@@ -19,8 +19,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xs-3">
-                            <div class="col-xs-4 col-xs-offset-8">
+                        <div class="col-xs-3" style="top:29px;">
+                            <div class="col-xs-6 col-xs-offset-6">
                                 <div id="edit_button" class="btn btn-lg btn-primary btn-block" onclick="switch_edit_mode()">
                                     Edit
                                 </div>
@@ -139,7 +139,7 @@
 <script>
 
     /* Degree Class Model Definition */
-    var Degree = function(ubclass, sem_index,title, link, pre1, pre2, pre3, co1, co2,  user_took){
+    var Degree = function(ubclass, sem_index,title, link, pre1, pre2, pre3, co1, co2,  user_took, course_ref){
         this.UBCLASS = ubclass;
         this.SEM_INDEX = sem_index;
         this.LINK = link;
@@ -150,7 +150,33 @@
         this.CO_REQ1 = co1;
         this.CO_REQ2 = co2;
         this.TAKEN = user_took;
+        this.COURSE_ID_REF = course_ref;
+
+
     };
+
+    Degree.prototype.get_id = function(){
+            return this.COURSE_ID_REF;
+    };
+    Degree.prototype.get_taken = function(){
+            return this.TAKEN;
+    };
+    Degree.prototype.set_as_taken = function(){
+            this.TAKEN = 1;
+    };
+    Degree.prototype.set_not_taken = function(){
+            this.TAKEN = 0;
+    };
+    Degree.prototype.get_title = function(){
+            return this.TITLE;
+    };
+    Degree.prototype.get_ubclass = function(){
+            return this.UBCLASS;
+    };
+    Degree.prototype.get_sem_index = function(){
+            return this.SEM_INDEX;
+    };
+
     /* Helper_Table Class Model Definition */
     var Helper_Table = function(user_id){
         this.user_id = user_id;
@@ -201,7 +227,7 @@
                             pre3 = dat.classes[x].PRE_REQ3;
                             co1 = dat.classes[x].CO_REQ1;
                             co2 = dat.classes[x].CO_REQ2;
-                            DEGREE_HANDLES[handle_index] = new Degree(ubclass, sem_index, title, link, pre1, pre2, pre3, co1, co2, 1);
+                            DEGREE_HANDLES[handle_index] = new Degree(ubclass, sem_index, title, link, pre1, pre2, pre3, co1, co2, 1, id);
                             handle_index += 1;
                             NUM_USER_CLASSES_APPLIED += 1;
                             x = x + 1;
@@ -227,7 +253,7 @@
                             co1 = dat.classes[x].CO_REQ1;
                             co2 = dat.classes[x].CO_REQ2;
                             if (!search_degree_for_repeats(ubclass)) {
-                                DEGREE_HANDLES[handle_index] = new Degree(ubclass, sem_index, title, link, pre1, pre2, pre3, co1, co2, 0);
+                                DEGREE_HANDLES[handle_index] = new Degree(ubclass, sem_index, title, link, pre1, pre2, pre3, co1, co2, 0, id);
                                 handle_index += 1;
                                 NUM_COURSES_IN_DEGREE += 1;
                             }
@@ -249,14 +275,14 @@
         progress_bar_text.innerText = String(percentage).substring(0, 4) + '%';
     }
 
-    /* Switches a Bool indicating whether editting funcitons are enable/disabled */
+    /* Switches a Bool indicating whether editing funcitons are enable/disabled */
     function switch_edit_mode(){
         var x;
         var elem = document.getElementById('edit_button');
         if(EDITABLE == 0){
             EDITABLE = 1;
             elem.style.backgroundColor = "red";
-            elem.innerText = "Submit Changes";
+            elem.innerText = "Submit";
             for(x=0;x<DEGREE_HANDLES.length;x++){
                 if(DEGREE_HANDLES[x].TAKEN == 0){
                     switch_check_visibility(DEGREE_HANDLES[x].UBCLASS);
