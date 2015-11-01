@@ -973,59 +973,64 @@
         var Selected_Classes = new Selected_Class();
 
 
-    /*********************************************************
-    *       Reset Class Handles Array  to None
-    *********************************************************/
-    function reset_class_handles(){
-        for(var i=0;i<CLASS_HANDLES.length;i++){
-            CLASS_HANDLES[i] = null;
+        /*********************************************************
+        *       Reset Class Handles Array  to None
+        *********************************************************/
+        function reset_class_handles(){
+            for(var i=0;i<CLASS_HANDLES.length;i++){
+                CLASS_HANDLES[i] = null;
+            }
         }
-    }
 
 
-    /*********************************************************
-    *       Remove All Available Classes Currently Visible
-    *********************************************************/
-    function remove_available_classes(){
-        var list = document.getElementById('accordion-body');
-        var i =0;
-        while(i<CLASS_HANDLES.length){
-            if(CLASS_HANDLES[i]){
-                list = document.getElementById('container' + i).remove();
-                if(CLASS_HANDLES[i].RECITATION){
-                    var str;
-                    for(var r=0;r<CLASS_HANDLES[i].RECITATION.length;r++){
-                        str = String(i)+ String(r);
-                        parent = document.getElementById('collapser' + str).remove();
+        /*********************************************************
+        *       Remove All Available Classes Currently Visible
+        *********************************************************/
+        function remove_available_classes(){
+            var list = document.getElementById('accordion-body');
+            var i =0;
+            while(i<CLASS_HANDLES.length){
+                if(CLASS_HANDLES[i]){
+                    list = document.getElementById('container' + i).remove();
+                    if(CLASS_HANDLES[i].RECITATION){
+                        var str;
+                        for(var r=0;r<CLASS_HANDLES[i].RECITATION.length;r++){
+                            str = String(i)+ String(r);
+                            parent = document.getElementById('collapser' + str).remove();
+                        }
                     }
                 }
+                i++;
             }
-            i++;
         }
-    }
 
 
 
-    function check_uncheck_buttons(checkbox_id, button_id){
-        var checkbox = document.getElementById(checkbox_id);
-        var button = document.getElementById(button_id);
-        if(checkbox.value == "0"){
-            checkbox.value = "1";
-            button.style.backgroundColor = "#f78181";
+        function check_uncheck_buttons(checkbox_id, button_id){
+            var x;
+            if(button_id == 'monday_button'){x=0;}
+            if(button_id == 'tuesday_button'){x=27;}
+            if(button_id == 'wednesday_button'){x=54;}
+            if(button_id == 'thursday_button'){x=81;}
+            if(button_id == 'friday_button'){x=108;}
+            limit = x+26;
+            var checkbox = document.getElementById(checkbox_id);
+            var button = document.getElementById(button_id);
+            if(checkbox.value == "0"){
+                checkbox.value = "1";
+                button.style.backgroundColor = "#f78181";
+                for(x;x<limit;x++){
+                    Table1.set_cell_color(Table1.id_table[x],"#F78181");
+                }
+            }
+            else{
+                checkbox.value = "0";
+                button.style.backgroundColor = "White";
+                for(x;x<limit;x++){
+                    Table1.set_cell_color(Table1.id_table[x],"White");
+                }
+            }
         }
-        else{
-            checkbox.value = "0";
-            button.style.backgroundColor = "White";
-        }
-    }
-
-
-//    $('.btn[data-checkbox-name]').click(function() {
-//        $('input[name="'+$(this).data('checkboxName')+'"]').val(
-//            $(this).hasClass('active') ? 0 : 1
-//        );
-//    });
-
     </script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
