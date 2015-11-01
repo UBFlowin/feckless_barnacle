@@ -124,7 +124,7 @@ function make_available_classes2() {
 
                     //add type
                     var sub_type_text = document.createElement('type');
-                    var sub_text = document.createTextNode(CLASS_HANDLES[j].get_recitation()[k].get_days()+ " : " +CLASS_HANDLES[j].get_recitation()[k].get_type());
+                    var sub_text = document.createTextNode(CLASS_HANDLES[j].RECITATION[k].DAYS+ " : " +CLASS_HANDLES[j].RECITATION[k].get_type());
                     sub_type_text.appendChild(sub_text);
                     sub_type_container.appendChild(sub_type_text);
 

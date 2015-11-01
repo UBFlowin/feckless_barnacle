@@ -162,12 +162,8 @@
                             var semester = dat.classes[x].SEMESTER;
                             if (dat.classes[x].RECITATION.length != 0) {
                                 var index = 0;
+                                var added_rec = 0;
                                 while (index < dat.classes[x].RECITATION.length) {
-                                    var rec_class_id = dat.classes[x].RECITATION[index].ID;
-                                    var rec_id = dat.classes[x].RECITATION[index].REC_ID;
-                                    var ubclass1 = dat.classes[x].RECITATION[index].UBCLASS;
-                                    var rec_section = dat.classes[x].RECITATION[index].SECTION;
-                                    var rec_type = dat.classes[x].RECITATION[index].TYPE;
                                     var rec_days = dat.classes[x].RECITATION[index].DAYS;
                                     if(chk1_val=="1") {
                                         if (rec_days.indexOf("M") != -1) {
@@ -199,13 +195,20 @@
                                             continue;
                                         }
                                     }
+
+                                    var rec_class_id = dat.classes[x].RECITATION[index].ID;
+                                    var rec_id = dat.classes[x].RECITATION[index].REC_ID;
+                                    var ubclass1 = dat.classes[x].RECITATION[index].UBCLASS;
+                                    var rec_section = dat.classes[x].RECITATION[index].SECTION;
+                                    var rec_type = dat.classes[x].RECITATION[index].TYPE;
                                     var rec_time = dat.classes[x].RECITATION[index].TIME;
                                     var rec_building = dat.classes[x].RECITATION[index].BUILDING;
                                     var rec_room = dat.classes[x].RECITATION[index].ROOM_NUMBER;
                                     var rec_location = dat.classes[x].RECITATION[index].LOCATION;
                                     var rec_status = dat.classes[x].RECITATION[index].STATUS;
                                     var rec_reserved = dat.classes[x].RECITATION[index].RESERVED;
-                                    recitation[index] = new UbRec(rec_class_id, rec_id, ubclass1, rec_section, rec_type, rec_days, rec_time, rec_building, rec_room, rec_location, rec_status, rec_reserved);
+                                    recitation[added_rec] = new UbRec(rec_class_id, rec_id, ubclass1, rec_section, rec_type, rec_days, rec_time, rec_building, rec_room, rec_location, rec_status, rec_reserved);
+                                    added_rec++;
                                     index++;
                                 }
                             }
