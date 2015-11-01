@@ -430,7 +430,7 @@ def profile():
     return render_template("profile.html",username="sethkara")
 
 
-@app.route('/getnextclassgroup/search', methods=['GET','POST'])
+@app.route('/getnext/search', methods=['GET','POST'])
 @login_required
 def getSearch():
     if request.method == 'POST':
@@ -491,7 +491,7 @@ def getSearch():
         return jsonify(classes=json_results)
 
 
-@app.route('/getfirstclassgroup', methods=['GET'])
+@app.route('/getfirst', methods=['GET'])
 @login_required
 def getFirstClassGroup():
     if request.method == 'GET':
@@ -539,7 +539,7 @@ def getFirstClassGroup():
     return jsonify(classes=json_results)
 
 
-@app.route('/getnextclassgroup', methods=['GET'])
+@app.route('/getnext', methods=['GET'])
 @login_required
 def getClassGroup():
     if request.method == 'GET':
@@ -673,6 +673,29 @@ def degree_info_user(user_id):
                              'CO_REQ1':course.CO_REQ1,
                              'CO_REQ2':course.CO_REQ2}
                         json_results.append(d)
+    return jsonify(classes=json_results)
+
+
+@app.route('/updatedegree', methods=['GET','POST'])
+@login_required
+def update_degree():
+    json_results = []
+    user = request.json['user']
+    course = request.json['course']
+    update = request.json['update_type']
+    num = request.json['num_taken']
+    d = {}
+    if update == 'remove':
+        string = 'DEGREE_COURSE' + str(num+1)
+        entry = ClassesTakenHelper.query.filter_by(USER_ID=user)
+        entry.update({string : str(0)}, synchronize_session="evaluate")
+        db.session.commit()
+    if update == 'add':
+        string = 'DEGREE_COURSE' + str(num)
+        entry = ClassesTakenHelper.query.filter_by(USER_ID=user)
+        entry.update({string : course}, synchronize_session="evaluate")
+        db.session.commit()
+    json_results.append(d)
     return jsonify(classes=json_results)
 
 

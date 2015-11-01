@@ -15,7 +15,7 @@
     /*********************************************************
     *       Get First Class Information
     *********************************************************/
-    $.getJSON('/getfirstclassgroup', function(dat) {
+    $.getJSON('/getfirst', function(dat) {
         var x = 0;
         var recitation = [];
         while(dat.classes[x] != null) {
@@ -98,7 +98,7 @@
             console.log(data);
             $.ajax({
                 type : "POST",
-                url : '/getnextclassgroup/search',
+                url : '/getnext/search',
                 data: JSON.stringify(data, null, '\t'),
                 contentType: 'application/json;charset=UTF-8',
                 success: function(dat) {

@@ -275,7 +275,7 @@
         progress_bar_text.innerText = String(percentage).substring(0, 4) + '%';
     }
 
-    /* Switches a Bool indicating whether editing funcitons are enable/disabled */
+    /* Switches a Bool indicating whether editing functions are enable/disabled */
     function switch_edit_mode(){
         var x;
         var elem = document.getElementById('edit_button');
@@ -301,6 +301,9 @@
         }
         update_progress_bar();
     }
+
+
+
 
     jQuery.fn.shake = function() {
         this.each(function(i) {
