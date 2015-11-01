@@ -537,7 +537,7 @@ function switch_check_visibility(id){
 *********************************************************************/
 /*  */
 function switch_check_type(id){
-    var i;
+    var i, course;
     var image_id = id + '_check';
     var elem = document.getElementById(image_id);
     if(EDITABLE == 1) {
@@ -547,15 +547,43 @@ function switch_check_type(id){
                     elem.setAttribute('src', 'static/grayscale_check.png');
                     DEGREE_HANDLES[i].set_not_taken();
                     NUM_USER_CLASSES_APPLIED -= 1;
-                    var course = DEGREE_HANDLES[i].get_id();
-                    //
+                    course = DEGREE_HANDLES[i].get_id();
 
-
+                    data = {'user': USER_ID,
+                            'course':course,
+                            'update_type':'remove',
+                            'num_taken': NUM_USER_CLASSES_APPLIED};
+                    console.log(data);
+                    $.ajax({
+                        type : "POST",
+                        url : '/updatedegree',
+                        data: JSON.stringify(data, null, '\t'),
+                        contentType: 'application/json;charset=UTF-8',
+                        success: function(dat) {
+                            console.log(dat);
+                        }
+                    });
                 }
                 else{
                     elem.setAttribute('src', 'static/blue_check.png');
-                    DEGREE_HANDLES[i].set_as_taken()
+                    DEGREE_HANDLES[i].set_as_taken();
                     NUM_USER_CLASSES_APPLIED += 1;
+                    course = DEGREE_HANDLES[i].get_id();
+
+                    data = {'user': USER_ID,
+                            'course':course,
+                            'update_type':'add',
+                            'num_taken': NUM_USER_CLASSES_APPLIED};
+                    console.log(data);
+                    $.ajax({
+                        type : "POST",
+                        url : '/updatedegree',
+                        data: JSON.stringify(data, null, '\t'),
+                        contentType: 'application/json;charset=UTF-8',
+                        success: function(dat) {
+                            console.log(dat);
+                        }
+                    });
                 }
                 break;
             }
