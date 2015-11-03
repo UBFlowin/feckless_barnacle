@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
+<script type="stylesheet" src="{{ url_for('static', filename='custom_ubflow.css') }}"></script>
 <script>
     var error = '{{ input_error }}';
     if (elem = document.getElementById("panel_footer")){
@@ -10,11 +11,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4 col-md-offset-4 col-xs-offset-3 col-xs-6">
-                <div class="login-panel panel panel-default">
+                <div class="login-panel panel">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Please Log In</h3>
+                        <h3 class="panel-title-login">Please Log In</h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body-login">
                         <form role="form" method="post" action="/login">
                             <fieldset>
                                 <div class="form-group">
@@ -29,11 +30,11 @@
                                     </label>
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
-                                <input type="submit" class="btn btn-lg btn-primary btn-block" value ="Login"/>
+                                <input type="submit" class="btn btn-lg btn-primary btn-block gradient round" value ="Login"/>
                                 <br/>
-                                <input type="button" class="btn btn-med btn-primary btn-block" onclick="location.href='/register';" value="Go Register Me" />
+                                <input type="button" class="btn btn-med btn-primary btn-block gradient round" onclick="location.href='/register';" value="Go Register Me" />
                                 <div class="panel-footer">
-                                    <h3 id="panel_footer" class="panel-title" align="center">
+                                    <h3 id="panel_footer" class="panel-title-login" align="center">
                                         {% if input_error == '' %}
                                         {% else %}
                                             <script>
