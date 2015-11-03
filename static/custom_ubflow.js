@@ -47,7 +47,7 @@ function make_available_classes2() {
 
             //add class name
             p1 = document.createElement('class_name_' + String(j));
-            txt1 = document.createTextNode(CLASS_HANDLES[j].UBCLASS);
+            txt1 = document.createTextNode(CLASS_HANDLES[j].get_ubclass());
             p1.appendChild(txt1);
             class_name_holder.appendChild(p1);
 
@@ -61,7 +61,7 @@ function make_available_classes2() {
             type_text = document.createElement('type');
             var str1 = CLASS_HANDLES[j].DAYS;
             str1 = str1.replace(/\s+/g, '');
-            text = document.createTextNode(str1+ ': '+CLASS_HANDLES[j].TYPE);
+            text = document.createTextNode(str1+ ': '+CLASS_HANDLES[j].get_type());
             type_text.appendChild(text);
             type_container.appendChild(type_text);
 
@@ -73,19 +73,19 @@ function make_available_classes2() {
 
             //add class times
             p2 = document.createElement('class_name_' + String(j));
-            txt2 = document.createTextNode(CLASS_HANDLES[j].TIME);
+            txt2 = document.createTextNode(CLASS_HANDLES[j].get_time());
 
             p2.appendChild(txt2);
             container1.appendChild(p2);
 
 
-            if (CLASS_HANDLES[j].RECITATION.length != 0) {
+            if (CLASS_HANDLES[j].get_recitation().length != 0) {
                 var sub_group = document.createElement('sub_group');
                 sub_group.setAttribute('id', 'collapse' + String(j));
                 sub_group.setAttribute('class', 'panel-collapse collapse');
                 sub_group.setAttribute('style', 'padding: 4px;');
                 var k;
-                for (k = 0; k < CLASS_HANDLES[j].RECITATION.length; k++) {
+                for (k = 0; k < CLASS_HANDLES[j].get_recitation().length; k++) {
                     var sub_heading = document.createElement('sub_heading');
                     var sub_a = document.createElement('availableClass' + String(j));
                     sub_a.setAttribute('id', 'collapser' + String(j) + String(k));
@@ -124,7 +124,7 @@ function make_available_classes2() {
 
                     //add type
                     var sub_type_text = document.createElement('type');
-                    var sub_text = document.createTextNode(CLASS_HANDLES[j].RECITATION[k].DAYS+ " : " +CLASS_HANDLES[j].RECITATION[k].TYPE);
+                    var sub_text = document.createTextNode(CLASS_HANDLES[j].RECITATION[k].DAYS+ " : " +CLASS_HANDLES[j].RECITATION[k].get_type());
                     sub_type_text.appendChild(sub_text);
                     sub_type_container.appendChild(sub_type_text);
 
@@ -136,7 +136,7 @@ function make_available_classes2() {
 
                     //add class name
                     var sub_p1 = document.createElement('name_' + String(j));
-                    var sub_txt1 = document.createTextNode(CLASS_HANDLES[j].RECITATION[k].TIME);
+                    var sub_txt1 = document.createTextNode(CLASS_HANDLES[j].get_recitation()[k].get_time());
                     sub_p1.appendChild(sub_txt1);
                     sub_class_name_holder.appendChild(sub_p1);
 
@@ -167,16 +167,16 @@ function switch_avail_classes(){
 *               Add Classes to "Selected Classes"
 *********************************************************************/
 function populate_selected_class(class_handle, rec_handle) {
-    var heading = document.createElement('heading' + class_handle.ID);
+    var heading = document.createElement('heading' + class_handle.get_id());
     var a = document.createElement('availableClass');
     a.setAttribute('style', 'height: 45px; padding:4px; ' +
         'border-bottom-left-radius:9px; border-bottom-right-radius:9px; ' +
         'border-top-left-radius:9px; border-top-right-radius:9px; vertical-align: middle;' );
-    a.setAttribute('id', 'selected_container' + class_handle.ID);
+    a.setAttribute('id', 'selected_container' + class_handle.get_id());
     a.setAttribute('class', 'list-group-item');
 
-    var onmouseover = "shade('selected_container" + class_handle.ID + "')";
-    var onmouseout = "unshade('selected_container" + class_handle.ID + "')";
+    var onmouseover = "shade('selected_container" + class_handle.get_id() + "')";
+    var onmouseout = "unshade('selected_container" + class_handle.get_id() + "')";
     a.setAttribute('onmouseover', onmouseover);
     a.setAttribute('onmouseout', onmouseout);
     heading.appendChild(a);
@@ -189,9 +189,9 @@ function populate_selected_class(class_handle, rec_handle) {
 
     //Add spin wheel
     var lock_icon = document.createElement('lock_icon');
-    lock_icon.setAttribute('id','lock_icon'+class_handle.ID);
+    lock_icon.setAttribute('id','lock_icon'+class_handle.get_id());
     lock_icon.setAttribute('class', 'fa fa-unlock');
-    lock_icon.setAttribute('onclick','lock_in_course("lock_icon'+class_handle.ID+'"'+')');
+    lock_icon.setAttribute('onclick','lock_in_course("lock_icon'+class_handle.get_id()+'"'+')');
     lock_icon_holder.appendChild(lock_icon);
 
     //Add trash container
@@ -201,7 +201,7 @@ function populate_selected_class(class_handle, rec_handle) {
 
     //Add trash icon
     var trash_icon = document.createElement('trash_icon');
-    trash_icon.setAttribute('id','trash_icon'+class_handle.ID);
+    trash_icon.setAttribute('id','trash_icon'+class_handle.get_id());
     trash_icon.setAttribute('class', 'fa fa-trash-o');
     trash_icon.setAttribute('style', 'vertical-align: middle;');
     //trash_icon.setAttribute('onclick','lock_in_course("trash_icon'+class_handle.ID+'"'+')');
@@ -222,19 +222,19 @@ function populate_selected_class(class_handle, rec_handle) {
 
     //add class name
     p1 = document.createElement('class_name');
-    txt1 = document.createTextNode(class_handle.UBCLASS + ' : ' + class_handle.DAYS);
+    txt1 = document.createTextNode(class_handle.get_ubclass() + ' : ' + class_handle.get_days());
     p1.appendChild(txt1);
     class_name_holder.appendChild(p1);
 
     //Add container
-    container1 = document.createElement("class_time_holder"+class_handle.ID);
+    container1 = document.createElement("class_time_holder"+class_handle.get_id());
     container1.setAttribute('class', 'col-xs-12');
     container1.setAttribute('style', 'font-size: 11px;');
     container.appendChild(container1);
 
     //add class times
-    p2 = document.createElement('class_time'+class_handle.ID);
-    txt2 = document.createTextNode(class_handle.TIME);
+    p2 = document.createElement('class_time'+class_handle.get_id());
+    txt2 = document.createTextNode(class_handle.get_time());
     p2.appendChild(txt2);
     container1.appendChild(p2);
 
@@ -418,15 +418,15 @@ function unshade(id){
 function create_new_course_block(sem_index, num){
     var course = document.createElement('semester'+String(sem_index));
     var a = document.createElement('course');
-    a.setAttribute('style', 'height: 80px; min-width: 95px; padding: 10px 2px; ' +
+    a.setAttribute('style', 'min-height: 90px; min-width: 95px; padding: 10px 2px; ' +
             'border-top-left-radius: 8px;border-top-right-radius: 8px;' +
             'border-bottom-left-radius: 8px;border-bottom-right-radius: 8px;' +
-            'border-color: #334455;' );
+            'border-color: #334455; word-wrap: break-word;' );
 
     /* Add Blue checkmark if taken, otherwise add a gray hidden mark */
     var image = document.createElement('img');
-    image.setAttribute('id',String(DEGREE_HANDLES[num].UBCLASS)+'_check');
-    if(DEGREE_HANDLES[num].TAKEN == 1) {
+    image.setAttribute('id',String(DEGREE_HANDLES[num].get_ubclass())+'_check');
+    if(DEGREE_HANDLES[num].get_taken() == 1) {
         image.setAttribute('src', 'static/blue_check.png');
         image.setAttribute('style', 'position:absolute; top:0px; left:0px;');
     }
@@ -437,15 +437,15 @@ function create_new_course_block(sem_index, num){
     }
     a.appendChild(image);
 
-    a.setAttribute('id',String(DEGREE_HANDLES[num].UBCLASS));
+    a.setAttribute('id',String(DEGREE_HANDLES[num].get_ubclass()));
     a.setAttribute('class', 'list-group-item');
-    var check_string = "switch_check_type('"+String(DEGREE_HANDLES[num].UBCLASS)+"')";
+    var check_string = "switch_check_type('"+String(DEGREE_HANDLES[num].get_ubclass())+"')";
     a.setAttribute('onclick',check_string);
 
 
     //Set Change Color on Hover
-    var mouseover = "show_info('"+String(DEGREE_HANDLES[num].UBCLASS)+"',"+String(0)+")";
-    var mouseout = "hide_info('"+String(DEGREE_HANDLES[num].UBCLASS)+"',"+String(0)+")";
+    var mouseover = "show_info('"+String(DEGREE_HANDLES[num].get_ubclass())+"',"+String(0)+")";
+    var mouseout = "hide_info('"+String(DEGREE_HANDLES[num].get_ubclass())+"',"+String(0)+")";
     a.setAttribute('onmouseover', mouseover);
     a.setAttribute('onmouseout', mouseout);
 
@@ -479,7 +479,7 @@ function create_new_course_block(sem_index, num){
 
     //add course name
     var course_name = document.createElement('course_text' + String(num));
-    var course_name_text = document.createTextNode(DEGREE_HANDLES[num].UBCLASS);
+    var course_name_text = document.createTextNode(DEGREE_HANDLES[num].get_ubclass());
     course_name.appendChild(course_name_text);
     course_container.appendChild(course_name);
 
@@ -494,7 +494,7 @@ function create_new_course_block(sem_index, num){
 
     //add course name
     var course_title1 = document.createElement('course_title');
-    var course_text_title = document.createTextNode(DEGREE_HANDLES[num].TITLE);
+    var course_text_title = document.createTextNode(DEGREE_HANDLES[num].get_title());
     course_title1.appendChild(course_text_title);
     course_title_container.appendChild(course_title1);
 
@@ -507,7 +507,7 @@ function create_new_course_block(sem_index, num){
 *********************************************************************/
 function search_degree_for_repeats(id){
     for(var p=0;p<DEGREE_HANDLES.length;p++){
-        if( id == DEGREE_HANDLES[p].UBCLASS){
+        if( id == DEGREE_HANDLES[p].get_ubclass()){
             return true;
         }
     }
@@ -537,21 +537,53 @@ function switch_check_visibility(id){
 *********************************************************************/
 /*  */
 function switch_check_type(id){
-    var i;
+    var i, course;
     var image_id = id + '_check';
     var elem = document.getElementById(image_id);
     if(EDITABLE == 1) {
         for(i=0;i<DEGREE_HANDLES.length;i++){
-            if(id == DEGREE_HANDLES[i].UBCLASS) {
+            if(id == DEGREE_HANDLES[i].get_ubclass()) {
                 if(elem.getAttribute('src') == 'static/blue_check.png') {
                     elem.setAttribute('src', 'static/grayscale_check.png');
-                    DEGREE_HANDLES[i].TAKEN = 0;
+                    DEGREE_HANDLES[i].set_not_taken();
                     NUM_USER_CLASSES_APPLIED -= 1;
+                    course = DEGREE_HANDLES[i].get_id();
+
+                    data = {'user': USER_ID,
+                            'course':course,
+                            'update_type':'remove',
+                            'num_taken': NUM_USER_CLASSES_APPLIED};
+                    console.log(data);
+                    $.ajax({
+                        type : "POST",
+                        url : '/updatedegree',
+                        data: JSON.stringify(data, null, '\t'),
+                        contentType: 'application/json;charset=UTF-8',
+                        success: function(dat) {
+                            console.log(dat);
+                        }
+                    });
                 }
                 else{
                     elem.setAttribute('src', 'static/blue_check.png');
-                    DEGREE_HANDLES[i].TAKEN = 1;
+                    DEGREE_HANDLES[i].set_as_taken();
                     NUM_USER_CLASSES_APPLIED += 1;
+                    course = DEGREE_HANDLES[i].get_id();
+
+                    data = {'user': USER_ID,
+                            'course':course,
+                            'update_type':'add',
+                            'num_taken': NUM_USER_CLASSES_APPLIED};
+                    console.log(data);
+                    $.ajax({
+                        type : "POST",
+                        url : '/updatedegree',
+                        data: JSON.stringify(data, null, '\t'),
+                        contentType: 'application/json;charset=UTF-8',
+                        success: function(dat) {
+                            console.log(dat);
+                        }
+                    });
                 }
                 break;
             }
@@ -657,7 +689,7 @@ function hide_info(id,iteration){
     function populate_semesters(){
         for(var sem=0;sem<9;sem++){
             for(var i=0;i<DEGREE_HANDLES.length;i++) {
-                if (DEGREE_HANDLES[i].SEM_INDEX == sem) {
+                if (DEGREE_HANDLES[i].get_sem_index() == sem) {
                     create_new_course_block(sem, i);
                 }
             }
