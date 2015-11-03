@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block layout %}
+
+        <script type="stylesheet" src="{{ url_for('static', filename='custom_ubflow.css') }}"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -41,6 +43,6 @@
     <article>
         {% block body %}{% endblock %}
     </article>
-    <footer><div class="panel-footer" align="center">Copyright 2015</div></footer>
+    <footer><div class="panel-footer-copy" align="center">Copyright 2015</div></footer>
 </body>
 {% endblock %}
