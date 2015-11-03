@@ -380,7 +380,7 @@ def load_user(user_id):
       Logout User
 ----------------------------'''
 @app.route('/logout')
-# @login_required
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('login'))
@@ -390,13 +390,13 @@ def logout():
       Test Login Page
 ----------------------------'''
 @app.route('/secret')
-# @login_required
+@login_required
 def secret():
     return render_template('index.html')
 
 
 @app.route('/userid')
-# @login_required
+@login_required
 def passuserid():
     json_results = []
     if request.method == 'GET':
@@ -407,7 +407,7 @@ def passuserid():
 
 
 @app.route('/resource')
-# @login_required
+@login_required
 def get_resource():
     """FOR AUTHENTICATION TESTING"""
     return jsonify({'data': 'Hello, %s!' % g.user.username})
@@ -429,13 +429,13 @@ def verify_password(username_or_token, password):
       ROUTE: Profile
 -----------------------------------------------'''
 @app.route('/profile', methods=['GET'])
-# @login_required
+@login_required
 def profile():
     return render_template("profile.html",username="sethkara")
 
 
 @app.route('/getnext/search', methods=['GET','POST'])
-# @login_required
+@login_required
 def getSearch():
     if request.method == 'POST':
         course_num = request.json['course']
@@ -496,7 +496,7 @@ def getSearch():
 
 
 @app.route('/getfirst', methods=['GET'])
-# @login_required
+@login_required
 def getFirstClassGroup():
     if request.method == 'GET':
         results = UBClasses.query.limit(10).offset(0).all()
@@ -544,7 +544,7 @@ def getFirstClassGroup():
 
 
 @app.route('/getnext', methods=['GET'])
-# @login_required
+@login_required
 def getClassGroup():
     if request.method == 'GET':
         results = UBClasses.query.filter_by(DEPARTMENT="CSE").all()
@@ -593,7 +593,7 @@ def getClassGroup():
 
 
 @app.route('/degreeinfo', methods=['GET'])
-# @login_required
+@login_required
 def degree_info():
     if request.method == 'GET':
         courses = Degree.query.all()
@@ -616,13 +616,23 @@ def degree_info():
 
 
 @app.route('/degreeinfo/<int:user_id>', methods=['GET'])
-# @login_required
+@login_required
 def degree_info_user(user_id):
     json_results = []
     d ={}
+    degree_array = []
     if request.method == 'GET':
-        courses = Degree.query.all()
+        # Get the Users Degree #
+        user = User.query.filter_by(id=user_id).first()
+        degree = user.DEGREE
+        # Search Degree Table for all the Course for that Degree #
+        courses = Degree.query.filter_by(DEGREE_NAME=degree).all()
+        if courses is None:
+            json_results.append(d)
+            return jsonify(classes=json_results)
+        # Get the classes the User has taken so far #
         user_classes = ClassesTakenHelper.query.filter_by(USER_ID=user_id).first()
+
         degree_array = [user_classes.DEGREE_COURSE1,
                             user_classes.DEGREE_COURSE2,
                             user_classes.DEGREE_COURSE3,
@@ -687,7 +697,7 @@ def degree_info_user(user_id):
 
 
 @app.route('/updatedegree', methods=['GET','POST'])
-# @login_required
+@login_required
 def update_degree():
     json_results = []
     user = request.json['user']
@@ -713,7 +723,7 @@ def update_degree():
       Error Handling Page
 -----------------------------------------------'''
 @app.route('/flowsheet')
-# @login_required
+@login_required
 def flowsheet():
     return render_template("flowsheet.html")
 
@@ -722,7 +732,7 @@ def flowsheet():
       ROUTE: All Professors
 -----------------------------------------------'''
 @app.route('/professor', methods=['GET'])
-# @login_required
+@login_required
 def getProfessors():
     if request.method == 'GET':
         results = Professor.query.limit(10).offset(0).all()
@@ -741,7 +751,7 @@ def getProfessors():
       ROUTE: Single Professor
 -----------------------------------------------'''
 @app.route('/professor/<int:professor_id>', methods=['GET'])
-# @login_required
+@login_required
 def getProfessor(professor_id):
     if request.method == 'GET':
         result = Professor.query.filter_by(ID=professor_id).first()
@@ -757,7 +767,7 @@ def getProfessor(professor_id):
       ROUTE: All Classes
 -----------------------------------------------'''
 @app.route('/classes', methods=['GET'])
-# @login_required
+@login_required
 def get_classes():
     if request.method == 'GET':
         results = UBClasses.query.limit(10).offset(0).all()
