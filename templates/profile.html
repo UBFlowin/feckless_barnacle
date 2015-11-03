@@ -11,6 +11,8 @@
     var CLASS_HANDLES = [];
     var g_Color = "#0c1Aff";
     var g_Border_Color = "Black";
+    var BLOCKED_CLASSES = 0;
+    var BLOCKED_RECITATIONS = 0;
 
     /*********************************************************
     *       Get First Class Information
@@ -67,7 +69,8 @@
         $("#SearchButton").click(function() {
             var x = 0;
             var recitation = [];
-
+            BLOCKED_CLASSES = 0;
+            BLOCKED_RECITATIONS =0;
             //Get Input
             var elem = document.getElementById('courseNum');
             var department = document.getElementById('dept_button');
@@ -95,7 +98,7 @@
                 'Thu' : chk4_val,
                 'Fri' : chk5_val
             };
-            console.log(data);
+//            console.log(data);
             $.ajax({
                 type : "POST",
                 url : '/getnext/search',
@@ -125,30 +128,35 @@
                             if(chk1_val=="1") {
                                 if (days.indexOf("M") != -1) {
                                     x=x+1;
+                                    BLOCKED_CLASSES += 1;
                                     continue;
                                 }
                             }
                             if(chk2_val=="1") {
                                 if (days.indexOf("T") != -1) {
                                     x=x+1;
+                                    BLOCKED_CLASSES += 1;
                                     continue;
                                 }
                             }
                             if(chk3_val=="1") {
                                 if (days.indexOf("W") != -1) {
                                     x=x+1;
+                                    BLOCKED_CLASSES += 1;
                                     continue;
                                 }
                             }
                             if(chk4_val=="1") {
                                 if (days.indexOf("R") != -1) {
                                     x=x+1;
+                                    BLOCKED_CLASSES += 1;
                                     continue;
                                 }
                             }
                             if(chk5_val=="1") {
                                 if (days.indexOf("F") != -1) {
                                     x=x+1;
+                                    BLOCKED_CLASSES += 1;
                                     continue;
                                 }
                             }
@@ -168,30 +176,35 @@
                                     if(chk1_val=="1") {
                                         if (rec_days.indexOf("M") != -1) {
                                             index=index+1;
+                                            BLOCKED_RECITATIONS += 1;
                                             continue;
                                         }
                                     }
                                     if(chk2_val=="1") {
                                         if (rec_days.indexOf("T") != -1) {
                                             index=index+1;
+                                            BLOCKED_RECITATIONS += 1;
                                             continue;
                                         }
                                     }
                                     if(chk3_val=="1") {
                                         if (rec_days.indexOf("W") != -1) {
                                             index=index+1;
+                                            BLOCKED_RECITATIONS += 1;
                                             continue;
                                         }
                                     }
                                     if(chk4_val=="1") {
                                         if (rec_days.indexOf("R") != -1) {
                                             index=index+1;
+                                            BLOCKED_RECITATIONS += 1;
                                             continue;
                                         }
                                     }
                                     if(chk5_val=="1") {
                                         if (rec_days.indexOf("F") != -1) {
                                             index=index+1;
+                                            BLOCKED_RECITATIONS += 1;
                                             continue;
                                         }
                                     }
@@ -207,12 +220,14 @@
                                     var rec_location = dat.classes[x].RECITATION[index].LOCATION;
                                     var rec_status = dat.classes[x].RECITATION[index].STATUS;
                                     var rec_reserved = dat.classes[x].RECITATION[index].RESERVED;
-                                    recitation[added_rec] = new UbRec(rec_class_id, rec_id, ubclass1, rec_section, rec_type, rec_days, rec_time, rec_building, rec_room, rec_location, rec_status, rec_reserved);
+                                    recitation[added_rec] = new UbRec(rec_class_id, rec_id, ubclass1, rec_section, rec_type, rec_days, rec_time,
+                                                                        rec_building, rec_room, rec_location, rec_status, rec_reserved);
                                     added_rec++;
                                     index++;
                                 }
                             }
-                            CLASS_HANDLES[x] = new UbClass(id, ubclass, title, department, section, type, days, time, building, room_number, location, professor, status, reserved, semester, recitation);
+                            CLASS_HANDLES[x] = new UbClass(id, ubclass, title, department, section, type, days, time, building, room_number,
+                                                            location, professor, status, reserved, semester, recitation);
                             x = x + 1;
                             recitation = [];
                             var courseNum = document.getElementById('courseNum');
@@ -221,7 +236,11 @@
                 }
                 //repopulate list
                 make_available_classes2();
-                console.log(dat);
+//                console.log(dat);
+                    console.log("Blocked Classes: " + BLOCKED_CLASSES);
+                    var blocked_classes = document.getElementById("blocked_classes");
+                    blocked_classes.innerText = "Blocked Options: "+(BLOCKED_CLASSES+BLOCKED_RECITATIONS);
+                    console.log("Blocked Recitations: " + BLOCKED_RECITATIONS);
                 }
             });
         });
@@ -301,7 +320,9 @@
                             <div class="col-xs-offset-1 col-xs-10">
                                 <br/>
                                 <a href="#" id="SearchButton" class="btn btn-primary btn-block">Search</a>
-                                <br/>
+                                <div id="blocked_classes">
+
+                                </div>
                             </div>
                         </div>
                         <br/>
@@ -663,7 +684,7 @@
             $.getJSON('/userid', function (dat) {
                 if (dat.classes) {
                     USER_ID = dat.classes[0].ID;
-                    console.log(dat);
+//                    console.log(dat);
                 }
             });
         };
