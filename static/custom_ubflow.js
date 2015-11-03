@@ -477,13 +477,33 @@ function create_new_course_block(sem_index, num){
         ' 23px; font-weight: bold; font-size: 17px;');
     course_box.appendChild(course_container);
 
-    //add course name
+    //add course name and link to course description
     var course_name = document.createElement('course_text' + String(num));
+    //var course_name = document.createElement('a');
+    var course_string = String(DEGREE_HANDLES[num].get_ubclass());
+    var URL = 'http://undergrad-catalog.buffalo.edu/coursedescriptions/index.php?frm_abbr=' + course_string.slice(0, (course_string.length - 3)) + '&frm_num=' + course_string.slice(-3);
+    course_name.onmouseover = function() {
+        if ( (course_string.indexOf("XX") == -1) && (course_string.indexOf("Gen Ed") == -1) && (getEDITABLE() == 0) ) {
+            document.body.style.cursor = 'pointer';
+            course_name.setAttribute('style', 'color: blue; text-decoration: underline');
+        }
+    }
+    course_name.onmouseout = function() {
+        if ( (course_string.indexOf("XX") == -1) && (course_string.indexOf("Gen Ed") == -1) && (getEDITABLE() == 0) ) {
+            document.body.style.cursor = 'auto';
+            course_name.setAttribute('style', 'color: black; text-decoration: none');
+        }
+    }
+    course_name.onclick = function() {
+        if ( (course_string.indexOf("XX") == -1) && (course_string.indexOf("Gen Ed") == -1) && (getEDITABLE() == 0) ) {
+            course_name.setAttribute('style', 'color: #4B0082; text-decoration: none');
+            window.open(URL, '_blank');
+            return false;
+        }
+    }
     var course_name_text = document.createTextNode(DEGREE_HANDLES[num].get_ubclass());
     course_name.appendChild(course_name_text);
     course_container.appendChild(course_name);
-
-
 
     //course title
     var course_title_container = document.createElement("course_title_box");
