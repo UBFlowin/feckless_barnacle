@@ -200,6 +200,7 @@
     var USER_ID =0;
     var NUM_USER_CLASSES_APPLIED = 0;
     var NUM_COURSES_IN_DEGREE = 0;
+    var TOTAL_COURSES = 0;
     var EDITABLE = 0;
 
     /*
@@ -208,7 +209,7 @@
     window.onload = function() {
         $.getJSON('/userid', function (dat) {
             var handle_index = 0;
-            var id, ubclass, sem_index, link, title, pre1, pre2, pre3;
+            var id, ubclass, sem_index, link, title, pre1, pre2, pre3, taken;
             console.log(dat);
             if (dat.classes) {
                 USER_ID = dat.classes[0].ID;
@@ -227,40 +228,20 @@
                             pre3 = dat.classes[x].PRE_REQ3;
                             co1 = dat.classes[x].CO_REQ1;
                             co2 = dat.classes[x].CO_REQ2;
-                            DEGREE_HANDLES[handle_index] = new Degree(ubclass, sem_index, title, link, pre1, pre2, pre3, co1, co2, 1, id);
-                            handle_index += 1;
-                            NUM_USER_CLASSES_APPLIED += 1;
-                            x = x + 1;
-                        }
-                    }
-                });
-
-                /* Get All Courses, but don't include repeats */
-                $.getJSON('/degreeinfo', function (dat) {
-                    console.log(dat);
-                    NUM_COURSES_IN_DEGREE = NUM_COURSES_IN_DEGREE + NUM_USER_CLASSES_APPLIED;
-                    if (dat.classes) {
-                        var x = 0;
-                        while (x < dat.classes.length) {
-                            id = dat.classes[x].ID;
-                            ubclass = dat.classes[x].UBCLASS;
-                            sem_index = dat.classes[x].SEM_INDEX;
-                            link = "link";
-                            title = dat.classes[x].TITLE;
-                            pre1 = dat.classes[x].PRE_REQ1;
-                            pre2 = dat.classes[x].PRE_REQ2;
-                            pre3 = dat.classes[x].PRE_REQ3;
-                            co1 = dat.classes[x].CO_REQ1;
-                            co2 = dat.classes[x].CO_REQ2;
-                            if (!search_degree_for_repeats(ubclass)) {
-                                DEGREE_HANDLES[handle_index] = new Degree(ubclass, sem_index, title, link, pre1, pre2, pre3, co1, co2, 0, id);
-                                handle_index += 1;
+                            taken = dat.classes[x].TAKEN;
+                            if(taken == '1'){
+                                NUM_USER_CLASSES_APPLIED += 1;
+                            }
+                            else{
                                 NUM_COURSES_IN_DEGREE += 1;
                             }
+                            DEGREE_HANDLES[handle_index] = new Degree(ubclass, sem_index, title, link, pre1, pre2, pre3, co1, co2, taken, id);
+                            handle_index += 1;
                             x = x + 1;
                         }
                     }
-                    populate_semesters();
+                    window.setTimeout(populate_semesters,400);
+                    TOTAL_COURSES = NUM_COURSES_IN_DEGREE + NUM_USER_CLASSES_APPLIED;
                 });
             }
         });
@@ -268,7 +249,7 @@
 
     window.setTimeout(update_progress_bar,500);
     function update_progress_bar(){
-        var percentage = (NUM_USER_CLASSES_APPLIED / NUM_COURSES_IN_DEGREE) * 100;
+        var percentage = (NUM_USER_CLASSES_APPLIED / TOTAL_COURSES) * 100;
         var progress_bar = document.getElementById('prog_bar');
         progress_bar.style.width = String(percentage) + '%';
         var progress_bar_text = document.getElementById('prog_bar_num');

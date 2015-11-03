@@ -314,6 +314,10 @@ def new_user():
         # Check Password Length #
         if len(password) < 8:
             return render_template('register.html', input_error='Password must be at least 8 characters')
+        if first_name == '':
+            return render_template('register.html', input_error='First name cannot be blank')
+        if last_name == '':
+            return render_template('register.html', input_error='Last name cannot be blank')
         # Create New User Model and enter into database
         new_user = User(username,password,first_name,last_name,degree)
         new_user.hash_password(password)
@@ -376,7 +380,7 @@ def load_user(user_id):
       Logout User
 ----------------------------'''
 @app.route('/logout')
-@login_required
+# @login_required
 def logout():
     logout_user()
     return redirect(url_for('login'))
@@ -386,13 +390,13 @@ def logout():
       Test Login Page
 ----------------------------'''
 @app.route('/secret')
-@login_required
+# @login_required
 def secret():
     return render_template('index.html')
 
 
 @app.route('/userid')
-@login_required
+# @login_required
 def passuserid():
     json_results = []
     if request.method == 'GET':
@@ -403,7 +407,7 @@ def passuserid():
 
 
 @app.route('/resource')
-@login_required
+# @login_required
 def get_resource():
     """FOR AUTHENTICATION TESTING"""
     return jsonify({'data': 'Hello, %s!' % g.user.username})
@@ -425,13 +429,13 @@ def verify_password(username_or_token, password):
       ROUTE: Profile
 -----------------------------------------------'''
 @app.route('/profile', methods=['GET'])
-@login_required
+# @login_required
 def profile():
     return render_template("profile.html",username="sethkara")
 
 
 @app.route('/getnext/search', methods=['GET','POST'])
-@login_required
+# @login_required
 def getSearch():
     if request.method == 'POST':
         course_num = request.json['course']
@@ -492,7 +496,7 @@ def getSearch():
 
 
 @app.route('/getfirst', methods=['GET'])
-@login_required
+# @login_required
 def getFirstClassGroup():
     if request.method == 'GET':
         results = UBClasses.query.limit(10).offset(0).all()
@@ -540,7 +544,7 @@ def getFirstClassGroup():
 
 
 @app.route('/getnext', methods=['GET'])
-@login_required
+# @login_required
 def getClassGroup():
     if request.method == 'GET':
         results = UBClasses.query.filter_by(DEPARTMENT="CSE").all()
@@ -589,7 +593,7 @@ def getClassGroup():
 
 
 @app.route('/degreeinfo', methods=['GET'])
-@login_required
+# @login_required
 def degree_info():
     if request.method == 'GET':
         courses = Degree.query.all()
@@ -605,20 +609,21 @@ def degree_info():
              'PRE_REQ3':course.PRE_REQ3,
              'CO_REQ1':course.CO_REQ1,
              'CO_REQ2':course.CO_REQ2,
+             'TAKEN':'0'
              }
         json_results.append(d)
     return jsonify(classes=json_results)
 
 
 @app.route('/degreeinfo/<int:user_id>', methods=['GET'])
-@login_required
+# @login_required
 def degree_info_user(user_id):
     json_results = []
     d ={}
     if request.method == 'GET':
+        courses = Degree.query.all()
         user_classes = ClassesTakenHelper.query.filter_by(USER_ID=user_id).first()
-        if user_classes is not None:
-            degree_array = [user_classes.DEGREE_COURSE1,
+        degree_array = [user_classes.DEGREE_COURSE1,
                             user_classes.DEGREE_COURSE2,
                             user_classes.DEGREE_COURSE3,
                             user_classes.DEGREE_COURSE4,
@@ -658,26 +663,31 @@ def degree_info_user(user_id):
                             user_classes.DEGREE_COURSE38,
                             user_classes.DEGREE_COURSE39,
                             user_classes.DEGREE_COURSE40]
-            for x in range(0,35):
-                if degree_array[x] is not None:
-                    course = Degree.query.filter_by(ID=degree_array[x]).first()
-                    if course is not None:
-                        d = {'ID': course.ID,
-                             'UBCLASS': course.UBCLASS,
-                             'SEM_INDEX': course.SEM_INDEX,
-                             'TITLE': course.TITLE,
-                             'LINK': course.LINK,
-                             'PRE_REQ1':course.PRE_REQ1,
-                             'PRE_REQ2':course.PRE_REQ2,
-                             'PRE_REQ3':course.PRE_REQ3,
-                             'CO_REQ1':course.CO_REQ1,
-                             'CO_REQ2':course.CO_REQ2}
-                        json_results.append(d)
+        taken = '0'
+        for course in courses:
+            taken = "0"
+            for x in degree_array:
+                if x == course.ID:
+                    taken = "1"
+                    break
+            d = {'ID': course.ID,
+                 'UBCLASS': course.UBCLASS,
+                 'SEM_INDEX': course.SEM_INDEX,
+                 'TITLE': course.TITLE,
+                 'LINK': course.LINK,
+                 'PRE_REQ1':course.PRE_REQ1,
+                 'PRE_REQ2':course.PRE_REQ2,
+                 'PRE_REQ3':course.PRE_REQ3,
+                 'CO_REQ1':course.CO_REQ1,
+                 'CO_REQ2':course.CO_REQ2,
+                 'TAKEN':taken
+                 }
+            json_results.append(d)
     return jsonify(classes=json_results)
 
 
 @app.route('/updatedegree', methods=['GET','POST'])
-@login_required
+# @login_required
 def update_degree():
     json_results = []
     user = request.json['user']
@@ -703,7 +713,7 @@ def update_degree():
       Error Handling Page
 -----------------------------------------------'''
 @app.route('/flowsheet')
-@login_required
+# @login_required
 def flowsheet():
     return render_template("flowsheet.html")
 
@@ -712,7 +722,7 @@ def flowsheet():
       ROUTE: All Professors
 -----------------------------------------------'''
 @app.route('/professor', methods=['GET'])
-@login_required
+# @login_required
 def getProfessors():
     if request.method == 'GET':
         results = Professor.query.limit(10).offset(0).all()
@@ -731,7 +741,7 @@ def getProfessors():
       ROUTE: Single Professor
 -----------------------------------------------'''
 @app.route('/professor/<int:professor_id>', methods=['GET'])
-@login_required
+# @login_required
 def getProfessor(professor_id):
     if request.method == 'GET':
         result = Professor.query.filter_by(ID=professor_id).first()
@@ -747,7 +757,7 @@ def getProfessor(professor_id):
       ROUTE: All Classes
 -----------------------------------------------'''
 @app.route('/classes', methods=['GET'])
-@login_required
+# @login_required
 def get_classes():
     if request.method == 'GET':
         results = UBClasses.query.limit(10).offset(0).all()
