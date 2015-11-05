@@ -34,7 +34,7 @@
             var location = dat.classes[x].LOCATION;
             var professor = dat.classes[x].PROFESSOR;
             var status = dat.classes[x].STATUS;
-            var reserved = dat.classes[x].RESERVED;
+            var year = dat.classes[x].YEAR;
             var semester = dat.classes[x].SEMESTER;
             if(dat.classes[x].RECITATION.length != 0){
                 var index =0;
@@ -50,12 +50,12 @@
                     var rec_room = dat.classes[x].RECITATION[index].ROOM_NUMBER;
                     var rec_location = dat.classes[x].RECITATION[index].LOCATION;
                     var rec_status = dat.classes[x].RECITATION[index].STATUS;
-                    var rec_reserved = dat.classes[x].RECITATION[index].RESERVED;
-                    recitation[index] = new UbRec(rec_class_id, rec_id, ubclass1, rec_section, rec_type, rec_days, rec_time, rec_building, rec_room, rec_location, rec_status, rec_reserved);
+                    var rec_year = dat.classes[x].RECITATION[index].YEAR;
+                    recitation[index] = new UbRec(rec_class_id, rec_id, ubclass1, rec_section, rec_type, rec_days, rec_time, rec_building, rec_room, rec_location, rec_status, rec_year);
                     index++;
                 }
             }
-            CLASS_HANDLES[x] = new UbClass(id,ubclass,title, department,section,type,days,time,building,room_number,location,professor,status,reserved,semester, recitation);
+            CLASS_HANDLES[x] = new UbClass(id,ubclass,title, department,section,type,days,time,building,room_number,location,professor,status,year,semester, recitation);
             x = x + 1;
             recitation = [];
         }
@@ -166,7 +166,7 @@
                             var location = dat.classes[x].LOCATION;
                             var professor = dat.classes[x].PROFESSOR;
                             var status = dat.classes[x].STATUS;
-                            var reserved = dat.classes[x].RESERVED;
+                            var year = dat.classes[x].YEAR;
                             var semester = dat.classes[x].SEMESTER;
                             if (dat.classes[x].RECITATION.length != 0) {
                                 var index = 0;
@@ -219,15 +219,15 @@
                                     var rec_room = dat.classes[x].RECITATION[index].ROOM_NUMBER;
                                     var rec_location = dat.classes[x].RECITATION[index].LOCATION;
                                     var rec_status = dat.classes[x].RECITATION[index].STATUS;
-                                    var rec_reserved = dat.classes[x].RECITATION[index].RESERVED;
+                                    var rec_year = dat.classes[x].RECITATION[index].YEAR;
                                     recitation[added_rec] = new UbRec(rec_class_id, rec_id, ubclass1, rec_section, rec_type, rec_days, rec_time,
-                                                                        rec_building, rec_room, rec_location, rec_status, rec_reserved);
+                                                                        rec_building, rec_room, rec_location, rec_status, rec_year);
                                     added_rec++;
                                     index++;
                                 }
                             }
                             CLASS_HANDLES[x] = new UbClass(id, ubclass, title, department, section, type, days, time, building, room_number,
-                                                            location, professor, status, reserved, semester, recitation);
+                                                            location, professor, status, year, semester, recitation);
                             x = x + 1;
                             recitation = [];
                             var courseNum = document.getElementById('courseNum');
@@ -694,7 +694,7 @@
         /*********************************************************
         *       Courses Class
         *********************************************************/
-        var UbClass = function(id,ubclass,title,department,section,type,days,time,building,room_number,location,professor,status,reserved,semester, recitation){
+        var UbClass = function(id,ubclass,title,department,section,type,days,time,building,room_number,location,professor,status,year,semester, recitation){
             this.ID = id;
             this.UBCLASS = ubclass;
             this.TITLE = title;
@@ -708,7 +708,7 @@
             this.LOCATION = location;
             this.PROFESSOR = professor;
             this.STATUS = status;
-            this.RESERVED = reserved;
+            this.YEAR = year;
             this.SEMESTER = semester;
             this.RECITATION = recitation;
             this.REC_ID_selected = 0;
@@ -745,7 +745,7 @@
         /*********************************************************
         *       Recitation Class
         *********************************************************/
-        var UbRec = function(rec_class_id, rec_id, ubclass,section,type,days,time,building,room_number,location,status,reserved){
+        var UbRec = function(rec_class_id, rec_id, ubclass,section,type,days,time,building,room_number,location,status,year){
             this.ID = rec_class_id;
             this.REC_ID = rec_id;
             this.UBCLASS = ubclass;
@@ -757,7 +757,7 @@
             this.ROOM_NUMBER = room_number;
             this.LOCATION = location;
             this.STATUS = status;
-            this.RESERVED = reserved;
+            this.YEAR = year;
         };
         UbRec.prototype.get_id = function(){
             return this.ID;

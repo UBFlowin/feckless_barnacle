@@ -128,7 +128,7 @@ class UBClasses(db.Model):
     PROFESSOR_ID = db.Column(db.Integer, db.ForeignKey('professor.ID'))
     PROFESSOR = db.Column(db.String(50), nullable=False)
     STATUS = db.Column(db.String(50), nullable=False)
-    RESERVED = db.Column(db.String(50), nullable=False)
+    YEAR = db.Column(db.String(50), nullable=False)
     SEMESTER = db.Column(db.String(50), nullable=True)
     PRE_REQ1 = db.Column(db.String(50), nullable=True)
     PRE_REQ2 = db.Column(db.String(50), nullable=True)
@@ -137,7 +137,7 @@ class UBClasses(db.Model):
     CO_REQ2 = db.Column(db.String(50), nullable=True)
     DEGREE = db.Column(db.String(50), nullable=True)
 
-    def __init__(self, ubclass, title, department, section, type, days, time, building, room_number, location, professor, status, reserved, semester,pre1,pre2,pre3,co1,co2,degree):
+    def __init__(self, ubclass, title, department, section, type, days, time, building, room_number, location, professor, status, YEAR, semester,pre1,pre2,pre3,co1,co2,degree):
 
         self.UBCLASS = ubclass
         self.TITLE = title
@@ -151,7 +151,7 @@ class UBClasses(db.Model):
         self.LOCATION = location
         self.PROFESSOR = professor
         self.STATUS = status
-        self.RESERVED = reserved
+        self.YEAR = YEAR
         self.SEMESTER = semester
         self.PRE_REQ1 = pre1
         self.PRE_REQ2 = pre2
@@ -182,10 +182,10 @@ class UBRecitation(db.Model):
     ROOM_NUMBER = db.Column(db.String(50), nullable=False)
     LOCATION = db.Column(db.String(50), nullable=False)
     STATUS = db.Column(db.String(50), nullable=False)
-    RESERVED = db.Column(db.String(50), nullable=False)
+    YEAR = db.Column(db.String(50), nullable=False)
 
 
-    def __init__(self, ubclass, hub_id, recitation, section, type, days, time, building, room_number, location, status, reserved, semester):
+    def __init__(self, ubclass, hub_id, recitation, section, type, days, time, building, room_number, location, status, YEAR, semester):
         self.UBCLASS = ubclass
         self.HUB_ID = hub_id
         self.RECITATION_ID = recitation
@@ -197,7 +197,7 @@ class UBRecitation(db.Model):
         self.ROOM_NUMBER = room_number
         self.LOCATION = location
         self.STATUS = status
-        self.RESERVED = reserved
+        self.YEAR = YEAR
         self.SEMESTER = semester
 
     def __repr__(self):
@@ -469,7 +469,7 @@ def getSearch():
                          'ROOM_NUMBER': recitation.ROOM_NUMBER,
                          'LOCATION': recitation.LOCATION,
                          'STATUS': recitation.STATUS,
-                         'RESERVED': recitation.RESERVED,
+                         'YEAR': recitation.YEAR,
                   }
                   json_rec.append(rec)
              d = {'ID': result.ID,
@@ -486,7 +486,7 @@ def getSearch():
                   'PROFESSOR_ID': result.PROFESSOR_ID,
                   'PROFESSOR': result.PROFESSOR,
                   'STATUS': result.STATUS,
-                  'RESERVED': result.RESERVED,
+                  'YEAR': result.YEAR,
                   'SEMESTER': result.SEMESTER,
                   'RECITATION': json_rec
                 }
@@ -517,7 +517,7 @@ def getFirstClassGroup():
                    'ROOM_NUMBER': recitation.ROOM_NUMBER,
                    'LOCATION': recitation.LOCATION,
                    'STATUS': recitation.STATUS,
-                   'RESERVED': recitation.RESERVED,
+                   'YEAR': recitation.YEAR,
             }
             json_rec.append(rec)
         d = {'ID': result.ID,
@@ -534,7 +534,7 @@ def getFirstClassGroup():
              'PROFESSOR_ID': result.PROFESSOR_ID,
              'PROFESSOR': result.PROFESSOR,
              'STATUS': result.STATUS,
-             'RESERVED': result.RESERVED,
+             'YEAR': result.YEAR,
              'SEMESTER': result.SEMESTER,
              'RECITATION': json_rec
             }
@@ -565,7 +565,7 @@ def getClassGroup():
                      'ROOM_NUMBER': recitation.ROOM_NUMBER,
                      'LOCATION': recitation.LOCATION,
                      'STATUS': recitation.STATUS,
-                     'RESERVED': recitation.RESERVED,
+                     'YEAR': recitation.YEAR,
               }
               json_rec.append(rec)
          d = {'ID': result.ID,
@@ -582,7 +582,7 @@ def getClassGroup():
               'PROFESSOR_ID': result.PROFESSOR_ID,
               'PROFESSOR': result.PROFESSOR,
               'STATUS': result.STATUS,
-              'RESERVED': result.RESERVED,
+              'YEAR': result.YEAR,
               'SEMESTER': result.SEMESTER,
               'RECITATION': json_rec
             }
@@ -787,7 +787,7 @@ def get_classes():
              'PROFESSOR_ID': result.PROFESSOR_ID,
              'PROFESSOR': result.PROFESSOR,
              'STATUS': result.STATUS,
-             'RESERVED': result.RESERVED,
+             'YEAR': result.YEAR,
              'SEMESTER': result.SEMESTER}
         json_results.append(d)
     return jsonify(classes=json_results)
