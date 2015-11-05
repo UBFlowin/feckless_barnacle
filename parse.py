@@ -1,5 +1,5 @@
 from scraper import get_info, get_url
-#from app import db, UBClasses, UBRecitation
+from app import db, UBClasses, UBRecitation
 import re
 
 
@@ -60,6 +60,7 @@ def isolate_data(info):
                 # curr_data = curr_data.replace(" ","")
                 #print curr_data
                 course_num.append(curr_data)
+                #print curr_data
             elif(position == 3):
                 course_name.append(curr_data)
             elif(position == 4):
@@ -126,78 +127,95 @@ def isolate_data(info):
             else:
                 position += 1
             curr_data = ''
-
-
-            # UBCLASS = course_name[i]
-            # DEPARTMENT = "CSE"
-            # SECTION = section[i]
-            # TYPE = type[i]
-            # DAYS = days[i]
-            # TIME = time[i]
-            # BUILDING = room[i]
-            # ROOM_NUMBER = room[i]
-            # LOCATION = campus[i]
-            # PROFESSOR_ID = 0
-            # PROFESSOR = instructor[i]
-            # STATUS = status[i]
-            # RESERVED = "No"
-            # SEMESTER = "Fall"
-            # class1 = UBClasses(UBCLASS,HUB_ID,DEPARTMENT,SECTION,TYPE,DAYS,TIME,BUILDING,ROOM_NUMBER,LOCATION,0,PROFESSOR,STATUS,RESERVED,SEMESTER)
-            # db.add(class1)
-            # db.commit()
         else:
             curr_data += data[i]
-
-    # #TODO for loop making an object and adding to the database
-    # max = 0
-    # for z in range(0,60):
-    #     UBCLASS = course_num[z]
-    #     HUB_ID = course_id[z]
-    #     TITLE = course_name[z]
-    #     DEPARTMENT = "CSE"
-    #     SECTION = section[z]
-    #     TYPE = type[z]
-    #     DAYS = days[z]
-    #     TIME = time[z]
-    #     BUILDING = room[z]
-    #     ROOM_NUMBER = room[z]
-    #     LOCATION = "North"
-    #     PROFESSOR = instructor[z]
-    #     STATUS = status[z]
-    #     RESERVED = "No"
-    #     SEMESTER = "Fall"
-    #     PRE1 = "None"
-    #     PRE2 = "None"
-    #     PRE3 = "None"
-    #     PRE4 = "None"
-    #     PRE5 = "None"
-    #     DEGREE = "None"
-    #     if TYPE == 'LEC':
-    #         class1 = UBClasses(UBCLASS,TITLE,DEPARTMENT,SECTION,TYPE,DAYS,TIME,BUILDING,ROOM_NUMBER,LOCATION,PROFESSOR,STATUS,RESERVED,SEMESTER,PRE1,PRE2,PRE3,PRE4,PRE5,DEGREE)
-    #         db.session.add(class1)
-    #         db.session.commit()
-    #     else:
-    #         results = UBClasses.query.all()
-    #         for result in results:
-    #             temp_max = result.ID
-    #             if temp_max > max:
-    #                 max = temp_max
-    #         print max
-    #         class1 = UBRecitation(UBCLASS,HUB_ID,max,SECTION,TYPE,DAYS,TIME,BUILDING,ROOM_NUMBER,LOCATION,STATUS,RESERVED,SEMESTER)
-    #         db.session.add(class1)
-    #         db.session.commit()
     return data
-#
+
 
 semester_links = get_url(base_url, '//*[@id="content_internal"]/ul/li/a')
 semester_links.remove(semester_links[1])
+broken_departments = []
 for semester in semester_links:
-    print semester
+    print semester # print link
     department_links = get_url(semester, '/html/body/table[4]/tr/td[1]/table/tr/td[1]/a')
     for department in department_links:
         info = get_info(department)
         isolate_data(info)
         print department
+        # print "course_num length = " + str(len(course_num))
+        # print "course_name length = " + str(len(course_name))
+        # print "course_id length   = " + str(len(course_id))
+        # print "section length     = " + str(len(section))
+        # print "type length        = " + str(len(type))
+        # print "days length        = " + str(len(days))
+        # print "time length        = " + str(len(time))
+        # print "room length        = " + str(len(room))
+        # print "campus length      = " + str(len(campus))
+        # print "instructor length  = " + str(len(instructor))
+        # print "status length      = " + str(len(status))
+        sem = ''
+        new_course = ''
+        dept_code = ''
+
+        if len(course_num) == len(course_id) and len(course_num) == len(course_name) and len(course_num) == len(section) and len(course_num) == len(type) and len(course_num) == len(days) and len(course_num) == len(time) and len(course_num) == len(room) and len(course_num) == len(campus) and len(course_num) == len(instructor) and len(course_num) == len(status):
+            if len(course_num) != 0:
+                dept_code = course_num[0][:3]
+                dept_code.replace(" ", "")
+
+                new_course = course_num[0]
+                length = len(new_course)
+                while new_course[-1:].isalpha():
+                    new_course = new_course[:-1]
+                    length -= 1
+                new_course = new_course.replace(' ', '')
+
+                sem = "semester="
+                if sem in department:
+                    start = department.find(sem)+9
+                    end = department.find("&", start)
+                    sem = department[start:end]
+                    sem = sem.title()
+
+                max = 0
+                for z in range(0, len(course_num)):
+                    UBCLASS = new_course
+                    HUB_ID = course_id[z]
+                    TITLE = course_name[z]
+                    DEPARTMENT = dept_code
+                    SECTION = section[z]
+                    TYPE = type[z]
+                    DAYS = days[z]
+                    TIME = time[z]
+                    BUILDING = room[z]
+                    ROOM_NUMBER = room[z]
+                    LOCATION = campus[z]
+                    PROFESSOR = instructor[z]
+                    STATUS = status[z]
+                    YEAR = "none"
+                    SEMESTER = sem
+                    PRE1 = "none"
+                    PRE2 = "none"
+                    PRE3 = "none"
+                    CO_REQ1 = "none"
+                    CO_REQ2 = "none"
+                    DEGREE = "none"
+                    if TYPE == 'LEC':
+                        class1 = UBClasses(UBCLASS,TITLE,DEPARTMENT,SECTION,TYPE,DAYS,TIME,BUILDING,ROOM_NUMBER,LOCATION,PROFESSOR,STATUS,YEAR,SEMESTER,PRE1,PRE2,PRE3,CO_REQ1,CO_REQ2,DEGREE)
+                        db.session.add(class1)
+                        db.session.commit()
+                    else:
+                        results = UBClasses.query.all()
+                        for result in results:
+                            temp_max = result.ID
+                            if temp_max > max:
+                                max = temp_max
+                        class1 = UBRecitation(UBCLASS,HUB_ID,max,SECTION,TYPE,DAYS,TIME,BUILDING,ROOM_NUMBER,LOCATION,STATUS,YEAR,SEMESTER)
+                        # db.session.add(class1)
+                        # db.session.commit()
+        else:
+            broken_departments.append(department)
+            # store the broken ones
+
         course_num = []
         course_name = []
         course_id = []
@@ -210,5 +228,5 @@ for semester in semester_links:
         instructor = []
         status = []
 
-
-
+for broke in broken_departments:
+    print broke
