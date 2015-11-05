@@ -263,7 +263,8 @@
         if(EDITABLE == 0){
             EDITABLE = 1;
             elem.style.backgroundColor = "red";
-            elem.innerText = "Submit";
+            elem.removeChild(elem.firstChild);
+            elem.appendChild(document.createTextNode("Submit"));
             for(x=0;x<DEGREE_HANDLES.length;x++){
                 if(DEGREE_HANDLES[x].TAKEN == 0){
                     switch_check_visibility(DEGREE_HANDLES[x].UBCLASS);
@@ -272,7 +273,8 @@
         }
         else{
             elem.style.backgroundColor = "#337ab7";
-            elem.innerText = "Edit";
+            elem.removeChild(elem.firstChild);
+            elem.appendChild(document.createTextNode("Edit"));
             for(x=0;x<DEGREE_HANDLES.length;x++){
                 if(DEGREE_HANDLES[x].TAKEN == 0){
                     switch_check_visibility(DEGREE_HANDLES[x].UBCLASS);
