@@ -489,19 +489,19 @@ function create_new_course_block(sem_index, num){
         if ( (course_string.indexOf("XX") == -1) && (course_string.indexOf("Gen Ed") == -1) && (EDITABLE == 0) ) {
             document.body.style.cursor = 'pointer';
         }
-    }
+    };
     course_name.onmouseout = function() {
         if ( (course_string.indexOf("XX") == -1) && (course_string.indexOf("Gen Ed") == -1) && (EDITABLE == 0) ) {
             document.body.style.cursor = 'auto';
         }
-    }
+    };
     course_name.onclick = function() {
         if ( (course_string.indexOf("XX") == -1) && (course_string.indexOf("Gen Ed") == -1) && (EDITABLE == 0) ) {
             course_name.setAttribute('style', 'color: #4B0082; text-decoration: underline');
             window.open(URL, '_blank');
             return false;
         }
-    }
+    };
     var course_name_text = document.createTextNode(DEGREE_HANDLES[num].get_ubclass());
     course_name.appendChild(course_name_text);
     course_container.appendChild(course_name);
