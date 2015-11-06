@@ -245,46 +245,23 @@ function populate_selected_class(class_handle, rec_handle) {
 /********************************************************************
 *               Validate "Selected Classes"
 *********************************************************************/
-function validate_selected_class(class_handle,rec_handle, heading){
-    var list;
+function validate_selected_class(class_handle,rec_handle, heading) {
     var parent;
-    //If there is something in the last, check for duplicates or updates
-    if (Selected_Classes.SELECTED_CLASS_HANDLES.length !=0 ) {
-        //check if it already exists in the list
-        if (Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] != null) {
-            //If the recitation id == the recitation of the class at that index, remove it
-            if (rec_handle.ID == Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID].ID) {
-                parent = document.getElementById('selected_container' + class_handle.ID).remove();
-                Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = 0;
-            }
-            //If the recitation is of the same class, but its not the same recitation, update it
-            else if (rec_handle.REC_ID == Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID].REC_ID) {
-                Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = rec_handle;
-            }
-            //else, just add it to the list
-            else {
-                //Add parent (with all children to html)
-                list = document.getElementById('selected_class_container');
-                list.insertBefore(heading, list.childNodes[0]);
-                Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = rec_handle;
-                Selected_Classes.NUM_SELECTED_CLASSES = Selected_Classes.NUM_SELECTED_CLASSES + 1;
-            }
-        }
-         else{
-            //Add parent (with all children to html)
-            list = document.getElementById('selected_class_container');
-            list.insertBefore(heading, list.childNodes[0]);
-            Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = rec_handle;
-            Selected_Classes.NUM_SELECTED_CLASSES = Selected_Classes.NUM_SELECTED_CLASSES + 1;
-        }
+    var list;
+    // Case 1: Node is found
+    if(SEL_LL.find_node(class_handle,rec_handle)) {
+        SEL_LL.remove_node(class_handle,rec_handle);
+        parent = document.getElementById('selected_container' + class_handle.ID).remove();
     }
-    //Nothing is in the list, just add it as the first element entered
+    // Case 2: Class is found, so switch its Recitation
+    else if (SEL_LL.find_node_by_class(class_handle)) {
+        SEL_LL.switch_node_rec_handle(class_handle, rec_handle);
+    }
+    //No class found, add class and recitation
     else{
-        // Add to selected classes list
+        SEL_LL.add_node(class_handle, rec_handle);
         list = document.getElementById('selected_class_container');
         list.insertBefore(heading, list.childNodes[0]);
-        Selected_Classes.SELECTED_CLASS_HANDLES[rec_handle.REC_ID] = rec_handle;
-        Selected_Classes.NUM_SELECTED_CLASSES = Selected_Classes.NUM_SELECTED_CLASSES + 1;
     }
 }
 
@@ -393,8 +370,8 @@ function convertTimes(db_days,db_time){
     }
     /* Saturdays not implemented yet */
     //if(db_days.indexOf('S') != -1){
-    //    times[10] = "F" + start_time;
-    //    times[11] = "F" + end_time;
+    //    times[10] = "S" + start_time;
+    //    times[11] = "S" + end_time;
     //}
     return times;
 }
@@ -704,18 +681,18 @@ function hide_info(id,iteration){
 }
 
 
-    /********************************************************************
-    *           FLOWSHEET - Loop and create Blocks in Semesters
-    *********************************************************************/
-    function populate_semesters(){
-        for(var sem=0;sem<9;sem++){
-            for(var i=0;i<DEGREE_HANDLES.length;i++) {
-                if (DEGREE_HANDLES[i].get_sem_index() == sem) {
-                    create_new_course_block(sem, i);
-                }
+/********************************************************************
+*           FLOWSHEET - Loop and create Blocks in Semesters
+*********************************************************************/
+function populate_semesters(){
+    for(var sem=0;sem<9;sem++){
+        for(var i=0;i<DEGREE_HANDLES.length;i++) {
+            if (DEGREE_HANDLES[i].get_sem_index() == sem) {
+                create_new_course_block(sem, i);
             }
         }
     }
+}
 
 
 

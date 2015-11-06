@@ -17,6 +17,7 @@
     var BLOCKED_CLASSES = 0;
     var BLOCKED_RECITATIONS = 0;
 
+
     /*********************************************************
     *       Get First Class Information
     *********************************************************/
@@ -697,6 +698,203 @@
             });
         };
 
+
+
+        /*********************************************************
+        *       Selected Courses Linked List
+        *********************************************************/
+        var Linked_List = function(){
+            this.head = null;
+        };
+
+        Linked_List.prototype.node = function(class_payload,rec_payload){
+            var elem = {
+                class_handle : class_payload,
+                rec_handle : rec_payload,
+                next : null
+            };
+            return elem;
+        };
+
+        Linked_List.prototype.add_node = function(class_payload,rec_payload){
+            if(!this.head){
+               this.head = this.node(class_payload,rec_payload);
+            }
+            else{
+                var current_node = this.head;
+                while(current_node.next != null){
+                    current_node = current_node.next;
+                }
+                current_node.next = this.node(class_payload,rec_payload);
+            }
+        };
+
+        Linked_List.prototype.remove_node = function(class_payload,rec_payload){
+            var current_node = this.head;
+            if((current_node.class_handle.ID == class_payload.ID)&&(current_node.rec_handle.ID == rec_payload.ID)){
+               this.head = current_node.next;
+            }
+            else{
+                var previous_node = current_node;
+
+                while(current_node.next){
+                    if((current_node.class_handle.ID == class_payload.ID)&&(current_node.rec_handle.ID == rec_payload.ID)){
+                        previous_node.next = current_node.next;
+                        break;
+                    }
+                    previous_node = current_node;
+                    current_node = current_node.next;
+                }
+                if((current_node.class_handle.ID == class_payload.ID)&&(current_node.rec_handle.ID == rec_payload.ID)){
+                    previous_node.next = null;
+                }
+            }
+        };
+
+        Linked_List.prototype.remove_node_by_class = function(class_payload){
+            var current_node = this.head;
+            if(current_node.class_handle.ID == class_payload.ID){
+               this.head = current_node.next;
+            }
+            else{
+                var previous_node = current_node;
+
+                while(current_node.next){
+                    if(current_node.class_handle.ID == class_payload.ID){
+                        previous_node.next = current_node.next;
+                        break;
+                    }
+                    previous_node = current_node;
+                    current_node = current_node.next;
+                }
+                if(current_node.class_handle.ID == class_payload.ID){
+                    previous_node.next = null;
+                }
+            }
+        };
+
+        Linked_List.prototype.remove_node_by_rec = function(rec_payload){
+            var current_node = this.head;
+            if(current_node.rec_handle.ID == rec_payload.ID){
+               this.head = current_node.next;
+            }
+            else{
+                var previous_node = current_node;
+
+                while(current_node.next){
+                    if(current_node.rec_handle.ID == rec_payload.ID){
+                        previous_node.next = current_node.next;
+                        break;
+                    }
+                    previous_node = current_node;
+                    current_node = current_node.next;
+                }
+                if(current_node.rec_handle.ID == rec_payload.ID){
+                    previous_node.next = null;
+                }
+            }
+        };
+
+        Linked_List.prototype.find_node = function(class_payload,rec_payload){
+            var current_node = this.head;
+            if((current_node.class_handle.ID == class_payload.ID)&&(current_node.rec_handle.ID == rec_payload.ID)){
+               return true;
+            }
+            else{
+                var previous_node = current_node;
+
+                while(current_node.next){
+                    if((current_node.class_handle.ID == class_payload.ID)&&(current_node.rec_handle.ID == rec_payload.ID)){
+                        previous_node.next = current_node.next;
+                        return true;
+                    }
+                    previous_node = current_node;
+                    current_node = current_node.next;
+                }
+                if((current_node.class_handle.ID == class_payload.ID)&&(current_node.rec_handle.ID == rec_payload.ID)){
+                    return true;
+                }
+                return false;
+            }
+
+        };
+
+        Linked_List.prototype.find_node_by_class = function(class_payload){
+            var current_node = this.head;
+            if(current_node.class_handle.ID == class_payload.ID){
+                return true;
+            }
+            else{
+                var previous_node = current_node;
+
+                while(current_node.next){
+                    if(current_node.class_handle.ID == class_payload.ID){
+                        previous_node.next = current_node.next;
+                        return true;
+                    }
+                    previous_node = current_node;
+                    current_node = current_node.next;
+                }
+                if(current_node.class_handle.ID == class_payload.ID){
+                    return true;
+                }
+                return false;
+            }
+        };
+
+        Linked_List.prototype.find_node_by_rec = function(rec_payload){
+            var current_node = this.head;
+            if(current_node.rec_handle.ID == rec_payload.ID){
+               return true;
+            }
+            else{
+                var previous_node = current_node;
+
+                while(current_node.next){
+                    if(current_node.rec_handle.ID == rec_payload.ID){
+                        previous_node.next = current_node.next;
+                        return true;
+                    }
+                    previous_node = current_node;
+                    current_node = current_node.next;
+                }
+                if(current_node.rec_handle.ID == rec_payload.ID){
+                    return true;
+                }
+                return false;
+            }
+        };
+
+        Linked_List.prototype.switch_node_rec_handle = function(class_payload,rec_payload){
+            var current_node = this.head;
+            if(current_node.class_handle.ID == class_payload.ID){
+               current_node.rec_handle = rec_payload;
+            }
+            else{
+                var previous_node = current_node;
+
+                while(current_node.next){
+                    if(current_node.class_handle.ID == class_payload.ID){
+                        current_node.rec_handle = rec_payload;
+                        break;
+                    }
+                    previous_node = current_node;
+                    current_node = current_node.next;
+                }
+                if(current_node.class_handle.ID == class_payload.ID){
+                    current_node.rec_handle = rec_payload;
+                }
+            }
+        };
+
+        var SEL_LL = new Linked_List();
+        SEL_LL.add_node("head","node");
+//        var truth = SEL_LL.find_node("class1", "rec1");
+//        var class_exists = SEL_LL.find_node_by_class("class2");
+//        var rec_exists = SEL_LL.find_node_by_rec("rec1");
+//        SEL_LL.add_node("class2", "rec2");
+//        SEL_LL.remove_node_by_rec("rec2");
+//        SEL_LL.switch_node_rec_handle("class1", "rec9");
 
 
         /*********************************************************
