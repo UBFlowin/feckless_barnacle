@@ -976,6 +976,52 @@
             }
         };
 
+        Linked_List.prototype.return_node_by_id = function(class_payload){
+            var current_node = this.head;
+            if(current_node.class_handle.ID == class_payload.ID){
+                return current_node;
+            }
+            else{
+                var previous_node = current_node;
+
+                while(current_node.next){
+                    if(current_node.class_handle.ID == class_payload.ID){
+                        previous_node.next = current_node.next;
+                        return current_node;
+                    }
+                    previous_node = current_node;
+                    current_node = current_node.next;
+                }
+                if(current_node.class_handle.ID == class_payload.ID){
+                    return current_node;
+                }
+            }
+        };
+
+
+        Linked_List.prototype.clear_table = function(){
+           for(var x=0;x<Table1.id_table.length; x++){
+               Table1.set_cell_value(Table1.id_table[x], ' ');
+               Table1.set_cell_color(Table1.id_table[x], "White");
+               Table1.set_cell_border_color(Table1.id_table[x], "#ddd");
+               Table1.set_side_borders_color(Table1.id_table[x], "#ddd");
+           }
+        };
+
+        Linked_List.prototype.repaint_table = function(){
+            var current_node = this.head;
+            if(!current_node){
+                return;
+            }
+            current_node = current_node.next;
+            while(current_node != null){
+                Table1.paint_cells(current_node.class_handle);
+                Table1.paint_cells(current_node.rec_handle);
+                current_node = current_node.next;
+            }
+        };
+
+
         var SEL_LL = new Linked_List();
         SEL_LL.add_node("head","node");
 //        var truth = SEL_LL.find_node("class1", "rec1");
@@ -1206,11 +1252,30 @@
         /***************************************
         *       Clear All Recitations of Parent Class
         ****************************************/
-        Table_Class.prototype.clear_all_recs = function(class_handle) {
+        Table_Class.prototype.time_conflict = function(class_handle) {
+            var times = convertTimes(class_handle.DAYS, class_handle.TIME);
+            var index;
+            for(var w=0;w<10;w=w+2) {
+                if (times[w] != ' ') {
+                    index = Table1.id_table.indexOf(times[w]);
+                    while (Table1.id_table[index] != times[w + 1]) {
+                        if(Table1.get_cell_value(Table1.id_table[index]) != ' '){
+                            return true;
+                        }
+                        index += 1;
+                    }
+                }
+            }
+            return false;
+        };
+
+        Table_Class.prototype.clear_all_cells = function(){
             var x=0;
-            while(x<class_handle.RECITATION.length){
-                Table1.clear_cells(class_handle.RECITATION[x]);
-                x++;
+            for(x=0;x<Table1.id_table.length;x++){
+                this.set_cell_value(this.id_table[x], ' ');
+                this.set_cell_color(this.id_table[x], "White");
+                this.set_cell_border_color(this.id_table[x], "#ddd");
+                this.set_side_borders_color(this.id_table[x], "#ddd");
             }
         };
 
@@ -1221,7 +1286,7 @@
             var clear_times = convertTimes(class_handle.DAYS, class_handle.TIME);
             var clear_index;
             var first_cell_of_block;
-            //var conflict_reset = 0;
+            var conflict_reset = 0;
             for(var k=0;k<10;k=k+2) {
                 first_cell_of_block = 1;
                 if (times[k] != ' ') {
@@ -1274,7 +1339,7 @@
         *       Paint Cells
         ****************************************/
         Table_Class.prototype.paint_cells = function(class_handle) {
-            var paint_times = convertTimes(class_handle.get_days(), class_handle.get_time());
+            var paint_times = convertTimes(class_handle.DAYS, class_handle.TIME);
             var paint_index;
             var first_cell_of_block;
             for(var w=0;w<10;w=w+2) {
@@ -1282,36 +1347,46 @@
                 if (times[w] != ' ') {
                     paint_index = Table1.id_table.indexOf(paint_times[w]);
                     while (Table1.id_table[paint_index] != paint_times[w + 1]) {
-                        if(!Table1.cell_conflict(Table1.id_table[paint_index])){
-                            this.set_cell_value(this.id_table[paint_index],class_handle.get_id());
+//                        if(!Table1.cell_conflict(Table1.id_table[paint_index])){
+                            this.set_cell_value(this.id_table[paint_index],class_handle.ID);
                             this.set_cell_color(this.id_table[paint_index], g_Color);
                             this.set_side_borders_color(this.id_table[paint_index], g_Border_Color);
                             this.set_bottom_border_color(this.id_table[paint_index], g_Color);
 
-                            //elem = document.getElementById(this.id_table[paint_index]);
-                            //elem.style.backgroundImage = "url('/static/Checkmark.jpg')";
 
                             if(first_cell_of_block == 1) {
                                 if(class_handle.REC_ID) {
-                                    this.changeText(this.id_table[paint_index], class_handle.get_ubclass());
-                                    this.changeText(this.id_table[paint_index+1], class_handle.get_type());
+                                    this.changeText(this.id_table[paint_index], class_handle.UBCLASS);
+                                    this.changeText(this.id_table[paint_index+1], class_handle.TYPE);
                                 }
                                 else{
-                                    this.changeText(this.id_table[paint_index], class_handle.get_ubclass());
+                                    this.changeText(this.id_table[paint_index], class_handle.UBCLASS);
                                 }
                                 first_cell_of_block = 0;
                                 this.set_top_border_color(this.id_table[paint_index], g_Border_Color);
                             }
-                        }
-                        else{
-                            this.set_cell_color(this.id_table[paint_index], "Red");
-                            this.set_side_borders_color(this.id_table[paint_index], "Red");
-                            this.set_bottom_border_color(this.id_table[paint_index], "Red");
-                        }
+//                        }
+//                        else{
+//                            this.set_cell_color(this.id_table[paint_index], "Red");
+//                            this.set_side_borders_color(this.id_table[paint_index], "Red");
+//                            this.set_bottom_border_color(this.id_table[paint_index], "Red");
+//                        }
                         paint_index++;
                     }
                     this.set_bottom_border_color(this.id_table[paint_index-1], g_Border_Color);
                 }
+            }
+        };
+
+        Table_Class.prototype.reset_selected = function(Linked_List){
+            var node = Linked_List.head;
+            if(node == null){
+                return;
+            }
+            node = node.next;
+            while(node.next != null){
+                Table1.paint_cells(node.class_handle);
+                Table1.paint_cells(node.rec_handle);
             }
         };
 

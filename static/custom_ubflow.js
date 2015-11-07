@@ -246,43 +246,62 @@ function populate_selected_class(class_handle, rec_handle) {
 *               Validate "Selected Classes"
 *********************************************************************/
 function validate_selected_class(class_handle,rec_handle, heading) {
-    var parent;
-    var list;
+    var parent,list,node;
     // Case 1: Node is found
     if(SEL_LL.find_node(class_handle,rec_handle)) {
-        Table1.clear_cells(class_handle);
-        Table1.clear_cells(rec_handle);
         SEL_LL.remove_node(class_handle,rec_handle);
         parent = document.getElementById('selected_container' + class_handle.ID).remove();
+        Table1.clear_cells(class_handle);
+        Table1.clear_cells(rec_handle);
     }
     // Case 2: Class is found, so switch its Recitation
     else if (SEL_LL.find_node_by_class(class_handle)) {
-        SEL_LL.switch_node_rec_handle(class_handle, rec_handle);
+        if(!Table1.time_conflict(class_handle)) {
+            node = SEL_LL.return_node_by_id(class_handle);
+            Table1.clear_cells(node.rec_handle);
+            SEL_LL.switch_node_rec_handle(class_handle, rec_handle);
+            Table1.paint_cells(rec_handle);
+        }
+        else{
+            alert("Time Conflict with Recitation");
+        }
     }
     // Case 3: Class exists but is a different time slot
     else if(SEL_LL.find_node_by_ubclass(class_handle)){
-        //remove the node, but get its reference
-        var node = SEL_LL.return_node_by_ubclass(class_handle);
-        SEL_LL.remove_node_by_class(node.class_handle);
-        //remove the webpage items for the node
-        parent = document.getElementById('selected_container' + node.class_handle.ID).remove();
-        Table1.clear_cells(node.class_handle);
-        Table1.clear_cells(node.rec_handle);
-        //add the new node
-        SEL_LL.add_node(class_handle, rec_handle);
-        Table1.paint_cells(class_handle);
-        Table1.paint_cells(rec_handle);
-        list = document.getElementById('selected_class_container');
-        list.insertBefore(heading, list.childNodes[0]);
+        if(!Table1.time_conflict(class_handle)) {
+            //remove the node, but get its reference
+            node = SEL_LL.return_node_by_ubclass(class_handle);
+            parent = document.getElementById('selected_container' + node.class_handle.ID).remove();
+            Table1.clear_cells(node.class_handle);
+            Table1.clear_cells(node.rec_handle);
+            SEL_LL.remove_node_by_class(node.class_handle);
+            //add the new node
+            SEL_LL.add_node(class_handle, rec_handle);
+            list = document.getElementById('selected_class_container');
+            list.insertBefore(heading, list.childNodes[0]);
+            Table1.paint_cells(class_handle);
+            Table1.paint_cells(rec_handle);
+        }
+        else{
+            alert("Time conflict switching the class");
+        }
+
     }
     //No class found, add class and recitation
     else{
-        SEL_LL.add_node(class_handle, rec_handle);
-        Table1.paint_cells(class_handle);
-        Table1.paint_cells(rec_handle);
-        list = document.getElementById('selected_class_container');
-        list.insertBefore(heading, list.childNodes[0]);
+        if(!Table1.time_conflict(class_handle)){
+            Table1.paint_cells(class_handle);
+            Table1.paint_cells(rec_handle);
+            SEL_LL.add_node(class_handle, rec_handle);
+            list = document.getElementById('selected_class_container');
+            list.insertBefore(heading, list.childNodes[0]);
+        }
+        else{
+            alert("Time Conflict");
+        }
+
     }
+
 }
 
 
