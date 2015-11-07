@@ -257,6 +257,19 @@ function validate_selected_class(class_handle,rec_handle, heading) {
     else if (SEL_LL.find_node_by_class(class_handle)) {
         SEL_LL.switch_node_rec_handle(class_handle, rec_handle);
     }
+    else if(SEL_LL.find_node_by_ubclass(class_handle)){
+
+        var node = SEL_LL.return_node_by_ubclass(class_handle);
+        SEL_LL.remove_node_by_class(node.class_handle);
+
+        parent = document.getElementById('selected_container' + node.class_handle.ID).remove();
+        Table1.clear_cells(node.class_handle);
+        Table1.clear_cells(node.rec_handle);
+
+        SEL_LL.add_node(class_handle, rec_handle);
+        list = document.getElementById('selected_class_container');
+        list.insertBefore(heading, list.childNodes[0]);
+    }
     //No class found, add class and recitation
     else{
         SEL_LL.add_node(class_handle, rec_handle);
