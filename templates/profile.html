@@ -1191,21 +1191,6 @@
         *       Set Cell Color and Text
         ************************************/
         Table_Class.prototype.clicked_class = function(rec_handle, class_handle){
-            if(class_handle.REC_ID_selected == 0){
-                Table1.paint_cells(class_handle);
-                Table1.paint_cells(rec_handle);
-                class_handle.REC_ID_selected = rec_handle.ID;
-            }
-            else if(class_handle.REC_ID_selected != (rec_handle.ID)){
-                Table1.clear_all_recs(class_handle,rec_handle);
-                class_handle.REC_ID_selected = rec_handle.ID;
-                Table1.paint_cells(rec_handle);
-            }
-            else if(class_handle.REC_ID_selected == (rec_handle.ID)){
-                Table1.clear_cells(class_handle);
-                Table1.clear_cells(rec_handle);
-                class_handle.REC_ID_selected = 0;
-            }
             populate_selected_class(class_handle,rec_handle);
         };
 

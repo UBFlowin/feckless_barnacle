@@ -250,6 +250,8 @@ function validate_selected_class(class_handle,rec_handle, heading) {
     var list;
     // Case 1: Node is found
     if(SEL_LL.find_node(class_handle,rec_handle)) {
+        Table1.clear_cells(class_handle);
+        Table1.clear_cells(rec_handle);
         SEL_LL.remove_node(class_handle,rec_handle);
         parent = document.getElementById('selected_container' + class_handle.ID).remove();
     }
@@ -268,12 +270,16 @@ function validate_selected_class(class_handle,rec_handle, heading) {
         Table1.clear_cells(node.rec_handle);
         //add the new node
         SEL_LL.add_node(class_handle, rec_handle);
+        Table1.paint_cells(class_handle);
+        Table1.paint_cells(rec_handle);
         list = document.getElementById('selected_class_container');
         list.insertBefore(heading, list.childNodes[0]);
     }
     //No class found, add class and recitation
     else{
         SEL_LL.add_node(class_handle, rec_handle);
+        Table1.paint_cells(class_handle);
+        Table1.paint_cells(rec_handle);
         list = document.getElementById('selected_class_container');
         list.insertBefore(heading, list.childNodes[0]);
     }
