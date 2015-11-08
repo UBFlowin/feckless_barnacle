@@ -204,7 +204,7 @@ function populate_selected_class(class_handle, rec_handle) {
     trash_icon.setAttribute('id','trash_icon'+class_handle.get_id());
     trash_icon.setAttribute('class', 'fa fa-trash-o');
     trash_icon.setAttribute('style', 'vertical-align: middle;');
-    //trash_icon.setAttribute('onclick','lock_in_course("trash_icon'+class_handle.ID+'"'+')');
+    trash_icon.setAttribute('onclick','trash_course("trash_icon'+class_handle.ID+'"'+')');
     trash_icon_holder.appendChild(trash_icon);
 
 
@@ -256,7 +256,7 @@ function validate_selected_class(class_handle,rec_handle, heading) {
     }
     // Case 2: Class is found, so switch its Recitation
     else if (SEL_LL.find_node_by_class(class_handle)) {
-        if(!Table1.time_conflict(class_handle)) {
+        if(!Table1.time_conflict(rec_handle)) {
             node = SEL_LL.return_node_by_id(class_handle);
             Table1.clear_cells(node.rec_handle);
             SEL_LL.switch_node_rec_handle(class_handle, rec_handle);
@@ -268,7 +268,7 @@ function validate_selected_class(class_handle,rec_handle, heading) {
     }
     // Case 3: Class exists but is a different time slot
     else if(SEL_LL.find_node_by_ubclass(class_handle)){
-        if(!Table1.time_conflict(class_handle)) {
+        if((!Table1.time_conflict(class_handle))&&(!Table1.time_conflict(rec_handle))){
             //remove the node, but get its reference
             node = SEL_LL.return_node_by_ubclass(class_handle);
             parent = document.getElementById('selected_container' + node.class_handle.ID).remove();
@@ -289,7 +289,7 @@ function validate_selected_class(class_handle,rec_handle, heading) {
     }
     //No class found, add class and recitation
     else{
-        if(!Table1.time_conflict(class_handle)){
+        if((!Table1.time_conflict(class_handle))&&(!Table1.time_conflict(rec_handle))) {
             Table1.paint_cells(class_handle);
             Table1.paint_cells(rec_handle);
             SEL_LL.add_node(class_handle, rec_handle);
@@ -327,10 +327,31 @@ function lock_in_course(id){
         text.setAttribute('onmouseout', onmouseout);
         text.style.backgroundColor = "White";
     }
-
-
-
 }
+
+
+/********************************************************************
+*         WEEKLY SCHEDULE - Click Trash Icon to Remove Course
+*********************************************************************/
+function trash_course(id){
+    var elem = document.getElementById(id);
+    var index = id.split('n');
+    var class_id = parseInt(index[1]);
+
+    /* Remove the node from SEL_LL */
+    var fake_class_handle = new UbClass(class_id,' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ');
+    var node = SEL_LL.return_node_by_id(fake_class_handle);
+    SEL_LL.remove_node_by_class(fake_class_handle);
+
+    /* Remove the cells from Table */
+    Table1.clear_cells(node.class_handle);
+    Table1.clear_cells(node.rec_handle);
+
+    /* Remove the container from selected courses */
+    var text = document.getElementById('selected_container' + index[1]);
+    var removed = text.remove();
+}
+
 
 
 /********************************************************************
