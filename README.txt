@@ -1,14 +1,8 @@
 UB Flowin: Hosted at 68.133.10.203
 
 
-TODO: 10/16
-    Username and password restrictions:
-        - more than 8 chars, at least 1 number, etc.
-    Add prerequistes to scraper to modify current database entries
-
-
-
-
+Summary: We application for college students to easily schedule their semesters and track their degree progress in a visual way.
+        We bring all the information required to make plan these schedules into a easily followed, interactive format.
 
 
 Notes for developers:
@@ -21,9 +15,6 @@ Notes for developers:
     Server Commands:
         SSH Login:
             - ubflow@68.133.10.203
-
-        MYSQL login:
-            - root
 
         Restart deployment:
             - sudo supervisorctl restart app
