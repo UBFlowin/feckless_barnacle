@@ -19,4 +19,8 @@
     visibility: visible;
   }
 
+  tbody * :not(#time_column):hover {
+      transform: scale(2);
+  }
+
 }
