@@ -794,21 +794,20 @@
 
         Linked_List.prototype.remove_node_by_class = function(class_payload){
             var current_node = this.head;
+            var previous_node = current_node;
+
             if(current_node.next != null){
                 current_node = current_node.next;
             }
-            else{
-                var previous_node = current_node;
-
-                while(current_node.next){
-                    if(current_node.class_handle.ID == class_payload.ID){
-                        previous_node.next = current_node.next;
-                        break;
-                    }
-                    previous_node = current_node;
-                    current_node = current_node.next;
-                }
+            while(current_node.next){
                 if(current_node.class_handle.ID == class_payload.ID){
+                    previous_node.next = current_node.next;
+                }
+                previous_node = current_node;
+                current_node = current_node.next;
+            }
+            if(current_node != null) {
+                if (current_node.class_handle.ID == class_payload.ID) {
                     previous_node.next = null;
                 }
             }
