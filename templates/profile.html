@@ -722,6 +722,9 @@
     <!--bootstrap and custom bootstrap js files-->
     <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap-sb-admin-2-1.0.7/dist/js/sb-admin-2.js') }}"></script>
     <script type ='text/javascript'>
+
+
+
         var g_Color = "#8FC8FF";
         var g_Border_Color = "Black";
 
@@ -1091,7 +1094,7 @@
         var Table_Class = function() {
             var x = 0;
             this.table_cells = [];
-            for (x; x < 135; x++) {
+            for (x; x < 135; x++) {   //162 FOR SATURDAYS
                 this.table_cells[x] = " ";
             }
             this.id_table = ['M8:00AM', 'M8:30AM', 'M9:00AM', 'M9:30AM', 'M10:00AM', 'M10:30AM', 'M11:00AM', 'M11:30AM', 'M12:00PM',
@@ -1109,6 +1112,9 @@
                 'F8:00AM', 'F8:30AM', 'F9:00AM', 'F9:30AM', 'F10:00AM', 'F10:30AM', 'F11:00AM', 'F11:30AM', 'F12:00PM',
                 'F12:30PM', 'F1:00PM', 'F1:30PM', 'F2:00PM', 'F2:30PM', 'F3:00PM', 'F3:30PM', 'F4:00PM', 'F4:30PM', 'F5:00PM',
                 'F5:30PM', 'F6:00PM', 'F6:30PM', 'F7:00PM', 'F7:30PM', 'F8:00PM', 'F8:30PM', 'F9:00PM'];
+//                'S8:00AM', 'S8:30AM', 'S9:00AM', 'S9:30AM', 'S10:00AM', 'S10:30AM', 'S11:00AM', 'S11:30AM', 'S12:00PM',
+//                'S12:30PM', 'S1:00PM', 'S1:30PM', 'S2:00PM', 'S2:30PM', 'S3:00PM', 'S3:30PM', 'S4:00PM', 'S4:30PM', 'S5:00PM',
+//                'S5:30PM', 'S6:00PM', 'S6:30PM', 'S7:00PM', 'S7:30PM', 'S8:00PM', 'S8:30PM', 'S9:00PM'];
         };
 
         /***********************************
@@ -1246,12 +1252,16 @@
         };
 
         Table_Class.prototype.num_cells = function(){
-            return 135;
+            return 135;  //162 FOR SATURDAYS
         };
 
         Table_Class.prototype.cells_per_col = function(){
             return 27;
         };
+
+
+
+
 
         /***************************************
         *       Paint Cells
@@ -1260,7 +1270,7 @@
             var paint_times = convertTimes(class_handle.DAYS, class_handle.TIME);
             var paint_index;
             var first_cell_of_block;
-            for(var w=0;w<10;w=w+2) {
+            for(var w=0;w<10;w=w+2) {  //12 FOR SATURDAYS
                 first_cell_of_block = 1;
                 if (times[w] != ' ') {
                     paint_index = Table1.id_table.indexOf(paint_times[w]);
@@ -1270,6 +1280,11 @@
                         this.set_cell_color(this.id_table[paint_index], g_Color);
                         this.set_side_borders_color(this.id_table[paint_index], g_Border_Color);
                         this.set_bottom_border_color(this.id_table[paint_index], g_Color);
+
+                        /* For Melanie to do gradients */
+//                        var elem2 = document.getElementById(this.id_table[paint_index]);
+//                        elem2.setAttribute('name','class_created');
+//                        elem2.style.backgroundColor = "";
 
                         /* This is where an image would go */
                         //elem = document.getElementById(Table1.id_table[paint_index]);
@@ -1313,7 +1328,7 @@
             var clear_index, elem;
             var first_cell_of_block;
             var conflict_reset = 0;
-            for(var k=0;k<10;k=k+2) {
+            for(var k=0;k<10;k=k+2) {  //12 FOR SATURDAYS
                 first_cell_of_block = 1;
                 if (times[k] != ' ') {
                     clear_index = Table1.id_table.indexOf(clear_times[k]);
@@ -1362,6 +1377,11 @@
             }
         };
 
+
+
+
+
+
         Table_Class.prototype.reset_selected = function(Linked_List){
             var node = Linked_List.head;
             if(node == null){
@@ -1374,17 +1394,17 @@
             }
         };
 
-        var Selected_Class = function(){
-            this.SELECTED_CLASS_HANDLES = [];
-            this.NUM_SELECTED_CLASSES = 0;
-        };
+//        var Selected_Class = function(){
+//            this.SELECTED_CLASS_HANDLES = [];
+//            this.NUM_SELECTED_CLASSES = 0;
+//        };
 
 
         /*********************************************************
         *       New Instances
         *********************************************************/
         var Table1 = new Table_Class();
-        var Selected_Classes = new Selected_Class();
+        //var Selected_Classes = new Selected_Class();
 
 
         /*********************************************************
