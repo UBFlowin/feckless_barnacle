@@ -167,41 +167,43 @@ function switch_avail_classes(){
 *               Add Classes to "Selected Classes"
 *********************************************************************/
 function populate_selected_class(class_handle, rec_handle) {
-    var heading = document.createElement('heading' + class_handle.get_id());
+    var p1,p2,txt2, txt1, container, class_name_holder;
+    var heading = document.createElement('heading' + class_handle.ID);
     var a = document.createElement('availableClass');
-    a.setAttribute('style', 'height: 45px; padding:4px; ' +
+    a.setAttribute('style', 'height: 60px; padding:4px; ' +
         'border-bottom-left-radius:9px; border-bottom-right-radius:9px; ' +
         'border-top-left-radius:9px; border-top-right-radius:9px; vertical-align: middle;' );
-    a.setAttribute('id', 'selected_container' + class_handle.get_id());
+    a.setAttribute('id', 'selected_container' + class_handle.ID);
     a.setAttribute('class', 'list-group-item');
 
-    var onmouseover = "shade('selected_container" + class_handle.get_id() + "')";
-    var onmouseout = "unshade('selected_container" + class_handle.get_id() + "')";
+    var onmouseover = "shade('selected_container" + class_handle.ID + "')";
+    var onmouseout = "unshade('selected_container" + class_handle.ID + "')";
     a.setAttribute('onmouseover', onmouseover);
     a.setAttribute('onmouseout', onmouseout);
     heading.appendChild(a);
 
-    //Add spin wheel container
-    var lock_icon_holder = document.createElement("lock_icon_holder");
-    lock_icon_holder.setAttribute('class', 'col-md-1');
-    lock_icon_holder.setAttribute('style', 'height: 40px; vertical-align: middle;');
-    a.appendChild(lock_icon_holder);
-
-    //Add spin wheel
-    var lock_icon = document.createElement('lock_icon');
-    lock_icon.setAttribute('id','lock_icon'+class_handle.get_id());
-    lock_icon.setAttribute('class', 'fa fa-unlock');
-    lock_icon.setAttribute('onclick','lock_in_course("lock_icon'+class_handle.get_id()+'"'+')');
-    lock_icon_holder.appendChild(lock_icon);
+    ////Add lock container
+    //var lock_icon_holder = document.createElement("lock_icon_holder");
+    //lock_icon_holder.setAttribute('class', 'col-md-1');
+    //lock_icon_holder.setAttribute('style', 'height: 40px; vertical-align: middle;');
+    //a.appendChild(lock_icon_holder);
+    //
+    ////Add lock
+    //var lock_icon = document.createElement('lock_icon');
+    //lock_icon.setAttribute('id','lock_icon'+class_handle.ID);
+    //lock_icon.setAttribute('class', 'fa fa-unlock');
+    //lock_icon.setAttribute('onclick','lock_in_course("lock_icon'+class_handle.ID+'"'+')');
+    //lock_icon_holder.appendChild(lock_icon);
 
     //Add trash container
     var trash_icon_holder = document.createElement("trash_icon_holder");
     trash_icon_holder.setAttribute('class', 'col-md-1');
+    trash_icon_holder.setAttribute('style', 'height:50px;');
     a.appendChild(trash_icon_holder);
 
     //Add trash icon
     var trash_icon = document.createElement('trash_icon');
-    trash_icon.setAttribute('id','trash_icon'+class_handle.get_id());
+    trash_icon.setAttribute('id','trash_icon'+class_handle.ID);
     trash_icon.setAttribute('class', 'fa fa-trash-o');
     trash_icon.setAttribute('style', 'vertical-align: middle;');
     trash_icon.setAttribute('onclick','trash_course("trash_icon'+class_handle.ID+'"'+')');
@@ -211,32 +213,44 @@ function populate_selected_class(class_handle, rec_handle) {
     //Add container
     container = document.createElement("container");
     container.setAttribute('class', 'col-xs-10');
-    container.setAttribute('style', 'font-size: 13px;');
+    container.setAttribute('style', 'font-size: 13px;  text-align:right;');
     a.appendChild(container);
 
      //add class name container
-    class_name_holder = document.createElement("name_holder_container");
+    class_name_holder = document.createElement("class_name_holder");
     class_name_holder.setAttribute('class', 'col-xs-12');
     class_name_holder.setAttribute('style', 'font-size: 14px; font-weight: bold; height: 20px;');
     container.appendChild(class_name_holder);
 
     //add class name
     p1 = document.createElement('class_name');
-    txt1 = document.createTextNode(class_handle.get_ubclass() + ' : ' + class_handle.get_days());
+    txt1 = document.createTextNode(class_handle.UBCLASS);// + ' : ' + class_handle.get_days());
     p1.appendChild(txt1);
     class_name_holder.appendChild(p1);
 
     //Add container
-    container1 = document.createElement("class_time_holder"+class_handle.get_id());
-    container1.setAttribute('class', 'col-xs-12');
-    container1.setAttribute('style', 'font-size: 11px;');
-    container.appendChild(container1);
+    var class_days_holder = document.createElement("class_days_holder"+class_handle.ID);
+    class_days_holder.setAttribute('class', 'col-xs-12');
+    class_days_holder.setAttribute('style', 'font-size: 11px; text-align:right;');
+    container.appendChild(class_days_holder);
+
+    //add class name
+    p1 = document.createElement('class_days');
+    txt1 = document.createTextNode(class_handle.DAYS);// + ' : ' + class_handle.get_days());
+    p1.appendChild(txt1);
+    class_days_holder.appendChild(p1);
+
+    //Add container
+    class_time_holder = document.createElement("class_time_holder"+class_handle.ID);
+    class_time_holder.setAttribute('class', 'col-xs-12');
+    class_time_holder.setAttribute('style', 'font-size: 11px;');
+    container.appendChild(class_time_holder);
 
     //add class times
-    p2 = document.createElement('class_time'+class_handle.get_id());
-    txt2 = document.createTextNode(class_handle.get_time());
+    p2 = document.createElement('class_time'+class_handle.ID);
+    txt2 = document.createTextNode(class_handle.TIME);
     p2.appendChild(txt2);
-    container1.appendChild(p2);
+    class_time_holder.appendChild(p2);
 
     validate_selected_class(class_handle,rec_handle, heading);
 }
