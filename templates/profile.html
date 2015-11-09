@@ -804,7 +804,7 @@
                     previous_node.next = current_node.next;
                 }
                 previous_node = current_node;
-                current_node = current_node.next;
+                current_node = previous_node.next;
             }
             if(current_node != null) {
                 if (current_node.class_handle.ID == class_payload.ID) {
@@ -941,7 +941,7 @@
                         current_node.rec_handle = rec_payload;
                         break;
                     }
-                    else if(current_node.class_handle.TITLE == class_payload.TITLE){
+                    else if(current_node.class_handle.UBCLASS == class_payload.UBCLASS){
                         current_node.class_handle = class_payload;
                         break;
                     }
