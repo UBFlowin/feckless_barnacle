@@ -1274,19 +1274,20 @@
                     var elem = document.getElementById(Table1.id_table[paint_index]);
                     while (Table1.id_table[paint_index] != paint_times[w + 1]) {
                         this.set_cell_value(this.id_table[paint_index],class_handle.ID);
-                        this.set_cell_color(this.id_table[paint_index], g_Color);
-                        this.set_side_borders_color(this.id_table[paint_index], g_Border_Color);
-                        this.set_bottom_border_color(this.id_table[paint_index], g_Color);
+{#                        this.set_cell_color(this.id_table[paint_index], g_Color);#}
+{#                        this.set_side_borders_color(this.id_table[paint_index], g_Border_Color);#}
+{#                        this.set_bottom_border_color(this.id_table[paint_index], g_Color);#}
 
                         /* For Melanie to do gradients */
-//                        var elem2 = document.getElementById(this.id_table[paint_index]);
-//                        elem2.setAttribute('name','class_created');
-//                        elem2.style.backgroundColor = "";
+                       // var elem = document.getElementById(this.id_table[paint_index]);
+
+
 
                         /* This is where an image would go */
-                        //elem = document.getElementById(Table1.id_table[paint_index]);
+                        elem = document.getElementById(Table1.id_table[paint_index]);
                         //elem.style.backgroundImage = "url('static/grad3.png')";
-                        //elem.style.border = '0';
+                        elem.style.border = '0';
+                        elem.setAttribute('class','class_created');
 
                         if(first_cell_of_block == 1) {
                             if(class_handle.REC_ID) {
@@ -1334,15 +1335,20 @@
                             if(this.get_cell_value(this.id_table[clear_index]) == class_handle.ID) {
                                 this.set_cell_value(this.id_table[clear_index], ' ');
                                 /* Comment out below if using image */
-                                this.set_cell_color(this.id_table[clear_index], "White");
-                                this.set_cell_border_color(this.id_table[clear_index], "#ddd");
-                                this.set_side_borders_color(this.id_table[clear_index], "#ddd");
+{#                                this.set_cell_color(this.id_table[clear_index], "White");#}
+{#                                this.set_cell_border_color(this.id_table[clear_index], "#ddd");#}
+{#                                this.set_side_borders_color(this.id_table[clear_index], "#ddd");#}
 
+                        elem = document.getElementById(Table1.id_table[clear_index]);
+                        //elem.style.backgroundImage = "url('static/grad3.png')";
+                         elem.setAttribute('class','class_removed');
+//                        elem.style.background = "transparent";
+                        //elem.style.border = '0';
 
                                 /* Change if you want a different cell image */
                                 //elem = document.getElementById(Table1.id_table[clear_index]);
                                 //elem.style.backgroundImage = "none";
-                                //elem.style.border = "solid 1px #ddd";
+                                elem.style.border = "solid 1px #ddd";
 
                                 if (first_cell_of_block == 1) {
                                     this.changeText(this.id_table[clear_index], ' ');
