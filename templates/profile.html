@@ -932,8 +932,6 @@
                 current_node.rec_handle = rec_payload;
             }
             else{
-                var previous_node = current_node;
-
                 while(current_node.next){
                     if(current_node.class_handle.ID == class_payload.ID){
                         current_node.rec_handle = rec_payload;
@@ -943,7 +941,6 @@
                         current_node.class_handle = class_payload;
                         break;
                     }
-                    previous_node = current_node;
                     current_node = current_node.next;
                 }
                 if(current_node.class_handle.ID == class_payload.ID){
@@ -1274,9 +1271,9 @@
                     var elem = document.getElementById(Table1.id_table[paint_index]);
                     while (Table1.id_table[paint_index] != paint_times[w + 1]) {
                         this.set_cell_value(this.id_table[paint_index],class_handle.ID);
-{#                        this.set_cell_color(this.id_table[paint_index], g_Color);#}
-{#                        this.set_side_borders_color(this.id_table[paint_index], g_Border_Color);#}
-{#                        this.set_bottom_border_color(this.id_table[paint_index], g_Color);#}
+//                        this.set_cell_color(this.id_table[paint_index], g_Color);
+//                        this.set_side_borders_color(this.id_table[paint_index], g_Border_Color);
+//                        this.set_bottom_border_color(this.id_table[paint_index], g_Color);
 
                         /* For Melanie to do gradients */
                        // var elem = document.getElementById(this.id_table[paint_index]);
@@ -1293,6 +1290,9 @@
                             if(class_handle.REC_ID) {
                                 this.changeText(this.id_table[paint_index], class_handle.UBCLASS);
                                 this.changeText(this.id_table[paint_index+1], class_handle.TYPE);
+
+
+
                                 /* Change if you want a different top cell image */
                                 //elem.style.backgroundImage = "url('static/bar2_top.png')";
                                 //elem.style.border = '0';
@@ -1309,6 +1309,13 @@
                         }
                         paint_index++;
                     }
+                    elem = document.getElementById(Table1.id_table[paint_index]);
+                        var elem3 = document.createElement('span');
+                        elem3.setAttribute('class','hidden_extra_info');
+                        elem3.setAttribute('style',"display:none;");
+                        var p = document.createTextNode(class_handle.ROOM_NUMBER);
+                        elem3.appendChild(p);
+                        elem.appendChild(elem3);
                     /* Change if you want a different bottom cell image */
                     //elem = document.getElementById(Table1.id_table[paint_index-1]);
                     //elem.style.backgroundImage = "url('static/bar2_bottom.png')";
