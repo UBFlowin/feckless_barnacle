@@ -322,7 +322,7 @@
                             <br/>
                             <div class="col-xs-offset-1 col-xs-10">
                                 <br/>
-                                <a href="#" id="SearchButton" class="btn btn-primary btn-block">Search</a>
+                                <a href="#" id="SearchButton" class="btn btn-primary btn-block gradient round">Search</a>
                                 <br/>
                                 <div id="blocked_classes">
 
@@ -1261,8 +1261,18 @@
                 if (times[w] != ' ') {
                     paint_index = Table1.id_table.indexOf(paint_times[w]);
                     var elem = document.getElementById(Table1.id_table[paint_index]);
+
                     while (Table1.id_table[paint_index] != paint_times[w + 1]) {
                         this.set_cell_value(this.id_table[paint_index],class_handle.ID);
+//                        this.set_cell_color(this.id_table[paint_index], g_Color);
+//                        this.set_side_borders_color(this.id_table[paint_index], g_Border_Color);
+//                        this.set_bottom_border_color(this.id_table[paint_index], g_Color);
+
+                        /* For Melanie to do gradients */
+                       // var elem = document.getElementById(this.id_table[paint_index]);
+
+
+
                         /* This is where an image would go */
                         elem = document.getElementById(Table1.id_table[paint_index]);
                         //elem.style.backgroundImage = "url('static/grad3.png')";
@@ -1273,18 +1283,18 @@
                             if(class_handle.REC_ID) {
                                 this.changeText(this.id_table[paint_index], class_handle.UBCLASS);
                                 this.changeText(this.id_table[paint_index+1], class_handle.TYPE);
-
-
-
-                                /* Change if you want a different top cell image */
-                                //elem.style.backgroundImage = "url('static/bar2_top.png')";
-                                //elem.style.border = '0';
+                                elem.style.border = '0';
+                                elem.setAttribute('class','first_cell');
                             }
                             else{
                                 this.changeText(this.id_table[paint_index], class_handle.UBCLASS);
                                 /* Change if you want a different top cell image */
                                 //elem.style.backgroundImage = "url('static/bar2_top.png')";
                                 //elem.style.border = '0';
+
+                                //sets first cell to first_cell class for transformation
+                                elem.style.border = '0';
+                                elem.setAttribute('class','first_cell');
                             }
                             first_cell_of_block = 0;
 
@@ -1292,13 +1302,13 @@
                         }
                         paint_index++;
                     }
-//                    elem = document.getElementById(Table1.id_table[paint_index]);
-//                        var elem3 = document.createElement('span');
-//                        elem3.setAttribute('class','hidden_extra_info');
-//                        elem3.setAttribute('style',"display:none;");
-//                        var p = document.createTextNode(class_handle.ROOM_NUMBER);
-//                        elem3.appendChild(p);
-//                        elem.appendChild(elem3);
+                    elem = document.getElementById(Table1.id_table[paint_index]);
+                        var elem3 = document.createElement('span');
+                        elem3.setAttribute('class','first_cell');
+                        elem3.setAttribute('style',"display:none;");
+                        var p = document.createTextNode(class_handle.ROOM_NUMBER);
+                        elem3.appendChild(p);
+                        elem.appendChild(elem3);
                     /* Change if you want a different bottom cell image */
                     //elem = document.getElementById(Table1.id_table[paint_index-1]);
                     //elem.style.backgroundImage = "url('static/bar2_bottom.png')";
@@ -1314,43 +1324,59 @@
         *       Clear Cells
         ****************************************/
         Table_Class.prototype.clear_cells = function(class_handle) {
-            if(class_handle != null) {
-                var clear_times = convertTimes(class_handle.DAYS, class_handle.TIME);
-                var clear_index, elem;
-                var first_cell_of_block;
-                var conflict_reset = 0;
-                for (var k = 0; k < 10; k = k + 2) {  //12 FOR SATURDAYS
-                    first_cell_of_block = 1;
-                    if (times[k] != ' ') {
-                        clear_index = Table1.id_table.indexOf(clear_times[k]);
-                        while (Table1.id_table[clear_index] != clear_times[k + 1]) {
-                            if (Table1.cell_conflict(this.id_table[clear_index])) {
-                                if (this.get_cell_value(this.id_table[clear_index]) == class_handle.ID) {
-                                    this.set_cell_value(this.id_table[clear_index], ' ');
+            var clear_times = convertTimes(class_handle.DAYS, class_handle.TIME);
+            var clear_index, elem;
+            var first_cell_of_block;
+            var conflict_reset = 0;
+            for(var k=0;k<10;k=k+2) {  //12 FOR SATURDAYS
+                first_cell_of_block = 1;
+                if (times[k] != ' ') {
+                    clear_index = Table1.id_table.indexOf(clear_times[k]);
+                    while (Table1.id_table[clear_index] != clear_times[k + 1]) {
+                        if(Table1.cell_conflict(this.id_table[clear_index])){
+                            if(this.get_cell_value(this.id_table[clear_index]) == class_handle.ID) {
+                                this.set_cell_value(this.id_table[clear_index], ' ');
+                                /* Comment out below if using image */
+{#                                this.set_cell_color(this.id_table[clear_index], "White");#}
+{#                                this.set_cell_border_color(this.id_table[clear_index], "#ddd");#}
+{#                                this.set_side_borders_color(this.id_table[clear_index], "#ddd");#}
 
-                                    elem = document.getElementById(Table1.id_table[clear_index]);
-                                    //elem.style.backgroundImage = "url('static/grad3.png')";
-                                    elem.setAttribute('class', 'class_removed');
-                                    //elem.style.border = '0';
+                        elem = document.getElementById(Table1.id_table[clear_index]);
+                        //elem.style.backgroundImage = "url('static/grad3.png')";
+                         elem.setAttribute('class','class_removed');
+//                        elem.style.background = "transparent";
+                        //elem.style.border = '0';
 
-                                    /* Change if you want a different cell image */
-                                    //elem = document.getElementById(Table1.id_table[clear_index]);
-                                    //elem.style.backgroundImage = "none";
-                                    elem.style.border = "solid 1px #ddd";
+                                /* Change if you want a different cell image */
+                                //elem = document.getElementById(Table1.id_table[clear_index]);
+                                //elem.style.backgroundImage = "none";
+                                elem.style.border = "solid 1px #ddd";
 
-                                    if (first_cell_of_block == 1) {
-                                        this.changeText(this.id_table[clear_index], ' ');
-                                        this.changeText(this.id_table[clear_index + 1], ' ');
-                                        first_cell_of_block = 0;
-                                    }
-                                    conflict_reset = 1;
+                                if (first_cell_of_block == 1) {
+                                    this.changeText(this.id_table[clear_index], ' ');
+                                    this.changeText(this.id_table[clear_index + 1], ' ');
+                                    first_cell_of_block = 0;
                                 }
+                                conflict_reset = 1;
                             }
-                            clear_index++;
+                            /* Unnecessary?*/
+                            else{
+                                //this.set_cell_value(this.id_table[clear_index], ' ');
+//                                this.set_cell_color(this.id_table[clear_index], g_Color);
+//                                this.set_cell_border_color(this.id_table[clear_index], g_Color);
+//                                this.set_side_borders_color(this.id_table[clear_index], g_Color);
+//                                if (first_cell_of_block == 1) {
+//                                    this.changeText(this.id_table[clear_index], ' ');
+//                                    this.changeText(this.id_table[clear_index + 1], ' ');
+//                                    first_cell_of_block = 0;
+//                                }
+                                conflict_reset = 0;
+                            }
                         }
-                        if (conflict_reset == 0) {
-                            this.set_bottom_border_color(this.id_table[clear_index - 1], g_Border_Color);
-                        }
+                        clear_index++;
+                    }
+                    if(conflict_reset == 0){
+                        this.set_bottom_border_color(this.id_table[clear_index-1], g_Border_Color);
                     }
                 }
             }
