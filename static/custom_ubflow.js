@@ -12,7 +12,7 @@ function make_available_classes2() {
                 'border-bottom-right-radius:9px; border-top-left-radius:9px; ' +
                 'border-top-right-radius:9px; border-width:2px;');
             a.setAttribute('id', 'container' + String(j));
-            a.setAttribute('class', 'list-group-item');
+            a.setAttribute('class', 'list-group-item lecture');
             a.setAttribute('data-toggle', 'collapse');
             a.setAttribute('data-parent', '#accordion');
             a.setAttribute('href', '#collapse' + String(j));
@@ -582,12 +582,6 @@ function create_new_course_block(sem_index, num){
     a.setAttribute('onmouseover', mouseover);
     a.setAttribute('onmouseout', mouseout);
 
-    //Add pre-req & co-req
-    a.setAttribute('pre_req1',DEGREE_HANDLES[num].PRE_REQ1);
-    a.setAttribute('pre_req2',DEGREE_HANDLES[num].PRE_REQ2);
-    a.setAttribute('pre_req3',DEGREE_HANDLES[num].PRE_REQ3);
-    a.setAttribute('co_req1',DEGREE_HANDLES[num].CO_REQ1);
-    a.setAttribute('co_req2',DEGREE_HANDLES[num].CO_REQ2);
     course.appendChild(a);
 
 
@@ -752,86 +746,84 @@ function switch_check_type(id){
 function show_info(id, iteration){
     var elem;
     var next;
+    var split;
     elem = document.getElementById(id);
+    if(elem == null){
+        return;
+    }
     if(iteration == 0){
         elem.style.backgroundColor = "#8FC8FF";
         iteration += 1;
     }
     else if(iteration == 1){
-        elem.style.backgroundColor = "#FFD700";
+        elem.style.backgroundColor = "#8FD6FF";
         iteration += 1;
     }
     else if(iteration == 2){
-        elem.style.backgroundColor = "#E6C200";
+        elem.style.backgroundColor = "#8FD4FF";
         iteration += 1;
     }
     else if(iteration == 3){
-        elem.style.backgroundColor = "#CCAC00";
+        elem.style.backgroundColor = "#8FD2FF";
         iteration += 1;
     }
     else if(iteration == 4){
-        elem.style.backgroundColor = "#B39600";
+        elem.style.backgroundColor = "#8FD0FF";
         iteration += 1;
     }
     else if(iteration == 5){
-        elem.style.backgroundColor = "#998100";
+        elem.style.backgroundColor = "#8FCEFF";
         iteration += 1;
     }
     else if(iteration == 6){
-        elem.style.backgroundColor = "#806C00";
+        elem.style.backgroundColor = "#8FCCFF";
         iteration += 1;
     }
     else if(iteration == 7){
-        elem.style.backgroundColor = "#665600";
+        elem.style.backgroundColor = "#8FCAFF";
         iteration += 1;
     }
     if(elem == null){
         return;
     }
-    if(elem.getAttribute('pre_req1')){
-        if(elem.getAttribute('pre_req1') != 'none') {
-            next = elem.getAttribute('pre_req1');
-            show_info(next, iteration);
-        }
-    }
-    if(elem.getAttribute('pre_req2')){
-        if(elem.getAttribute('pre_req2') != 'none') {
-            next = elem.getAttribute('pre_req2');
-            show_info(next, iteration);
-        }
-    }
-    if(elem.getAttribute('pre_req3')){
-        if(elem.getAttribute('pre_req3') != 'none') {
-            next = elem.getAttribute('pre_req3');
-            show_info(next, iteration);
+    if(elem.getAttribute('pre')){
+        if(elem.getAttribute('pre') != 'none') {
+            var pre = elem.getAttribute('pre');
+            if(pre.indexOf(" ") == -1){
+                split = [pre];
+            }
+            else{
+                split = pre.split(" ");
+            }
+            for(var i=0;i<split.length;i++){
+                show_info(split[i], iteration);
+            }
         }
     }
 }
+
 
 /********************************************************************
 *        FLOWSHEET - Uncolor Dependencies
 *********************************************************************/
 function hide_info(id,iteration){
-    var elem;
-    var next;
-    elem = document.getElementById(id);
-    elem.style.backgroundColor = "White";
-    if(elem.getAttribute('pre_req1')){
-        if(elem.getAttribute('pre_req1') != 'none') {
-            next = elem.getAttribute('pre_req1');
-            hide_info(next, iteration);
-        }
-    }
-    if(elem.getAttribute('pre_req2')){
-        if(elem.getAttribute('pre_req2') != 'none') {
-            next = elem.getAttribute('pre_req2');
-            hide_info(next, iteration);
-        }
-    }
-    if(elem.getAttribute('pre_req3')){
-        if(elem.getAttribute('pre_req3') != 'none') {
-            next = elem.getAttribute('pre_req3');
-            hide_info(next, iteration);
+    var elem,next,split,pre;
+    if(document.getElementById(id)) {
+        elem = document.getElementById(id);
+        elem.style.backgroundColor = "White";
+        if (elem.getAttribute('pre')) {
+            if (elem.getAttribute('pre') != 'none') {
+                pre = elem.getAttribute('pre');
+                if (pre.indexOf(" ") == -1) {
+                    split = [pre];
+                }
+                else {
+                    split = pre.split(" ");
+                }
+                for (var i = 0; i < split.length; i++) {
+                    hide_info(split[i], iteration);
+                }
+            }
         }
     }
 }

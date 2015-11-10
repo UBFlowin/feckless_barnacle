@@ -1,6 +1,8 @@
 {% extends "layout.html" %}
 {% block body %}
 <script type="stylesheet" src="{{ url_for('static', filename='custom_ubflow.css') }}"></script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='Prereq_Coreq_Postreq.js') }}"></script>
 <div id="wrapper">
     <div id="page-wrapper">
         <div class="col-xs-12">
@@ -241,6 +243,7 @@
                         }
                     }
                     window.setTimeout(populate_semesters,400);
+                    window.setTimeout(addCourseAttributes,500);
                     TOTAL_COURSES = NUM_COURSES_IN_DEGREE + NUM_USER_CLASSES_APPLIED;
                 });
             }
@@ -248,6 +251,7 @@
     };
 
     window.setTimeout(update_progress_bar,500);
+
     function update_progress_bar(){
         var percentage = (NUM_USER_CLASSES_APPLIED / TOTAL_COURSES) * 100;
         var progress_bar = document.getElementById('prog_bar');
