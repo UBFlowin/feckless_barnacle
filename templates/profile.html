@@ -1304,6 +1304,7 @@
                                 //elem.style.border = '0';
                             }
                             first_cell_of_block = 0;
+
                             //this.set_top_border_color(this.id_table[paint_index], g_Border_Color);
                         }
                         paint_index++;
@@ -1311,7 +1312,8 @@
                     /* Change if you want a different bottom cell image */
                     //elem = document.getElementById(Table1.id_table[paint_index-1]);
                     //elem.style.backgroundImage = "url('static/bar2_bottom.png')";
-                    //elem.style.border = '0';
+                    //elem.style.border = '3';
+                    //elem.setAttribute('class','last_cell');
 
                     this.set_bottom_border_color(this.id_table[paint_index-1], g_Border_Color);
                 }

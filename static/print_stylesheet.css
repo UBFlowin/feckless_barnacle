@@ -1,22 +1,26 @@
-@media print {
+@media screen {
   .CourseSearch * {
-      display: none;
+    visibility: visible;
   }
 
   .AvailableClasses * {
-      display: none;
+    visibility: visible;
   }
 
   .SelectedClasses * {
-      display: none;
+    visibility: visible;
   }
 
   .ProjectedWeeklySchedule * {
-      visibility: visible;
+    visibility: visible;
   }
 
   .ProjectedWeeklyScheduleButtons * {
-      visibility: hidden;
+    visibility: visible;
+  }
+
+  tbody * :not(#time_column):hover {
+      transform: scale(2);
   }
 
 }
