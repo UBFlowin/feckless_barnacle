@@ -91,7 +91,7 @@ function make_available_classes2() {
                     sub_a.setAttribute('id', 'collapser' + String(j) + String(k));
                     sub_a.setAttribute('style', 'height: 40px; padding:4px; border-bottom-left-radius:9px; border-bottom-right-radius:9px; border-top-left-radius:9px; border-top-right-radius:9px');
                     sub_a.setAttribute('class', 'list-group-item');
-                    sub_a.setAttribute('onclick', 'Table1.clicked_class(CLASS_HANDLES[' + String(j) + '].RECITATION[' + String(k) + '], CLASS_HANDLES[' + String(j) + '])');
+                    sub_a.setAttribute('onclick', 'Table1.clicked_class(CLASS_HANDLES[' + String(j) + '],CLASS_HANDLES[' + String(j) + '].RECITATION[' + String(k) + '])');
                     sub_a.setAttribute('href', '#');
                     var sub_mouseover = "shade('collapser" + String(j) + String(k) + "')";
                     var sub_mouseout = "unshade('collapser" + String(j) + String(k) + "')";
@@ -144,6 +144,9 @@ function make_available_classes2() {
                 }
                 available_class.appendChild(sub_group);
             }
+            else{
+                a.setAttribute('onclick', "Table1.clicked_class(CLASS_HANDLES["+String(j)+'],0)');
+            }
             //Add parent (with all children to html)
             var list = document.getElementById('accordion-body');
             list.insertBefore(available_class, list.childNodes[0]);
@@ -166,7 +169,7 @@ function switch_avail_classes(){
 /********************************************************************
 *               Add Classes to "Selected Classes"
 *********************************************************************/
-function populate_selected_class(class_handle, rec_handle) {
+function populate_selected_class(class_handle,rec_handle) {
     var p1,p2,txt2, txt1, container, class_name_holder;
     var heading = document.createElement('heading' + class_handle.ID);
     var a = document.createElement('availableClass');
@@ -181,19 +184,6 @@ function populate_selected_class(class_handle, rec_handle) {
     a.setAttribute('onmouseover', onmouseover);
     a.setAttribute('onmouseout', onmouseout);
     heading.appendChild(a);
-
-    ////Add lock container
-    //var lock_icon_holder = document.createElement("lock_icon_holder");
-    //lock_icon_holder.setAttribute('class', 'col-md-1');
-    //lock_icon_holder.setAttribute('style', 'height: 40px; vertical-align: middle;');
-    //a.appendChild(lock_icon_holder);
-    //
-    ////Add lock
-    //var lock_icon = document.createElement('lock_icon');
-    //lock_icon.setAttribute('id','lock_icon'+class_handle.ID);
-    //lock_icon.setAttribute('class', 'fa fa-unlock');
-    //lock_icon.setAttribute('onclick','lock_in_course("lock_icon'+class_handle.ID+'"'+')');
-    //lock_icon_holder.appendChild(lock_icon);
 
     //Add trash container
     var trash_icon_holder = document.createElement("trash_icon_holder");
@@ -252,14 +242,19 @@ function populate_selected_class(class_handle, rec_handle) {
     p2.appendChild(txt2);
     class_time_holder.appendChild(p2);
 
-    validate_selected_class(class_handle,rec_handle, heading);
+    if((rec_handle == 0)||(class_handle ==0)){
+        validate_selected_class(class_handle, heading);
+    }
+    else {
+        validate_selected_class_and_rec(class_handle, rec_handle, heading);
+    }
 }
 
 
 /********************************************************************
-*               Validate "Selected Classes"
+*               Validate "Selected Classes and Recs"
 *********************************************************************/
-function validate_selected_class(class_handle,rec_handle, heading) {
+function validate_selected_class_and_rec(class_handle,rec_handle, heading) {
     var parent,list,node;
     // Case 1: Node is found
     if(SEL_LL.find_node(class_handle,rec_handle)) {
@@ -299,7 +294,6 @@ function validate_selected_class(class_handle,rec_handle, heading) {
         else{
             alert("Time conflict switching the class");
         }
-
     }
     //No class found, add class and recitation
     else{
@@ -307,6 +301,61 @@ function validate_selected_class(class_handle,rec_handle, heading) {
             Table1.paint_cells(class_handle);
             Table1.paint_cells(rec_handle);
             SEL_LL.add_node(class_handle, rec_handle);
+            list = document.getElementById('selected_class_container');
+            list.insertBefore(heading, list.childNodes[0]);
+        }
+        else{
+            alert("Time Conflict");
+        }
+
+    }
+
+}
+
+
+
+/********************************************************************
+*               Validate "Selected Classes and Recs"
+*********************************************************************/
+function validate_selected_class(class_handle,heading) {
+    var parent,list,node;
+    // Case 1: Node is found
+    if(SEL_LL.find_node_by_class(class_handle)) {
+        SEL_LL.remove_node_by_class(class_handle);
+        parent = document.getElementById('selected_container' + class_handle.ID).remove();
+        Table1.clear_cells(class_handle);
+
+    }
+    // Case 2: Class is found, so switch its Recitation
+    else if (SEL_LL.find_node_by_class(class_handle)) {
+            node = SEL_LL.return_node_by_id(class_handle);
+            Table1.clear_cells(node.rec_handle);
+            SEL_LL.switch_node_rec_handle(class_handle, null);
+    }
+    // Case 3: Class exists but is a different time slot
+    else if(SEL_LL.find_node_by_ubclass(class_handle)){
+        if(!Table1.time_conflict(class_handle)){
+            //remove the node, but get its reference
+            node = SEL_LL.return_node_by_ubclass(class_handle);
+            parent = document.getElementById('selected_container' + node.class_handle.ID).remove();
+            Table1.clear_cells(node.class_handle);
+            SEL_LL.remove_node_by_class(node.class_handle);
+            //add the new node
+            SEL_LL.add_node(class_handle, null);
+            list = document.getElementById('selected_class_container');
+            list.insertBefore(heading, list.childNodes[0]);
+            Table1.paint_cells(class_handle);
+
+        }
+        else{
+            alert("Time conflict switching the class");
+        }
+    }
+    //No class found, add class
+    else{
+        if(!Table1.time_conflict(class_handle)) {
+            Table1.paint_cells(class_handle);
+            SEL_LL.add_node(class_handle, null);
             list = document.getElementById('selected_class_container');
             list.insertBefore(heading, list.childNodes[0]);
         }
@@ -387,12 +436,45 @@ function convertTimes(db_days,db_time){
     }
     /* Split Time to round */
     var split_time = db_time.split(" ");
+    var round0 = split_time[0].split(":");
     var round = split_time[3].split(":");
-    if((round[1] == '10')||(round[1] == '20')){
+    if((round0[1] == '05')||(round0[1] == '10')||(round0[1] == '15')||(round0[1] == '20')||(round0[1] == '25')){
+        round0[1] = '00';
+    }
+    /* Round */
+    if((round0[1] == '35')||(round0[1] == '40')||(round0[1] == '45')||(round0[1] == '50')||(round0[1] == '55')){
+        round0[1] = '00';
+        if(round0[0] == '1'){round0[0]="2";}
+        else if(round0[0] == '2'){round0[0]="3";}
+        else if(round0[0] == '3'){round0[0]="4";}
+        else if(round0[0] == '4'){round0[0]="5";}
+        else if(round0[0] == '5'){round0[0]="6";}
+        else if(round0[0] == '6'){round0[0]="7";}
+        else if(round0[0] == '7'){round0[0]="8";}
+        else if(round0[0] == '8'){round0[0]="9";}
+        else if(round0[0] == '9'){round0[0]="10";}
+        else if(round0[0] == '10'){round0[0]="11";}
+        else if(round0[0] == '11')
+        {
+            round0[0]="12";
+            if(split_time[2] == "AM"){
+                split_time[2] = "PM";
+            }
+            else{
+                split_time[2] = "AM";
+            }
+        }
+        else if(round0[0] == '12'){round0[0]='1';}
+    }
+
+
+
+
+    if((round[1] == '05')||(round[1] == '10')||(round[1] == '15')||(round[1] == '20')||(round[1] == '25')){
         round[1] = '00';
     }
     /* Round */
-    if((round[1] == '40')||(round[1] == '50')){
+    if((round[1] == '35')||(round[1] == '40')||(round[1] == '45')||(round[1] == '50')||(round[1] == '55')){
         round[1] = '00';
         if(round[0] == '1'){round[0]="2";}
         else if(round[0] == '2'){round[0]="3";}
@@ -416,7 +498,7 @@ function convertTimes(db_days,db_time){
         }
         else if(round[0] == '12'){round[0]='1';}
     }
-
+    split_time[0] = round0[0]+":"+round0[1];
     split_time[3] = round[0]+":"+round[1];
     var start_time = split_time[0]+split_time[1];
     var end_time = split_time[3]+split_time[4];

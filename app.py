@@ -499,10 +499,11 @@ def getSearch():
 @login_required
 def getFirstClassGroup():
     if request.method == 'GET':
-        results = UBClasses.query.limit(10).offset(0).all()
+        results = UBClasses.query.filter_by(DEPARTMENT='CSE').limit(10).all()
     rec = {}
     json_results = []
     json_rec = []
+    d = {}
     for result in results:
         recitations = UBRecitation.query.filter_by(RECITATION_ID=result.ID).all()
         for recitation in recitations:
@@ -542,6 +543,115 @@ def getFirstClassGroup():
         json_results.append(d)
     return jsonify(classes=json_results)
 
+    # user_id = session['user']
+    # user = User.query.filter_by(id=user_id).first()
+    # degree = user.DEGREE
+    # # Search Degree Table for all the Course for that Degree #
+    # courses = Degree.query.filter_by(DEGREE_NAME=degree).all()
+    # if courses is None:
+    #     json_results.append(d)
+    #     return jsonify(classes=json_results)
+    # # Get the classes the User has taken so far #
+    # user_classes = ClassesTakenHelper.query.filter_by(USER_ID=user_id).first()
+    #
+    # degree_array = [user_classes.DEGREE_COURSE1,
+    #                     user_classes.DEGREE_COURSE2,
+    #                     user_classes.DEGREE_COURSE3,
+    #                     user_classes.DEGREE_COURSE4,
+    #                     user_classes.DEGREE_COURSE5,
+    #                     user_classes.DEGREE_COURSE6,
+    #                     user_classes.DEGREE_COURSE7,
+    #                     user_classes.DEGREE_COURSE8,
+    #                     user_classes.DEGREE_COURSE9,
+    #                     user_classes.DEGREE_COURSE10,
+    #                     user_classes.DEGREE_COURSE11,
+    #                     user_classes.DEGREE_COURSE12,
+    #                     user_classes.DEGREE_COURSE13,
+    #                     user_classes.DEGREE_COURSE14,
+    #                     user_classes.DEGREE_COURSE15,
+    #                     user_classes.DEGREE_COURSE16,
+    #                     user_classes.DEGREE_COURSE17,
+    #                     user_classes.DEGREE_COURSE18,
+    #                     user_classes.DEGREE_COURSE19,
+    #                     user_classes.DEGREE_COURSE20,
+    #                     user_classes.DEGREE_COURSE21,
+    #                     user_classes.DEGREE_COURSE22,
+    #                     user_classes.DEGREE_COURSE23,
+    #                     user_classes.DEGREE_COURSE24,
+    #                     user_classes.DEGREE_COURSE25,
+    #                     user_classes.DEGREE_COURSE26,
+    #                     user_classes.DEGREE_COURSE27,
+    #                     user_classes.DEGREE_COURSE28,
+    #                     user_classes.DEGREE_COURSE29,
+    #                     user_classes.DEGREE_COURSE30,
+    #                     user_classes.DEGREE_COURSE31,
+    #                     user_classes.DEGREE_COURSE32,
+    #                     user_classes.DEGREE_COURSE33,
+    #                     user_classes.DEGREE_COURSE34,
+    #                     user_classes.DEGREE_COURSE35,
+    #                     user_classes.DEGREE_COURSE36,
+    #                     user_classes.DEGREE_COURSE37,
+    #                     user_classes.DEGREE_COURSE38,
+    #                     user_classes.DEGREE_COURSE39,
+    #                     user_classes.DEGREE_COURSE40]
+    # taken = "0"
+    # course_results = []
+    # for course in courses:
+    #     for x in degree_array:
+    #         taken = "0"
+    #         if x == course.ID:
+    #             taken = "1"
+    #             break
+    #     d = {'UBCLASS': course.UBCLASS,
+    #          'TAKEN':taken
+    #          }
+    #     course_results.append(d)
+    # final = []
+    # # return jsonify(classes=json_results)
+    # for x in course_results:
+    #     if x['TAKEN'] == "0":
+    #         result = {'YEP':"OK"}
+    #         ubclass = x['UBCLASS']
+    #
+    #         results = UBClasses.query.filter_by(UBCLASS=ubclass).all()
+    #         for result in results:
+    #             recitations = UBRecitation.query.filter_by(RECITATION_ID=result.ID).all()
+    #             for recitation in recitations:
+    #                 rec = {'ID': recitation.ID,
+    #                      'UBCLASS' : recitation.UBCLASS,
+    #                      'REC_ID': recitation.RECITATION_ID,
+    #                      'SECTION': recitation.SECTION,
+    #                      'TYPE': recitation.TYPE,
+    #                      'DAYS': recitation.DAYS,
+    #                      'TIME': recitation.TIME,
+    #                      'BUILDING': recitation.BUILDING,
+    #                      'ROOM_NUMBER': recitation.ROOM_NUMBER,
+    #                      'LOCATION': recitation.LOCATION,
+    #                      'STATUS': recitation.STATUS,
+    #                      'YEAR': recitation.YEAR,
+    #                 }
+    #                 json_rec.append(rec)
+    #             d = {'ID': result.ID,
+    #                 'UBCLASS': result.UBCLASS,
+    #                 'TITLE' : result.TITLE,
+    #                 'DEPARTMENT': result.DEPARTMENT,
+    #                 'SECTION': result.SECTION,
+    #                 'TYPE': result.TYPE,
+    #                 'DAYS': result.DAYS,
+    #                 'TIME': result.TIME,
+    #                 'BUILDING': result.BUILDING,
+    #                 'ROOM_NUMBER': result.ROOM_NUMBER,
+    #                 'LOCATION': result.LOCATION,
+    #                 'PROFESSOR_ID': result.PROFESSOR_ID,
+    #                 'PROFESSOR': result.PROFESSOR,
+    #                 'STATUS': result.STATUS,
+    #                 'YEAR': result.YEAR,
+    #                 'SEMESTER': result.SEMESTER,
+    #                 'RECITATION': json_rec
+    #             }
+    #             json_rec = []
+    #         json_results.append(d)
+    # return jsonify(classes=json_results)
 
 @app.route('/getnext', methods=['GET'])
 @login_required
