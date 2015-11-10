@@ -52,13 +52,6 @@ def isolate_data(info):
             if(position == 1):
                 course_id.append(curr_data)
             elif(position == 2):
-                # curr_data = curr_data.replace("L","")
-                # curr_data = curr_data.replace("R","")
-                # curr_data = curr_data.replace("B","")
-                # curr_data = curr_data.replace("T","")
-                # curr_data = curr_data.replace("U","")
-                # curr_data = curr_data.replace(" ","")
-                #print curr_data
                 course_num.append(curr_data)
                 #print curr_data
             elif(position == 3):
@@ -89,24 +82,6 @@ def isolate_data(info):
                     position += 1
                 else:
                     room.append(curr_data)
-                #
-                #
-                #
-                # if(time_unknown == 0):
-                #     if(curr_data == 'North Campus'):
-                #         room.append('-')
-                #         campus.append(curr_data)
-                #         position += 1
-                #     else:
-                #         room.append(curr_data)
-                # else:
-                #     if(curr_data == 'ARR'):
-                #         room.append(curr_data)
-                #     elif(curr_data == 'Online'):
-                #         room.append(curr_data)
-                #     else:
-                #         room.append("-")
-                #         position += 1
             elif(position == 9):
                 campus.append(curr_data)
             elif(position == 10):
@@ -114,7 +89,7 @@ def isolate_data(info):
                     curr_data = '* ' + curr_data
                     instructor.append(curr_data)
                     combine = 0
-                if(curr_data == '*'):
+                elif(curr_data == '*'):
                     combine = 1
                     position = 9
                 else:
@@ -131,9 +106,18 @@ def isolate_data(info):
             curr_data += data[i]
     return data
 
-
+index=0
 semester_links = get_url(base_url, '//*[@id="content_internal"]/ul/li/a')
 semester_links.remove(semester_links[1])
+semester_links.remove(semester_links[0])
+semester_links.remove(semester_links[0])
+semester_links.remove(semester_links[0])
+semester_links.remove(semester_links[0])
+semester_links.remove(semester_links[0])
+for semm in semester_links:
+    print semm
+
+
 broken_departments = []
 for semester in semester_links:
     print semester # print link
@@ -162,7 +146,7 @@ for semester in semester_links:
                 dept_code = course_num[0][:3]
                 dept_code.replace(" ", "")
 
-                new_course = course_num[0]
+                new_course = course_num[index]
                 length = len(new_course)
                 while new_course[-1:].isalpha():
                     new_course = new_course[:-1]
@@ -177,7 +161,15 @@ for semester in semester_links:
                     sem = sem.title()
 
                 max = 0
+                print "LENGTH OF COURSE_NUM: " + str(len(course_num))
                 for z in range(0, len(course_num)):
+                    new_course = course_num[z]
+                    length = len(new_course)
+                    while new_course[-1:].isalpha():
+                        new_course = new_course[:-1]
+                        length -= 1
+                    new_course = new_course.replace(' ', '')
+
                     UBCLASS = new_course
                     HUB_ID = course_id[z]
                     TITLE = course_name[z]
@@ -199,23 +191,26 @@ for semester in semester_links:
                     CO_REQ1 = "none"
                     CO_REQ2 = "none"
                     DEGREE = "none"
+                    print UBCLASS
                     if TYPE == 'LEC':
                         class1 = UBClasses(UBCLASS,TITLE,DEPARTMENT,SECTION,TYPE,DAYS,TIME,BUILDING,ROOM_NUMBER,LOCATION,PROFESSOR,STATUS,YEAR,SEMESTER,PRE1,PRE2,PRE3,CO_REQ1,CO_REQ2,DEGREE)
                         db.session.add(class1)
                         db.session.commit()
                     else:
+                        if dept_code == "NAH":
+                            break
                         results = UBClasses.query.all()
                         for result in results:
                             temp_max = result.ID
                             if temp_max > max:
                                 max = temp_max
                         class1 = UBRecitation(UBCLASS,HUB_ID,max,SECTION,TYPE,DAYS,TIME,BUILDING,ROOM_NUMBER,LOCATION,STATUS,YEAR,SEMESTER)
-                        # db.session.add(class1)
-                        # db.session.commit()
+                        db.session.add(class1)
+                        db.session.commit()
         else:
             broken_departments.append(department)
             # store the broken ones
-
+        print course_num
         course_num = []
         course_name = []
         course_id = []
