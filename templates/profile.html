@@ -839,14 +839,10 @@
                return true;
             }
             else{
-                var previous_node = current_node;
-
                 while(current_node.next){
                     if((current_node.class_handle.ID == class_payload.ID)&&(current_node.rec_handle.ID == rec_payload.ID)){
-                        previous_node.next = current_node.next;
                         return true;
                     }
-                    previous_node = current_node;
                     current_node = current_node.next;
                 }
                 if((current_node.class_handle.ID == class_payload.ID)&&(current_node.rec_handle.ID == rec_payload.ID)){
@@ -863,14 +859,10 @@
                 return true;
             }
             else{
-                var previous_node = current_node;
-
                 while(current_node.next){
                     if(current_node.class_handle.ID == class_payload.ID){
-                        previous_node.next = current_node.next;
                         return true;
                     }
-                    previous_node = current_node;
                     current_node = current_node.next;
                 }
                 if(current_node.class_handle.ID == class_payload.ID){

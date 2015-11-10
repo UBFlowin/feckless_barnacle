@@ -144,6 +144,9 @@ function make_available_classes2() {
                 }
                 available_class.appendChild(sub_group);
             }
+            else{
+                a.setAttribute('onclick', 'Table1.clicked_class(CLASS_HANDLES[' + String(j) + '], 0)');
+            }
             //Add parent (with all children to html)
             var list = document.getElementById('accordion-body');
             list.insertBefore(available_class, list.childNodes[0]);
@@ -166,7 +169,7 @@ function switch_avail_classes(){
 /********************************************************************
 *               Add Classes to "Selected Classes"
 *********************************************************************/
-function populate_selected_class(class_handle, rec_handle) {
+function populate_selected_class(rec_handle,class_handle) {
     var p1,p2,txt2, txt1, container, class_name_holder;
     var heading = document.createElement('heading' + class_handle.ID);
     var a = document.createElement('availableClass');
@@ -181,19 +184,6 @@ function populate_selected_class(class_handle, rec_handle) {
     a.setAttribute('onmouseover', onmouseover);
     a.setAttribute('onmouseout', onmouseout);
     heading.appendChild(a);
-
-    ////Add lock container
-    //var lock_icon_holder = document.createElement("lock_icon_holder");
-    //lock_icon_holder.setAttribute('class', 'col-md-1');
-    //lock_icon_holder.setAttribute('style', 'height: 40px; vertical-align: middle;');
-    //a.appendChild(lock_icon_holder);
-    //
-    ////Add lock
-    //var lock_icon = document.createElement('lock_icon');
-    //lock_icon.setAttribute('id','lock_icon'+class_handle.ID);
-    //lock_icon.setAttribute('class', 'fa fa-unlock');
-    //lock_icon.setAttribute('onclick','lock_in_course("lock_icon'+class_handle.ID+'"'+')');
-    //lock_icon_holder.appendChild(lock_icon);
 
     //Add trash container
     var trash_icon_holder = document.createElement("trash_icon_holder");
@@ -252,14 +242,19 @@ function populate_selected_class(class_handle, rec_handle) {
     p2.appendChild(txt2);
     class_time_holder.appendChild(p2);
 
-    validate_selected_class(class_handle,rec_handle, heading);
+    if((rec_handle == 0)||(class_handle ==0)){
+        validate_selected_class(class_handle, heading);
+    }
+    else {
+        validate_selected_class_and_rec(class_handle, rec_handle, heading);
+    }
 }
 
 
 /********************************************************************
-*               Validate "Selected Classes"
+*               Validate "Selected Classes and Recs"
 *********************************************************************/
-function validate_selected_class(class_handle,rec_handle, heading) {
+function validate_selected_class_and_rec(class_handle,rec_handle, heading) {
     var parent,list,node;
     // Case 1: Node is found
     if(SEL_LL.find_node(class_handle,rec_handle)) {
@@ -299,7 +294,6 @@ function validate_selected_class(class_handle,rec_handle, heading) {
         else{
             alert("Time conflict switching the class");
         }
-
     }
     //No class found, add class and recitation
     else{
@@ -307,6 +301,61 @@ function validate_selected_class(class_handle,rec_handle, heading) {
             Table1.paint_cells(class_handle);
             Table1.paint_cells(rec_handle);
             SEL_LL.add_node(class_handle, rec_handle);
+            list = document.getElementById('selected_class_container');
+            list.insertBefore(heading, list.childNodes[0]);
+        }
+        else{
+            alert("Time Conflict");
+        }
+
+    }
+
+}
+
+
+
+/********************************************************************
+*               Validate "Selected Classes and Recs"
+*********************************************************************/
+function validate_selected_class(class_handle,heading) {
+    var parent,list,node;
+    // Case 1: Node is found
+    if(SEL_LL.find_node_by_class(class_handle)) {
+        SEL_LL.remove_node_by_class(class_handle);
+        parent = document.getElementById('selected_container' + class_handle.ID).remove();
+        Table1.clear_cells(class_handle);
+
+    }
+    // Case 2: Class is found, so switch its Recitation
+    else if (SEL_LL.find_node_by_class(class_handle)) {
+            node = SEL_LL.return_node_by_id(class_handle);
+            Table1.clear_cells(node.rec_handle);
+            SEL_LL.switch_node_rec_handle(class_handle, null);
+    }
+    // Case 3: Class exists but is a different time slot
+    else if(SEL_LL.find_node_by_ubclass(class_handle)){
+        if(!Table1.time_conflict(class_handle)){
+            //remove the node, but get its reference
+            node = SEL_LL.return_node_by_ubclass(class_handle);
+            parent = document.getElementById('selected_container' + node.class_handle.ID).remove();
+            Table1.clear_cells(node.class_handle);
+            SEL_LL.remove_node_by_class(node.class_handle);
+            //add the new node
+            SEL_LL.add_node(class_handle, null);
+            list = document.getElementById('selected_class_container');
+            list.insertBefore(heading, list.childNodes[0]);
+            Table1.paint_cells(class_handle);
+
+        }
+        else{
+            alert("Time conflict switching the class");
+        }
+    }
+    //No class found, add class
+    else{
+        if(!Table1.time_conflict(class_handle)) {
+            Table1.paint_cells(class_handle);
+            SEL_LL.add_node(class_handle, null);
             list = document.getElementById('selected_class_container');
             list.insertBefore(heading, list.childNodes[0]);
         }
