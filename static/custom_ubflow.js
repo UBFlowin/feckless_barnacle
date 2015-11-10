@@ -91,7 +91,7 @@ function make_available_classes2() {
                     sub_a.setAttribute('id', 'collapser' + String(j) + String(k));
                     sub_a.setAttribute('style', 'height: 40px; padding:4px; border-bottom-left-radius:9px; border-bottom-right-radius:9px; border-top-left-radius:9px; border-top-right-radius:9px');
                     sub_a.setAttribute('class', 'list-group-item');
-                    sub_a.setAttribute('onclick', 'Table1.clicked_class(CLASS_HANDLES[' + String(j) + '].RECITATION[' + String(k) + '], CLASS_HANDLES[' + String(j) + '])');
+                    sub_a.setAttribute('onclick', 'Table1.clicked_class(CLASS_HANDLES[' + String(j) + '],CLASS_HANDLES[' + String(j) + '].RECITATION[' + String(k) + '])');
                     sub_a.setAttribute('href', '#');
                     var sub_mouseover = "shade('collapser" + String(j) + String(k) + "')";
                     var sub_mouseout = "unshade('collapser" + String(j) + String(k) + "')";
@@ -145,7 +145,7 @@ function make_available_classes2() {
                 available_class.appendChild(sub_group);
             }
             else{
-                a.setAttribute('onclick', 'Table1.clicked_class(CLASS_HANDLES[' + String(j) + '], 0)');
+                a.setAttribute('onclick', "Table1.clicked_class(CLASS_HANDLES["+String(j)+'],0)');
             }
             //Add parent (with all children to html)
             var list = document.getElementById('accordion-body');
@@ -169,7 +169,7 @@ function switch_avail_classes(){
 /********************************************************************
 *               Add Classes to "Selected Classes"
 *********************************************************************/
-function populate_selected_class(rec_handle,class_handle) {
+function populate_selected_class(class_handle,rec_handle) {
     var p1,p2,txt2, txt1, container, class_name_holder;
     var heading = document.createElement('heading' + class_handle.ID);
     var a = document.createElement('availableClass');
@@ -436,12 +436,45 @@ function convertTimes(db_days,db_time){
     }
     /* Split Time to round */
     var split_time = db_time.split(" ");
+    var round0 = split_time[0].split(":");
     var round = split_time[3].split(":");
-    if((round[1] == '10')||(round[1] == '20')){
+    if((round0[1] == '05')||(round0[1] == '10')||(round0[1] == '15')||(round0[1] == '20')||(round0[1] == '25')){
+        round0[1] = '00';
+    }
+    /* Round */
+    if((round0[1] == '35')||(round0[1] == '40')||(round0[1] == '45')||(round0[1] == '50')||(round0[1] == '55')){
+        round0[1] = '00';
+        if(round0[0] == '1'){round0[0]="2";}
+        else if(round0[0] == '2'){round0[0]="3";}
+        else if(round0[0] == '3'){round0[0]="4";}
+        else if(round0[0] == '4'){round0[0]="5";}
+        else if(round0[0] == '5'){round0[0]="6";}
+        else if(round0[0] == '6'){round0[0]="7";}
+        else if(round0[0] == '7'){round0[0]="8";}
+        else if(round0[0] == '8'){round0[0]="9";}
+        else if(round0[0] == '9'){round0[0]="10";}
+        else if(round0[0] == '10'){round0[0]="11";}
+        else if(round0[0] == '11')
+        {
+            round0[0]="12";
+            if(split_time[2] == "AM"){
+                split_time[2] = "PM";
+            }
+            else{
+                split_time[2] = "AM";
+            }
+        }
+        else if(round0[0] == '12'){round0[0]='1';}
+    }
+
+
+
+
+    if((round[1] == '05')||(round[1] == '10')||(round[1] == '15')||(round[1] == '20')||(round[1] == '25')){
         round[1] = '00';
     }
     /* Round */
-    if((round[1] == '40')||(round[1] == '50')){
+    if((round[1] == '35')||(round[1] == '40')||(round[1] == '45')||(round[1] == '50')||(round[1] == '55')){
         round[1] = '00';
         if(round[0] == '1'){round[0]="2";}
         else if(round[0] == '2'){round[0]="3";}
@@ -465,7 +498,7 @@ function convertTimes(db_days,db_time){
         }
         else if(round[0] == '12'){round[0]='1';}
     }
-
+    split_time[0] = round0[0]+":"+round0[1];
     split_time[3] = round[0]+":"+round[1];
     var start_time = split_time[0]+split_time[1];
     var end_time = split_time[3]+split_time[4];
