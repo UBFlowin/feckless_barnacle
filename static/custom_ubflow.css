@@ -24,6 +24,11 @@
   /*}
 
 }*/
+
+@media screen {
+  .PrintableProjectedWeeklySchedule{
+    display: none;
+  }
 /* ALL PAGES */
 /* extends background JPG across all pages, fully covered */
 /* */
@@ -265,11 +270,11 @@ th{
 
 
 
-.available_classes
+.available_classes {}
 
 .page-wrapper {
-	/*sets the background color*/
+    /*sets the background color*/
     background-color: transparent;
-
+}
 
 }
