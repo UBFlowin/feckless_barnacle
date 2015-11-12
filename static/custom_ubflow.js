@@ -438,11 +438,13 @@ function convertTimes(db_days,db_time){
     var split_time = db_time.split(" ");
     var round0 = split_time[0].split(":");
     var round = split_time[3].split(":");
-    if((round0[1] == '05')||(round0[1] == '10')||(round0[1] == '15')||(round0[1] == '20')||(round0[1] == '25')){
+    if((round0[1] == '05')||(round0[1] == '10')||(round0[1] == '15')){
         round0[1] = '00';
     }
-    /* Round */
-    if((round0[1] == '35')||(round0[1] == '40')||(round0[1] == '45')||(round0[1] == '50')||(round0[1] == '55')){
+    if((round0[1] == '20')||(round0[1] == '25')||(round0[1] == '35')||(round0[1] == '40')){
+        round0[1] = "30";
+    }
+    if((round0[1] == '45')||(round0[1] == '50')||(round0[1] == '55')){
         round0[1] = '00';
         if(round0[0] == '1'){round0[0]="2";}
         else if(round0[0] == '2'){round0[0]="3";}
@@ -558,7 +560,7 @@ function create_new_course_block(sem_index, num){
 
     /* Add Blue checkmark if taken, otherwise add a gray hidden mark */
     var image = document.createElement('img');
-    image.setAttribute('id',String(DEGREE_HANDLES[num].get_ubclass())+'_check');
+    image.setAttribute('id',DEGREE_HANDLES[num].get_ubclass()+'_check');
     if(DEGREE_HANDLES[num].get_taken() == 1) {
         image.setAttribute('src', 'static/blue_check.png');
         image.setAttribute('style', 'position:absolute; top:0px; left:0px;');
@@ -569,21 +571,20 @@ function create_new_course_block(sem_index, num){
 
     }
     a.appendChild(image);
-
     a.setAttribute('id',String(DEGREE_HANDLES[num].get_ubclass()));
     a.setAttribute('class', 'list-group-item');
-    var check_string = "switch_check_type('"+String(DEGREE_HANDLES[num].get_ubclass())+"')";
-    a.setAttribute('onclick',check_string);
-
 
     //Set Change Color on Hover
-    var mouseover = "show_info('"+String(DEGREE_HANDLES[num].get_ubclass())+"',"+String(0)+")";
-    var mouseout = "hide_info('"+String(DEGREE_HANDLES[num].get_ubclass())+"',"+String(0)+")";
-    a.setAttribute('onmouseover', mouseover);
-    a.setAttribute('onmouseout', mouseout);
-
+    a.onmouseover = function(){
+        show_info(DEGREE_HANDLES[num].get_ubclass(),0);
+    };
+    a.onmouseout = function(){
+        hide_info(DEGREE_HANDLES[num].get_ubclass(),0);
+    };
+    a.onclick = function(){
+        switch_check_type(DEGREE_HANDLES[num].get_ubclass());
+    };
     course.appendChild(a);
-
 
     //course and cap box
     var course_box = document.createElement("course_box");
@@ -747,10 +748,10 @@ function show_info(id, iteration){
     var elem;
     var next;
     var split;
-    elem = document.getElementById(id);
-    if(elem == null){
+    if(!document.getElementById(id)){
         return;
     }
+    elem = document.getElementById(id);
     if(iteration == 0){
         elem.style.backgroundColor = "#8FC8FF";
         iteration += 1;
@@ -801,6 +802,8 @@ function show_info(id, iteration){
         }
     }
 }
+
+
 
 
 /********************************************************************
