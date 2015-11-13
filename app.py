@@ -1,10 +1,13 @@
 from flask import Flask, request, jsonify, render_template, abort, make_response, g, session, redirect, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
+from sqlalchemy import Table, Column, Integer, ForeignKey
+from sqlalchemy.orm import relationship, backref
 from flask.ext.login import LoginManager, UserMixin, login_user, logout_user, login_required
 from passlib.apps import custom_app_context as pwd_context
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
 from itsdangerous import URLSafeTimedSerializer
 from datetime import timedelta
+from sqlalchemy import or_
 
 app = Flask(__name__)
 db = SQLAlchemy(app)
@@ -205,56 +208,29 @@ class UBRecitation(db.Model):
 
 
 '''-----------------------------------------------
-        Classes_Taken_Helper_Table Model
+        Classes Helper Table Model
+         -  Links User ID to Degree Course ID
 -----------------------------------------------'''
-class ClassesTakenHelper(db.Model):
-    __tablename__ = 'classes_taken_helper'
+association_table = Table('association', db.Model.metadata,
+    Column('User_id', Integer, ForeignKey('user.id')),
+    Column('class_taken_id', Integer, ForeignKey('classes_taken.ID'))
+)
+
+
+'''-----------------------------------------------
+        Classes_Taken Table Model
+-----------------------------------------------'''
+class ClassesTaken(db.Model):
+    __tablename__ = 'classes_taken'
 
     ID = db.Column(db.Integer, primary_key=True)
     USER_ID = db.Column(db.Integer, db.ForeignKey('user.id'))
-    DEGREE_COURSE1 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE2 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE3 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE4 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE5 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE6 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE7 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE8 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE9 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE10 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE11 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE12 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE13 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE14 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE15 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE16 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE17 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE18 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE19 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE20 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE21 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE22 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE23 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE24 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE25 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE26 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE27 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE28 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE29 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE30 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE31 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE32 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE33 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE34 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE35 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE36 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE37 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE38 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE39 = db.Column(db.Integer, nullable=True)
-    DEGREE_COURSE40 = db.Column(db.Integer, nullable=True)
+    DEGREE_COURSE = db.Column(db.Integer, nullable=True)
 
-    def __init__(self, user_id):
+
+    def __init__(self, user_id, course_id):
         self.USER_ID = user_id
+        self.DEGREE_COURSE = course_id
 
 
 '''-----------------------------------------------
@@ -325,12 +301,8 @@ def new_user():
         db.session.commit()
 
         # Load that user entry ID number and add row to helper table
-
         curr_user = User.query.filter_by(USERNAME=username).first()
         session['user'] = curr_user.id
-        new_classes_taken_row = ClassesTakenHelper(curr_user.id)
-        db.session.add(new_classes_taken_row)
-        db.session.commit()
 
         user = User.query.filter_by(USERNAME=username).first()
         login_user(user)
@@ -741,54 +713,16 @@ def degree_info_user(user_id):
             json_results.append(d)
             return jsonify(classes=json_results)
         # Get the classes the User has taken so far #
-        user_classes = ClassesTakenHelper.query.filter_by(USER_ID=user_id).first()
+        user_classes = ClassesTaken.query.filter_by(USER_ID=user_id).all()
 
-        degree_array = [user_classes.DEGREE_COURSE1,
-                            user_classes.DEGREE_COURSE2,
-                            user_classes.DEGREE_COURSE3,
-                            user_classes.DEGREE_COURSE4,
-                            user_classes.DEGREE_COURSE5,
-                            user_classes.DEGREE_COURSE6,
-                            user_classes.DEGREE_COURSE7,
-                            user_classes.DEGREE_COURSE8,
-                            user_classes.DEGREE_COURSE9,
-                            user_classes.DEGREE_COURSE10,
-                            user_classes.DEGREE_COURSE11,
-                            user_classes.DEGREE_COURSE12,
-                            user_classes.DEGREE_COURSE13,
-                            user_classes.DEGREE_COURSE14,
-                            user_classes.DEGREE_COURSE15,
-                            user_classes.DEGREE_COURSE16,
-                            user_classes.DEGREE_COURSE17,
-                            user_classes.DEGREE_COURSE18,
-                            user_classes.DEGREE_COURSE19,
-                            user_classes.DEGREE_COURSE20,
-                            user_classes.DEGREE_COURSE21,
-                            user_classes.DEGREE_COURSE22,
-                            user_classes.DEGREE_COURSE23,
-                            user_classes.DEGREE_COURSE24,
-                            user_classes.DEGREE_COURSE25,
-                            user_classes.DEGREE_COURSE26,
-                            user_classes.DEGREE_COURSE27,
-                            user_classes.DEGREE_COURSE28,
-                            user_classes.DEGREE_COURSE29,
-                            user_classes.DEGREE_COURSE30,
-                            user_classes.DEGREE_COURSE31,
-                            user_classes.DEGREE_COURSE32,
-                            user_classes.DEGREE_COURSE33,
-                            user_classes.DEGREE_COURSE34,
-                            user_classes.DEGREE_COURSE35,
-                            user_classes.DEGREE_COURSE36,
-                            user_classes.DEGREE_COURSE37,
-                            user_classes.DEGREE_COURSE38,
-                            user_classes.DEGREE_COURSE39,
-                            user_classes.DEGREE_COURSE40]
         taken = '0'
         for course in courses:
             taken = "0"
-            for x in degree_array:
-                if x == course.ID:
+            degree_course_index = 0
+            for user_class in user_classes:
+                if user_class == course.ID:
                     taken = "1"
+                    degree_course_index = user_class
                     break
             d = {'ID': course.ID,
                  'UBCLASS': course.UBCLASS,
@@ -800,7 +734,8 @@ def degree_info_user(user_id):
                  'PRE_REQ3':course.PRE_REQ3,
                  'CO_REQ1':course.CO_REQ1,
                  'CO_REQ2':course.CO_REQ2,
-                 'TAKEN':taken
+                 'TAKEN':taken,
+                 'DEG_CRSE_INDEX':degree_course_index
                  }
             json_results.append(d)
     return jsonify(classes=json_results)
@@ -815,16 +750,18 @@ def update_degree():
     update = request.json['update_type']
     num = request.json['num_taken']
     d = {}
+    string = ''
     if update == 'remove':
-        string = 'DEGREE_COURSE' + str(num+1)
-        entry = ClassesTakenHelper.query.filter_by(USER_ID=user)
-        entry.update({string : str(0)}, synchronize_session="evaluate")
+        user_class = ClassesTaken.query.filter_by(USER_ID=user).all().filter_by(DEGREE_COURSE=course).all()
+        string = 'DEGREE_COURSE'
+        user_class.update({string:str(0)}, synchronize_session="evaluate")
+        db.session.delete(user_class)
         db.session.commit()
+        d = {string:num}
     if update == 'add':
-        string = 'DEGREE_COURSE' + str(num)
-        entry = ClassesTakenHelper.query.filter_by(USER_ID=user)
-        entry.update({string : course}, synchronize_session="evaluate")
+        ClassTaken = ClassesTaken(user,course)
         db.session.commit()
+        d = {string:course}
     json_results.append(d)
     return jsonify(classes=json_results)
 
