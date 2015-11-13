@@ -1,26 +1,118 @@
-@media screen {
+@media print {
   .CourseSearch * {
-    visibility: visible;
+    display: none;
   }
 
   .AvailableClasses * {
-    visibility: visible;
+    display: none;
   }
 
   .SelectedClasses * {
-    visibility: visible;
+    display: none;
   }
 
   .ProjectedWeeklySchedule * {
+    display: none;
+  }
+
+  .PrintableProjectedWeeklySchedule{
     visibility: visible;
+    width: 90%;
   }
 
   .ProjectedWeeklyScheduleButtons * {
-    visibility: visible;
+    display: none;
   }
+  /* COURSE SCHEDULE CREATOR PAGE */
+/* functionality related to page */
+/* */
+/*gradients for classes*/
+/*.old_class_createdold{*/
+    /*background: -moz-linear-gradient(left,  #33a6cc 50%, #0099cc 50%) !important; /!* FF3.6+ *!/*/
+    /*background: -webkit-gradient(linear, left top, left bottom, color-stop(50%,#33a6cc), color-stop(50%,#0099cc))!important; /!* Chrome,Safari4+ *!/*/
+    /*background: -webkit-linear-gradient(left,  #33a6cc 50%,#0099cc 50%)!important; /!* Chrome10+,Safari5.1+ *!/*/
+    /*background: -o-linear-gradient(right,  #33a6cc 50%,#0099cc 50%)!important; /!* Opera 11.10+ *!/*/
+    /*background: -ms-linear-gradient(to right,  #33a6cc 50%,#0099cc 50%)!important; /!* IE10+ *!/*/
+    /*background: linear-gradient(to right,  #33a6cc 50%,#0099cc 50%)!important; /!* W3C *!/*/
+    /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33a6cc', endColorstr='#0099cc',GradientType=0 )!important; /!* IE6-9 *!/*/
+/*}*/
+.class_created {
+    /* Gradients for classes in schedule wizard */
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#0323af+0,8fbce0+32,8fbce0+63,0323af+100 */
+    background: rgba(72, 135, 202, 0.6); /* Old browsers */
+    border: 0px;
+/*    background: -moz-linear-gradient(left, #03063a 0%, #8fd6ff 5%, rgb(51, 122, 183) 15%, #337ab7 20%, #0000ff 80%, #03063a 100%); /* FF3.6+ */
+    /* fix this one with update*/
+    /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #03063a), color-stop(32%, #0000ff), color-stop(63%,#8fbce0), color-stop(100%, #8fd6ff)); /* Chrome,Safari4+ */
+/*    background: -webkit-linear-gradient(left, #03063a 0%, #8fd6ff 5%, rgb(51, 122, 183) 15%, #337ab7 20%, #0000ff 80%, #03063a 100%); /* Chrome10+,Safari5.1+ */
+/*    background: -o-linear-gradient(left, #03063a 0%, #8fd6ff 5%, rgb(51, 122, 183) 15%, #337ab7 20%, #0000ff 80%, #03063a 100%); /* Opera 11.10+ */
+/*    background: -ms-linear-gradient(to right, #03063a 0%, #8fd6ff 5%, rgb(51, 122, 183) 15%, #337ab7 20%, #0000ff 80%, #03063a 100%); /* IE10+ */
+    /*gradient for play*/
+/*    background: linear-gradient(to right, #03063a 0%, #8fd6ff 5%, rgb(51, 122, 183) 15%, #337ab7 20%, #0000ff 80%, #03063a 100%); /* W3C */
+/*    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0323af', endColorstr='#0323af', GradientType=0); /* IE6-9 */
+/*    background: linear-gradient(135deg, #4887ca 81%, #4b8dd3 82%, #539ce9 82%, #8fd6ff 100%); /* W3C */
+/*    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffff88', endColorstr='#ffffc6',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 
-  tbody * :not(#time_column):hover {
-      transform: scale(2);
-  }
+    /* text of class information */
+    color: #03063a;
+    font-weight: bold;
+}
 
+.first_cell{
+        /* adds clip off */
+/*    border-radius: 10px 0px 0px 0px;
+    -moz-border-radius: 10px 0px 0px 0px;
+    -webkit-border-radius: 10px 0px 0px 0px;*/
+    border: 0px solid #000000;
+        /* Gradients for classes in schedule wizard */
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#0323af+0,8fbce0+32,8fbce0+63,0323af+100 */
+    background: #8fbce0; /* Old browsers */
+/*    background: -moz-linear-gradient(left, #03063a 0%, #8fd6ff 5%,rgb(51, 122, 183) 15%, #337ab7 20%, #0000ff 80%, #03063a 100%); /* FF3.6+ */
+    /* fix this one with update*/
+    /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #03063a), color-stop(32%, #0000ff), color-stop(63%,#8fbce0), color-stop(100%, #8fd6ff)); /* Chrome,Safari4+ */
+/*    background: -webkit-linear-gradient(left, #03063a 0%, #8fd6ff 5%,rgb(51, 122, 183) 15%, #337ab7 20%, #0000ff 80%, #03063a 100%); /* Chrome10+,Safari5.1+ */
+/*    background: -o-linear-gradient(left, #03063a 0%, #8fd6ff 5%,rgb(51, 122, 183) 15%, #337ab7 20%, #0000ff 80%, #03063a 100%); /* Opera 11.10+ */
+/*    background: -ms-linear-gradient(to right, #03063a 0%, #8fd6ff 5%,rgb(51, 122, 183) 15%, #337ab7 20%, #0000ff 80%, #03063a 100%); /* IE10+ */
+    /*gradient for play*/
+/*    background: linear-gradient(to right, rgba(3, 6, 58, 0.51) 0%, rgba(143, 214, 255, 0.51) 5%, rgba(51, 122, 183, 0.51) 15%, rgba(51, 122, 183, 0.51) 20%, rgba(0, 0, 255, 0.5) 80%, rgba(3, 6, 58, 0.5) 100%);*/
+    background: linear-gradient(to top, rgba(72, 135, 202, 0.6) 39%, rgba(75, 141, 211, 0.61) 65%, rgba(84, 122, 160, 0.61) 74%, rgb(125, 159, 195) 83%, rgba(14, 58, 183, 0.61) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffff88', endColorstr='#ffffc6',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+        /* box shadow: h-shadow v-shadow blur spread color */
+
+    /* text of class information */
+    color: #03063a;
+    font-weight: bold;
+
+    /*text-shadow: 1px 1px 0 #333, 2px 2px 0 #333, -1px -1px 0 #03063a, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;8?*/
+/*    border-top-color: white;
+    border-top-width: medium;*/
+}
+
+.last_cell{
+    /* adds clip off */
+    border-radius: 0px 0px 25px 0px;
+    -moz-border-radius: 0px 0px 25px 0px;
+    -webkit-border-radius: 0px 0px 25px 0px;
+        /* Gradients for classes in schedule wizard */
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#0323af+0,8fbce0+32,8fbce0+63,0323af+100 */
+    background: #0323af; /* Old browsers */
+    background: linear-gradient(135deg, rgba(72, 135, 202, 0.59) 77%, rgba(75, 141, 211, 0.6) 37%, rgba(67, 143, 224, 0.6) 42%, rgba(6, 47, 90, 0.6) 95%, rgb(5, 27, 90) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffff88', endColorstr='#ffffc6',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+    box-shadow: 3px 12px 14px 1px rgba(0,0,0,0.3);
+
+
+    /*border: 0px;*/
+    /* text of class information */
+    color: #03063a;
+    font-weight: bold;
+}
+/*folded corner for post it */
+
+
+.last_cell::after{
+    width: 0px;
+    height: 0px;
+    border-top: 170 px solid #000;
+    border-right: 170px solid transparent;
+}
 }
