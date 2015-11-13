@@ -607,17 +607,15 @@ def degree_info_user(user_id):
             json_results.append(d)
             return jsonify(classes=json_results)
         # Get the classes the User has taken so far #
-        user_classes = ClassesTaken.query.filter_by(USER_ID=user_id).all()
+        #user_classes = ClassesTaken.query.filter_by(USER_ID=user_id).all()
 
         taken = '0'
         for course in courses:
             taken = "0"
             degree_course_index = 0
-            for user_class in user_classes:
-                if user_class == course.ID:
-                    taken = "1"
-                    degree_course_index = user_class
-                    break
+            user_class = ClassesTaken.query.filter_by(USER_ID=user_id, DEGREE_COURSE=course.ID).first()
+            if user_class is not None:
+                taken = 1
             d = {'ID': course.ID,
                  'UBCLASS': course.UBCLASS,
                  'SEM_INDEX': course.SEM_INDEX,
