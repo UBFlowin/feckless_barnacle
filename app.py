@@ -13,7 +13,7 @@ app = Flask(__name__)
 db = SQLAlchemy(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://ubflow:ubflow@localhost/ubflowdb'
 app.config['SECRET_KEY'] = 'The arsonist had oddly shaped feet'
-app.config["REMEMBER_COOKIE_DURATION"] = timedelta(days=1)
+app.config["REMEMBER_COOKIE_DURATION"] = timedelta(hours=1)
 login_serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
 login_manager = LoginManager()
@@ -233,6 +233,16 @@ class ClassesTaken(db.Model):
         self.DEGREE_COURSE = course_id
 
 
+
+# '''-----------------------------------------------
+#         DEGREE to COURSE Lookup Table
+# -----------------------------------------------'''
+# association_table2 = Table("Deg_to_Crse_Translator", db.Model.metadata,
+#     Column('Degree_ID', db.ForeignKey('Degree.ID')),
+#     Column('Course_ID', db.ForeignKey('UBClasses.ID'))
+# )
+
+
 '''-----------------------------------------------
         DEGREE COURSE CLASS
 -----------------------------------------------'''
@@ -244,25 +254,13 @@ class Degree(db.Model):
     UBCLASS = db.Column(db.String(50), nullable=False)
     TITLE = db.Column(db.String(50), nullable=False)
     SEM_INDEX = db.Column(db.Integer, nullable=False)
-    LINK = db.Column(db.String(100), nullable=True)
-    PRE_REQ1 = db.Column(db.String(50), nullable=True)
-    PRE_REQ2 = db.Column(db.String(50), nullable=True)
-    PRE_REQ3 = db.Column(db.String(50), nullable=True)
-    CO_REQ1 = db.Column(db.String(50), nullable=True)
-    CO_REQ2 = db.Column(db.String(50), nullable=True)
     CREDITS = db.Column(db.Integer, nullable=True)
 
-    def __init__(self,degree_name,ubclass,title,sem_index,link,pre1,pre2,pre3,co1,co2,credits):
+    def __init__(self,degree_name,ubclass,title,sem_index,credits):
         self.DEGREE_NAME = degree_name
         self.UBCLASS = ubclass
         self.TITLE = title
         self.SEM_INDEX = sem_index
-        self.LINK = link
-        self.PRE_REQ1 = pre1
-        self.PRE_REQ2 = pre2
-        self.PRE_REQ3 = pre3
-        self.CO_REQ1 = co1
-        self.CO_REQ2 = co2
         self.CREDITS = credits
 
     def __repr__(self):
@@ -416,7 +414,7 @@ def getSearch():
         results = UBClasses.query.filter_by(UBCLASS=ubclass).all()
 
     if request.method == 'GET':
-        results = UBClasses.query.all()
+        results = UBClasses.query.limit(12).all()
 
     if len(results) == 0:
         data = []
@@ -471,7 +469,7 @@ def getSearch():
 @login_required
 def getFirstClassGroup():
     if request.method == 'GET':
-        results = UBClasses.query.filter_by(DEPARTMENT='CSE').limit(10).all()
+        results = UBClasses.query.filter_by(DEPARTMENT='CSE').limit(13).all()
     rec = {}
     json_results = []
     json_rec = []
@@ -576,12 +574,6 @@ def degree_info():
              'UBCLASS': course.UBCLASS,
              'SEM_INDEX': course.SEM_INDEX,
              'TITLE': course.TITLE,
-             'LINK': course.LINK,
-             'PRE_REQ1':course.PRE_REQ1,
-             'PRE_REQ2':course.PRE_REQ2,
-             'PRE_REQ3':course.PRE_REQ3,
-             'CO_REQ1':course.CO_REQ1,
-             'CO_REQ2':course.CO_REQ2,
              'TAKEN':'0'
              }
         json_results.append(d)
@@ -593,39 +585,35 @@ def degree_info():
 def degree_info_user(user_id):
     json_results = []
     d ={}
-    degree_array = []
     if request.method == 'GET':
+
         # Get the Users Degree #
         user = User.query.filter_by(id=user_id).first()
         if user is None:
             json_results.append(d)
             return jsonify(classes=json_results)
         degree = user.DEGREE
+
         # Search Degree Table for all the Course for that Degree #
-        courses = Degree.query.filter_by(DEGREE_NAME=degree).all()
-        if courses is None:
+        degree_courses = Degree.query.filter_by(DEGREE_NAME=degree).all()
+        if degree_courses is None:
             json_results.append(d)
             return jsonify(classes=json_results)
-        # Get the classes the User has taken so far #
-        #user_classes = ClassesTaken.query.filter_by(USER_ID=user_id).all()
 
-        taken = '0'
-        for course in courses:
+        # Construct the list & Append it to the results #
+        for degree_course in degree_courses:
             taken = "0"
             degree_course_index = 0
-            user_class = ClassesTaken.query.filter_by(USER_ID=user_id, DEGREE_COURSE=course.ID).first()
+            # course = UBClasses.query.filter_by(UBCLASS=degree_course.UBCLASS).first()
+            # if course is None:
+            #     continue
+            user_class = ClassesTaken.query.filter_by(USER_ID=user_id, DEGREE_COURSE=degree_course.ID).first()
             if user_class is not None:
                 taken = 1
-            d = {'ID': course.ID,
-                 'UBCLASS': course.UBCLASS,
-                 'SEM_INDEX': course.SEM_INDEX,
-                 'TITLE': course.TITLE,
-                 'LINK': course.LINK,
-                 'PRE_REQ1':course.PRE_REQ1,
-                 'PRE_REQ2':course.PRE_REQ2,
-                 'PRE_REQ3':course.PRE_REQ3,
-                 'CO_REQ1':course.CO_REQ1,
-                 'CO_REQ2':course.CO_REQ2,
+            d = {'ID': degree_course.ID,
+                 'UBCLASS': degree_course.UBCLASS,
+                 'SEM_INDEX': degree_course.SEM_INDEX,
+                 'TITLE': degree_course.TITLE,
                  'TAKEN':taken,
                  'DEG_CRSE_INDEX':degree_course_index
                  }
