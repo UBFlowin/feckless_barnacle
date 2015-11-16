@@ -20,6 +20,11 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+
+
+'''~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                    MODELS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'''
 '''-----------------------------------------------
         User Model
 --------------------------------------------------'''
@@ -265,6 +270,23 @@ class Degree(db.Model):
 
     def __repr__(self):
         return '<degree'.format(self.UBCLASS)
+
+
+'''-----------------------------------------------
+       TABLE MODEL: List of all Degrees
+-----------------------------------------------'''
+class Degree_List(db.Model):
+    __tablename__ = 'degree_list'
+
+    ID = db.Column(db.Integer, primary_key=True)
+    DEGREE_FULL_NAME = db.Column(db.String(100), nullable=True)
+    DEGREE_ABRV = db.Column(db.String(20), nullable=False)
+
+
+
+'''~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                    ROUTES
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'''
 
 
 '''-----------------------------------------------
