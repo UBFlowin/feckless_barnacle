@@ -357,6 +357,11 @@ def login():
     return redirect(url_for('profile'))
 
 
+@app.route('/cart')
+def cart_page():
+    return render_template('cart.html')
+
+
 '''----------------------------
       Test if Logged In
 ----------------------------'''
