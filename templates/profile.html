@@ -263,7 +263,7 @@
                 <div class="col-xs-3 CourseSearch">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-book"></i> Course Search
+                            <i class="fa fa-search"></i> Course Search
                         </div>
                         <div class="panel-body" style="padding:2px;">
                             <div class="list-group">
@@ -335,16 +335,14 @@
                     <div class="col-xs-12 SelectedClasses">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <a class="btnWriteToNewWindow" type="button" style="cursor: pointer" onclick=writeToNewWindow();>
-                                <i class="fa fa-shopping-cart fa-fw"></i>Cart
-                            </a>
+                            <i class="fa fa-shopping-cart"></i> Selected Classes
                             <div class="btn-group SelectedClassesButtons pull-right">
                                     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
                                         Actions
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a href="flowsheet">Submit Cart</a>
+                                        <li><a href="cart" target="_blank" onclick="writeToNewWindow();">Go to Cart</a>
                                         </li>
                                         <li><a href="profile">Empty Cart</a>
                                         </li>
@@ -386,11 +384,6 @@
                                         <li><a href="profile">View Next Semester</a>
                                         </li>
                                     </ul>
-                                    <a href="javascript:window.print()">
-                                        <button type="button" class="btn btn-default btn-xs">
-                                        Print This Chart
-                                        </button>
-                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -663,7 +656,7 @@
                     <!-- /.panel -->
                 </div>
                 <!-- /.col-lg-9 -->
-                <div class="col-xs-6 PrintableProjectedWeeklySchedule">
+                <div class="col-xs-6 PrintableProjectedWeeklySchedule" id="TABLE_ID">
                    <!-- /.panel -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -1016,9 +1009,24 @@
     <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap-sb-admin-2-1.0.7/dist/js/sb-admin-2.js') }}"></script>
     <script type ='text/javascript'>
 
+{#        http://stackoverflow.com/questions/26975645/send-table-created-in-one-page-to-another-page#}
+{#        function writeToNewWindow() {#}
+{#            //newWindow = window.open("cart", "_blank");#}
+{#            $.ajax({#}
+{#                type: "POST",#}
+{#                url: "cart",#}
+{#                data: dataString,#}
+{#                dataType: "html",#}
+{#                cache: true,#}
+{#                success: function (html) {#}
+{#                    $("#TABLE_ID").html(html);#}
+{#                }#}
+{#            });#}
+{#            newWindow = window.open("cart", "_blank");#}
+{#        }#}
         function writeToNewWindow() {
             newWindow = window.open("cart", "_blank");
-            newWindow.document.write(document.getElementByClassName("ProjectedWeeklySchedule").innerHTML);
+            newWindow.document.write(document.getElementByID("TABLE_ID").innerHTML);
         }
 
         var g_Color = "#8FC8FF";
