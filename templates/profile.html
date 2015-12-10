@@ -17,7 +17,6 @@
     var BLOCKED_CLASSES = 0;
     var BLOCKED_RECITATIONS = 0;
 
-
     /*********************************************************
     *       Get First Class Information
     *********************************************************/
@@ -64,6 +63,20 @@
             recitation = [];
         }
     });
+
+
+    CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+        if (w < 2 * r) r = w / 2;
+        if (h < 2 * r) r = h / 2;
+        this.beginPath();
+        this.moveTo(x+r, y);
+        this.arcTo(x+w, y,   x+w, y+h, r);
+        this.arcTo(x+w, y+h, x,   y+h, r);
+        this.arcTo(x,   y+h, x,   y,   r);
+        this.arcTo(x,   y,   x+w, y,   r);
+        this.closePath();
+        return this;
+    };
 
 
     /*********************************************************
@@ -416,7 +429,7 @@
                                             <tbody>
                                                 <tbody style="background-color:#f0f0f1">
                                                 <tr style="height:15px;">
-                                                    <td style="padding:2px;" id="time_column">8:00</td>
+                                                    <td style="padding:2px;">8:00</td>
                                                     <td id="M8:00AM"></td>
                                                     <td id="T8:00AM"></td>
                                                     <td id="W8:00AM"></td>
@@ -425,7 +438,7 @@
                                                     <td id="S8:00AM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                    <td style="padding:1px;" id="time_column">8:30</td>
+                                                    <td style="padding:1px;">8:30</td>
                                                     <td id="M8:30AM"></td>
                                                     <td id="T8:30AM"></td>
                                                     <td id="W8:30AM"></td>
@@ -434,7 +447,7 @@
                                                     <td id="S8:30AM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                    <td style="padding:1px;" id="time_column">9:00</td>
+                                                    <td style="padding:1px;">9:00</td>
                                                     <td id="M9:00AM"></td>
                                                     <td id="T9:00AM"></td>
                                                     <td id="W9:00AM"></td>
@@ -443,7 +456,7 @@
                                                     <td id="S9:00AM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">9:30</td>
+                                                    <td  style="padding:1px;">9:30</td>
                                                     <td id="M9:30AM"></td>
                                                     <td id="T9:30AM"></td>
                                                     <td id="W9:30AM"></td>
@@ -452,7 +465,7 @@
                                                     <td id="S9:30AM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">10:00</td>
+                                                    <td  style="padding:1px;">10:00</td>
                                                     <td id="M10:00AM"></td>
                                                     <td id="T10:00AM"></td>
                                                     <td id="W10:00AM"></td>
@@ -461,7 +474,7 @@
                                                     <td id="S10:00AM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">10:30</td>
+                                                    <td  style="padding:1px;">10:30</td>
                                                     <td id="M10:30AM"></td>
                                                     <td id="T10:30AM"></td>
                                                     <td id="W10:30AM"></td>
@@ -470,7 +483,7 @@
                                                     <td id="S10:30AM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">11:00</td>
+                                                    <td  style="padding:1px;">11:00</td>
                                                     <td id="M11:00AM"></td>
                                                     <td id="T11:00AM"></td>
                                                     <td id="W11:00AM"></td>
@@ -479,7 +492,7 @@
                                                     <td id="S11:00AM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                   <td  style="padding:1px;" id="time_column">11:30</td>
+                                                   <td  style="padding:1px;">11:30</td>
                                                     <td id="M11:30AM"></td>
                                                     <td id="T11:30AM"></td>
                                                     <td id="W11:30AM"></td>
@@ -488,7 +501,7 @@
                                                     <td id="S11:30AM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">12:00</td>
+                                                    <td  style="padding:1px;">12:00</td>
                                                     <td id="M12:00PM"></td>
                                                     <td id="T12:00PM"></td>
                                                     <td id="W12:00PM"></td>
@@ -497,7 +510,7 @@
                                                     <td id="S12:00PM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">12:30</td>
+                                                    <td  style="padding:1px;">12:30</td>
                                                     <td id="M12:30PM"></td>
                                                     <td id="T12:30PM"></td>
                                                     <td id="W12:30PM"></td>
@@ -506,7 +519,7 @@
                                                     <td id="S12:30PM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">1:00</td>
+                                                    <td  style="padding:1px;">1:00</td>
                                                     <td id="M1:00PM"></td>
                                                     <td id="T1:00PM"></td>
                                                     <td id="W1:00PM"></td>
@@ -515,7 +528,7 @@
                                                     <td id="S1:00PM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">1:30</td>
+                                                    <td  style="padding:1px;">1:30</td>
                                                     <td id="M1:30PM"></td>
                                                     <td id="T1:30PM"></td>
                                                     <td id="W1:30PM"></td>
@@ -524,7 +537,7 @@
                                                     <td id="S1:30PM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">2:00</td>
+                                                    <td  style="padding:1px;">2:00</td>
                                                     <td id="M2:00PM"></td>
                                                     <td id="T2:00PM"></td>
                                                     <td id="W2:00PM"></td>
@@ -533,7 +546,7 @@
                                                     <td id="S2:00PM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">2:30</td>
+                                                    <td  style="padding:1px;">2:30</td>
                                                     <td id="M2:30PM"></td>
                                                     <td id="T2:30PM"></td>
                                                     <td id="W2:30PM"></td>
@@ -542,7 +555,7 @@
                                                     <td id="S2:30PM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">3:00</td>
+                                                    <td  style="padding:1px;">3:00</td>
                                                     <td id="M3:00PM"></td>
                                                     <td id="T3:00PM"></td>
                                                     <td id="W3:00PM"></td>
@@ -551,7 +564,7 @@
                                                     <td id="S3:00PM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">3:30</td>
+                                                    <td  style="padding:1px;">3:30</td>
                                                     <td id="M3:30PM"></td>
                                                     <td id="T3:30PM"></td>
                                                     <td id="W3:30PM"></td>
@@ -560,7 +573,7 @@
                                                     <td id="S3:30PM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">4:00</td>
+                                                    <td  style="padding:1px;">4:00</td>
                                                     <td id="M4:00PM"></td>
                                                     <td id="T4:00PM"></td>
                                                     <td id="W4:00PM"></td>
@@ -569,7 +582,7 @@
                                                     <td id="S4:00PM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">4:30</td>
+                                                    <td  style="padding:1px;">4:30</td>
                                                     <td id="M4:30PM"></td>
                                                     <td id="T4:30PM"></td>
                                                     <td id="W4:30PM"></td>
@@ -578,7 +591,7 @@
                                                     <td id="S4:30PM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">5:00</td>
+                                                    <td  style="padding:1px;">5:00</td>
                                                     <td id="M5:00PM"></td>
                                                     <td id="T5:00PM"></td>
                                                     <td id="W5:00PM"></td>
@@ -587,7 +600,7 @@
                                                     <td id="S5:00PM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">5:30</td>
+                                                    <td  style="padding:1px;">5:30</td>
                                                     <td id="M5:30PM"></td>
                                                     <td id="T5:30PM"></td>
                                                     <td id="W5:30PM"></td>
@@ -596,7 +609,7 @@
                                                     <td id="S5:30PM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">6:00</td>
+                                                    <td  style="padding:1px;">6:00</td>
                                                     <td id="M6:00PM"></td>
                                                     <td id="T6:00PM"></td>
                                                     <td id="W6:00PM"></td>
@@ -605,7 +618,7 @@
                                                     <td id="S6:00PM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">6:30</td>
+                                                    <td  style="padding:1px;">6:30</td>
                                                     <td id="M6:30PM"></td>
                                                     <td id="T6:30PM"></td>
                                                     <td id="W6:30PM"></td>
@@ -614,7 +627,7 @@
                                                     <td id="S6:30PM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">7:00</td>
+                                                    <td  style="padding:1px;">7:00</td>
                                                     <td id="M7:00PM"></td>
                                                     <td id="T7:00PM"></td>
                                                     <td id="W7:00PM"></td>
@@ -623,7 +636,7 @@
                                                     <td id="S7:00PM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">7:30</td>
+                                                    <td  style="padding:1px;">7:30</td>
                                                     <td id="M7:30PM"></td>
                                                     <td id="T7:30PM"></td>
                                                     <td id="W7:30PM"></td>
@@ -632,7 +645,7 @@
                                                     <td id="S7:30PM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">8:00</td>
+                                                    <td  style="padding:1px;">8:00</td>
                                                     <td id="M8:00PM"></td>
                                                     <td id="T8:00PM"></td>
                                                     <td id="W8:00PM"></td>
@@ -641,7 +654,7 @@
                                                     <td id="S8:00PM"></td>
                                                 </tr>
                                                 <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">8:30</td>
+                                                    <td  style="padding:1px;">8:30</td>
                                                     <td id="M8:30PM"></td>
                                                     <td id="T8:30PM"></td>
                                                     <td id="W8:30PM"></td>
@@ -662,297 +675,7 @@
                     </div>
                     <!-- /.panel -->
                 </div>
-                <!-- /.col-lg-9 -->
-                <div class="col-xs-6 PrintableProjectedWeeklySchedule">
-                   <!-- /.panel -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-calendar"></i> Projected Weekly Schedule
-                            <div class="pull-right">
-                                <div class="btn-group ProjectedWeeklyScheduleButtons">
-                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                        Actions
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a href="#">Action</a>
-                                        </li>
-                                        <li><a href="flowsheet">View Current Semester</a>
-                                        </li>
-                                        <li><a href="profile">View Next Semester</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered table-hover" style="padding:1px;">
-                                            <thead>
-                                                <tr style="background-color:#e6e6e7">
-                                                    <!--changes here!!!-->
 
-                                                    <th style="width:50px; text-align:center"></th>
-                                                    <th style="width:50px; text-align:center"><img src="static/mon.png" alt="Mon" height=auto width=50px></th>
-                                                    <th style="width:50px; text-align:center"><img src="static/tue.png" alt="Tue" height=auto width=50[x></th>
-                                                    <th style="width:50px; text-align:center"><img src="static/wed.png" alt="Wed" height=auto width=50px></th>
-                                                    <th style="width:50px; text-align:center"><img src="static/thu.png" alt="Thu" height=auto width=50px></th>
-                                                    <th style="width:50px; text-align:center"><img src="static/fri.png" alt="Fri" height=auto width=50px></th>
-                                                    <th style="width:50px; text-align:center"><img src="static/sat.png" alt="Sat" height=auto width=50px></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tbody style="background-color:#f0f0f1">
-                                                <tr style="height:15px;">
-                                                    <td style="padding:2px;" id="time_column">8:00</td>
-                                                    <td id="M8:00AM"></td>
-                                                    <td id="T8:00AM"></td>
-                                                    <td id="W8:00AM"></td>
-                                                    <td id="R8:00AM"></td>
-                                                    <td id="F8:00AM"></td>
-                                                    <td id="S8:00AM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                    <td style="padding:1px;" id="time_column">8:30</td>
-                                                    <td id="M8:30AM"></td>
-                                                    <td id="T8:30AM"></td>
-                                                    <td id="W8:30AM"></td>
-                                                    <td id="R8:30AM"></td>
-                                                    <td id="F8:30AM"></td>
-                                                    <td id="S8:30AM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                    <td style="padding:1px;" id="time_column">9:00</td>
-                                                    <td id="M9:00AM"></td>
-                                                    <td id="T9:00AM"></td>
-                                                    <td id="W9:00AM"></td>
-                                                    <td id="R9:00AM"></td>
-                                                    <td id="F9:00AM"></td>
-                                                    <td id="S9:00AM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">9:30</td>
-                                                    <td id="M9:30AM"></td>
-                                                    <td id="T9:30AM"></td>
-                                                    <td id="W9:30AM"></td>
-                                                    <td id="R9:30AM"></td>
-                                                    <td id="F9:30AM"></td>
-                                                    <td id="S9:30AM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">10:00</td>
-                                                    <td id="M10:00AM"></td>
-                                                    <td id="T10:00AM"></td>
-                                                    <td id="W10:00AM"></td>
-                                                    <td id="R10:00AM"></td>
-                                                    <td id="F10:00AM"></td>
-                                                    <td id="S10:00AM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">10:30</td>
-                                                    <td id="M10:30AM"></td>
-                                                    <td id="T10:30AM"></td>
-                                                    <td id="W10:30AM"></td>
-                                                    <td id="R10:30AM"></td>
-                                                    <td id="F10:30AM"></td>
-                                                    <td id="S10:30AM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">11:00</td>
-                                                    <td id="M11:00AM"></td>
-                                                    <td id="T11:00AM"></td>
-                                                    <td id="W11:00AM"></td>
-                                                    <td id="R11:00AM"></td>
-                                                    <td id="F11:00AM"></td>
-                                                    <td id="S11:00AM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                   <td  style="padding:1px;" id="time_column">11:30</td>
-                                                    <td id="M11:30AM"></td>
-                                                    <td id="T11:30AM"></td>
-                                                    <td id="W11:30AM"></td>
-                                                    <td id="R11:30AM"></td>
-                                                    <td id="F11:30AM"></td>
-                                                    <td id="S11:30AM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">12:00</td>
-                                                    <td id="M12:00PM"></td>
-                                                    <td id="T12:00PM"></td>
-                                                    <td id="W12:00PM"></td>
-                                                    <td id="R12:00PM"></td>
-                                                    <td id="F12:00PM"></td>
-                                                    <td id="S12:00PM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">12:30</td>
-                                                    <td id="M12:30PM"></td>
-                                                    <td id="T12:30PM"></td>
-                                                    <td id="W12:30PM"></td>
-                                                    <td id="R12:30PM"></td>
-                                                    <td id="F12:30PM"></td>
-                                                    <td id="S12:30PM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">1:00</td>
-                                                    <td id="M1:00PM"></td>
-                                                    <td id="T1:00PM"></td>
-                                                    <td id="W1:00PM"></td>
-                                                    <td id="R1:00PM"></td>
-                                                    <td id="F1:00PM"></td>
-                                                    <td id="S1:00PM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">1:30</td>
-                                                    <td id="M1:30PM"></td>
-                                                    <td id="T1:30PM"></td>
-                                                    <td id="W1:30PM"></td>
-                                                    <td id="R1:30PM"></td>
-                                                    <td id="F1:30PM"></td>
-                                                    <td id="S1:30PM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">2:00</td>
-                                                    <td id="M2:00PM"></td>
-                                                    <td id="T2:00PM"></td>
-                                                    <td id="W2:00PM"></td>
-                                                    <td id="R2:00PM"></td>
-                                                    <td id="F2:00PM"></td>
-                                                    <td id="S2:00PM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">2:30</td>
-                                                    <td id="M2:30PM"></td>
-                                                    <td id="T2:30PM"></td>
-                                                    <td id="W2:30PM"></td>
-                                                    <td id="R2:30PM"></td>
-                                                    <td id="F2:30PM"></td>
-                                                    <td id="S2:30PM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">3:00</td>
-                                                    <td id="M3:00PM"></td>
-                                                    <td id="T3:00PM"></td>
-                                                    <td id="W3:00PM"></td>
-                                                    <td id="R3:00PM"></td>
-                                                    <td id="F3:00PM"></td>
-                                                    <td id="S3:00PM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">3:30</td>
-                                                    <td id="M3:30PM"></td>
-                                                    <td id="T3:30PM"></td>
-                                                    <td id="W3:30PM"></td>
-                                                    <td id="R3:30PM"></td>
-                                                    <td id="F3:30PM"></td>
-                                                    <td id="S3:30PM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">4:00</td>
-                                                    <td id="M4:00PM"></td>
-                                                    <td id="T4:00PM"></td>
-                                                    <td id="W4:00PM"></td>
-                                                    <td id="R4:00PM"></td>
-                                                    <td id="F4:00PM"></td>
-                                                    <td id="S4:00PM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">4:30</td>
-                                                    <td id="M4:30PM"></td>
-                                                    <td id="T4:30PM"></td>
-                                                    <td id="W4:30PM"></td>
-                                                    <td id="R4:30PM"></td>
-                                                    <td id="F4:30PM"></td>
-                                                    <td id="S4:30PM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">5:00</td>
-                                                    <td id="M5:00PM"></td>
-                                                    <td id="T5:00PM"></td>
-                                                    <td id="W5:00PM"></td>
-                                                    <td id="R5:00PM"></td>
-                                                    <td id="F5:00PM"></td>
-                                                    <td id="S5:00PM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">5:30</td>
-                                                    <td id="M5:30PM"></td>
-                                                    <td id="T5:30PM"></td>
-                                                    <td id="W5:30PM"></td>
-                                                    <td id="R5:30PM"></td>
-                                                    <td id="F5:30PM"></td>
-                                                    <td id="S5:30PM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">6:00</td>
-                                                    <td id="M6:00PM"></td>
-                                                    <td id="T6:00PM"></td>
-                                                    <td id="W6:00PM"></td>
-                                                    <td id="R6:00PM"></td>
-                                                    <td id="F6:00PM"></td>
-                                                    <td id="S6:00PM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">6:30</td>
-                                                    <td id="M6:30PM"></td>
-                                                    <td id="T6:30PM"></td>
-                                                    <td id="W6:30PM"></td>
-                                                    <td id="R6:30PM"></td>
-                                                    <td id="F6:30PM"></td>
-                                                    <td id="S6:30PM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">7:00</td>
-                                                    <td id="M7:00PM"></td>
-                                                    <td id="T7:00PM"></td>
-                                                    <td id="W7:00PM"></td>
-                                                    <td id="R7:00PM"></td>
-                                                    <td id="F7:00PM"></td>
-                                                    <td id="S7:00PM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">7:30</td>
-                                                    <td id="M7:30PM"></td>
-                                                    <td id="T7:30PM"></td>
-                                                    <td id="W7:30PM"></td>
-                                                    <td id="R7:30PM"></td>
-                                                    <td id="F7:30PM"></td>
-                                                    <td id="S7:30PM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">8:00</td>
-                                                    <td id="M8:00PM"></td>
-                                                    <td id="T8:00PM"></td>
-                                                    <td id="W8:00PM"></td>
-                                                    <td id="R8:00PM"></td>
-                                                    <td id="F8:00PM"></td>
-                                                    <td id="S8:00PM"></td>
-                                                </tr>
-                                                <tr style="height:15px;">
-                                                    <td  style="padding:1px;" id="time_column">8:30</td>
-                                                    <td id="M8:30PM"></td>
-                                                    <td id="T8:30PM"></td>
-                                                    <td id="W8:30PM"></td>
-                                                    <td id="R8:30PM"></td>
-                                                    <td id="F8:30PM"></td>
-                                                    <td id="S8:30PM"></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <!-- /.table-responsive -->
-                                </div>
-                                <!-- /.col-lg-4 (nested) -->
-                            </div>
-                            <!-- /.row -->
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>
                 <div class="col-xs-3 AvailableClasses">
                     <div class="panel panel-default">
                         <div id="head" class="panel-heading">
@@ -1000,6 +723,69 @@
                 </div>
             </div>
             <!-- /.row -->
+            <div class="col-xs-6 col-xs-offset-3" id="canvas_parent">
+                <img id="monday_header" src="static/mon.png" alt="Mon" height=auto width=50px style="display: none;">
+                <canvas id="myCanvas" style="border: 1px solid #000000">
+                    <script>
+
+                        var total_height = 60;
+                        var radius = 10;
+
+                        var c = document.getElementById("myCanvas");
+                        var parent = document.getElementById("canvas_parent");
+                        c.width = parent.offsetWidth;
+                        c.height = parent.offsetHeight;
+
+                        var mon = 0.10 * c.width;
+                        var tue = 0.25 * c.width;
+                        var wed = 0.40 * c.width;
+                        var thu = 0.55 * c.width;
+                        var fri = 0.70 * c.width;
+                        var sat = 0.85 * c.width;
+                        var col_width = 0.15 * c.width;
+                        var ctx = c.getContext("2d");
+
+                        ctx.fillStyle = "#cccccc";
+
+                        ctx.clearRect(mon, 0, col_width, 40);
+                        var img = document.getElementById("monday_header");
+                        var image_holder = new Image();
+
+                        image_holder.src = 'static/mon.png';
+                        ctx.drawImage(image_holder,mon+((col_width/2)-25),0,50,0.15* c.height);
+                        image_holder.src = 'static/tue.png';
+                        ctx.drawImage(image_holder,tue+((col_width/2)-25),0,50,0.15* c.height);
+                        image_holder.src = 'static/wed.png';
+                        ctx.drawImage(image_holder,wed+((col_width/2)-25),0,50,0.15* c.height);
+                        image_holder.src = 'static/thu.png';
+                        ctx.drawImage(image_holder,thu+((col_width/2)-25),0,50,0.15* c.height);
+                        image_holder.src = 'static/fri.png';
+                        ctx.drawImage(image_holder,fri+((col_width/2)-25),0,50,0.15* c.height);
+                        image_holder.src = 'static/sat.png';
+                        ctx.drawImage(image_holder,sat+((col_width/2)-25),0,50,0.15* c.height);
+                        // Populate the Vertical 50
+//                        ctx.roundRect(wed, 0, .15*c.width, total_height, radius ).fill();
+                        ctx.beginPath();
+                        ctx.moveTo(.1*c.width, 0);
+                        ctx.lineTo(.1*c.width, c.height);
+                        ctx.moveTo(.25*c.width, 0);
+                        ctx.lineTo(.25*c.width, c.height);
+                        ctx.moveTo(.40*c.width, 0);
+                        ctx.lineTo(.40*c.width, c.height);
+                        ctx.moveTo(.55*c.width, 0);
+                        ctx.lineTo(.55*c.width, c.height);
+                        ctx.moveTo(.70*c.width, 0);
+                        ctx.lineTo(.70*c.width, c.height);
+                        ctx.moveTo(.85*c.width, 0);
+                        ctx.lineTo(.85*c.width, c.height);
+                        ctx.stroke();
+
+                        ctx.roundRect(fri+1, 28, .15*c.width-2, total_height, radius ).fill();
+                        ctx.fillStyle = "black"
+                        ctx.fillText("CSE442",fri+10,50);
+                    </script>
+                </canvas>
+            </div>
         </div>
         <!-- /#page-wrapper -->
     </div>
