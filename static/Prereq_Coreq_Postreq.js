@@ -144,8 +144,8 @@ function addCourseAttributes() {
 		$("#CSE331").attr({title: "Intro to Algorithms", pre:"MTH142 CSE250 CSE191"});
 		$("#CSE341").attr({title: "Computer Organization", pre:"CSE241 EE378 EE278"});
 		$("#CSE379").attr({title: "Microprocessors & Microcomputers", pre:"CSE241 EE378", co:"CSE380"});
-		$("#CSE380").attr({title: "Microprocessors & Microcomputers Lab", pre:"CSE241 EE378", co:"CSE380"});
-		$("#CSE396").attr({title: "Intro to Theory of Computation", pre:"CSE191 CSE250 MTH142 CALC1"});
+		$("#CSE380").attr({title: "Microprocessors & Microcomputers Lab", pre:"CSE241 EE378", co:"CSE379"});
+		$("#CSE396").attr({title: "Intro to Theory of Computation", pre:"CSE191 CSE250 MTH142 MTH141"});
 		$("#CSE421").attr({title: "Intro to Operating Systems", pre:"CSE250"});
 		$("#CSE442").attr({title: "Software Engineering", pre:"CSE250"});
 		$("#CSE453").attr({title: "Hardware/Software Integrated Systems", pre:"CSE442"});

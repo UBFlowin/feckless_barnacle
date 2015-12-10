@@ -1,20 +1,24 @@
-from lxml import html
+from lxml import html,etree
 import requests
 import re
 
-def get_flowsheet_info(flowsheet_url):
-    flowsheetPage = requests.get(flowsheet_url)
-    flowsheetHTML = html.fromstring(flowsheetPage.text)
-    rawFlowsheetData = flowsheetHTML.text_content()
-    refinedFlowsheetData = re.sub('\s\s+', '\n\n', rawFlowsheetData)
-    refinedFlowsheetData = re.sub('required if in Finish in Four', ' required if in Finish in Four\n', refinedFlowsheetData)
-    refinedFlowsheetData = re.sub('Faculty Advisor approval required', ' Faculty Advisor approval required\n', refinedFlowsheetData)
-    refinedFlowsheetData = re.sub('(.*)Fall\n\nSpring\n\n', '', refinedFlowsheetData, flags=re.DOTALL)
-    refinedFlowsheetData = re.sub('\n\n', '\nEND OF SEMESTER\n', refinedFlowsheetData, count=8)
-    refinedFlowsheetData = refinedFlowsheetData.encode('ascii', 'ignore').decode('ascii')
-    print refinedFlowsheetData
-    return refinedFlowsheetData
+path = '//*[@id="sem'
 
-# ssh into server
-# "cd ubflowproject/fecklessbarnacle"
-# "python parse.py"
+
+def get_flowsheet_info(url):
+    page = requests.get(url)
+    tree = html.fromstring(page.text)
+    fullset = []
+    for sem in range(1, 9):
+        set = tree.xpath(path+str(sem)+'"]/div')
+        for i in range(0, len(set)):
+            set[i] = etree.tostring(set[i])
+            set[i] = set[i].encode('ascii', 'ignore').decode('ascii')
+            set[i] = re.sub('<br(.*)$', '', set[i])
+            set[i] = re.sub('^(.*)">', '', set[i])
+            set[i] = re.sub('</d(.*)$', '', set[i])
+            set[i] = re.sub('^<div>', '', set[i])
+            set[i] = re.sub('\n', '', set[i])
+        set.insert(0, 'sem'+str(sem))
+        fullset.append(set)
+    return fullset

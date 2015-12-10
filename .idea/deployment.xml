@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" createEmptyFolders="true" traceLevel="DETAILS" folderPermissions="511" autoUploadExternalChanges="true">
-    <option name="myAutoUpload" value="ALWAYS" />
+  <component name="PublishConfigData" autoUpload="On explicit save action" serverName="Server" createEmptyFolders="true" traceLevel="DETAILS" folderPermissions="511" autoUploadExternalChanges="true">
+    <serverData>
+      <paths name="Server">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/ubflow_project/feckless_barnacle" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ON_EXPLICIT_SAVE" />
   </component>
 </project>
