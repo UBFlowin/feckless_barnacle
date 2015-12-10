@@ -126,17 +126,6 @@ for semester in semester_links:
         info = get_info(department)
         isolate_data(info)
         print department
-        # print "course_num length = " + str(len(course_num))
-        # print "course_name length = " + str(len(course_name))
-        # print "course_id length   = " + str(len(course_id))
-        # print "section length     = " + str(len(section))
-        # print "type length        = " + str(len(type))
-        # print "days length        = " + str(len(days))
-        # print "time length        = " + str(len(time))
-        # print "room length        = " + str(len(room))
-        # print "campus length      = " + str(len(campus))
-        # print "instructor length  = " + str(len(instructor))
-        # print "status length      = " + str(len(status))
         sem = ''
         new_course = ''
         dept_code = ''
