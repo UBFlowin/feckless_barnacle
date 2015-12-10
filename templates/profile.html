@@ -723,69 +723,6 @@
                 </div>
             </div>
             <!-- /.row -->
-            <div class="col-xs-6 col-xs-offset-3" id="canvas_parent">
-                <img id="monday_header" src="static/mon.png" alt="Mon" height=auto width=50px style="display: none;">
-                <canvas id="myCanvas" style="border: 1px solid #000000">
-                    <script>
-
-                        var total_height = 60;
-                        var radius = 10;
-
-                        var c = document.getElementById("myCanvas");
-                        var parent = document.getElementById("canvas_parent");
-                        c.width = parent.offsetWidth;
-                        c.height = parent.offsetHeight;
-
-                        var mon = 0.10 * c.width;
-                        var tue = 0.25 * c.width;
-                        var wed = 0.40 * c.width;
-                        var thu = 0.55 * c.width;
-                        var fri = 0.70 * c.width;
-                        var sat = 0.85 * c.width;
-                        var col_width = 0.15 * c.width;
-                        var ctx = c.getContext("2d");
-
-                        ctx.fillStyle = "#cccccc";
-
-                        ctx.clearRect(mon, 0, col_width, 40);
-                        var img = document.getElementById("monday_header");
-                        var image_holder = new Image();
-
-                        image_holder.src = 'static/mon.png';
-                        ctx.drawImage(image_holder,mon+((col_width/2)-25),0,50,0.15* c.height);
-                        image_holder.src = 'static/tue.png';
-                        ctx.drawImage(image_holder,tue+((col_width/2)-25),0,50,0.15* c.height);
-                        image_holder.src = 'static/wed.png';
-                        ctx.drawImage(image_holder,wed+((col_width/2)-25),0,50,0.15* c.height);
-                        image_holder.src = 'static/thu.png';
-                        ctx.drawImage(image_holder,thu+((col_width/2)-25),0,50,0.15* c.height);
-                        image_holder.src = 'static/fri.png';
-                        ctx.drawImage(image_holder,fri+((col_width/2)-25),0,50,0.15* c.height);
-                        image_holder.src = 'static/sat.png';
-                        ctx.drawImage(image_holder,sat+((col_width/2)-25),0,50,0.15* c.height);
-                        // Populate the Vertical 50
-//                        ctx.roundRect(wed, 0, .15*c.width, total_height, radius ).fill();
-                        ctx.beginPath();
-                        ctx.moveTo(.1*c.width, 0);
-                        ctx.lineTo(.1*c.width, c.height);
-                        ctx.moveTo(.25*c.width, 0);
-                        ctx.lineTo(.25*c.width, c.height);
-                        ctx.moveTo(.40*c.width, 0);
-                        ctx.lineTo(.40*c.width, c.height);
-                        ctx.moveTo(.55*c.width, 0);
-                        ctx.lineTo(.55*c.width, c.height);
-                        ctx.moveTo(.70*c.width, 0);
-                        ctx.lineTo(.70*c.width, c.height);
-                        ctx.moveTo(.85*c.width, 0);
-                        ctx.lineTo(.85*c.width, c.height);
-                        ctx.stroke();
-
-                        ctx.roundRect(fri+1, 28, .15*c.width-2, total_height, radius ).fill();
-                        ctx.fillStyle = "black"
-                        ctx.fillText("CSE442",fri+10,50);
-                    </script>
-                </canvas>
-            </div>
         </div>
         <!-- /#page-wrapper -->
     </div>
