@@ -496,7 +496,14 @@ def getSearch():
 @login_required
 def getFirstClassGroup():
     if request.method == 'GET':
-        results = UBClasses.query.filter_by(DEPARTMENT='CSE').limit(13).all()
+        degree = ''
+         # Get the Users Degree #
+        user_id = session['user']
+        user = User.query.filter_by(id=user_id).first()
+        if user is None:
+            degree = 'CSE'
+        degree = user.DEGREE
+        results = UBClasses.query.filter_by(DEPARTMENT=degree).limit(10).all()
     rec = {}
     json_results = []
     json_rec = []
