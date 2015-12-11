@@ -613,17 +613,17 @@ function create_new_course_block(sem_index, num){
         course_name.setAttribute('style', 'color: blue; text-decoration: underline');
     }
     course_name.onmouseover = function() {
-        if ( (course_string.indexOf("XX") == -1) && (course_string.indexOf("Gen Ed") == -1) && (course_string.indexOf("Tech") == -1) && (EDITABLE == 0) ) {
+        if ( (course_string.indexOf("XX") == -1) && (course_string.indexOf("Gen Ed") == -1) && (course_string.indexOf("Elective") == -1) && (EDITABLE == 0) ) {
             document.body.style.cursor = 'pointer';
         }
     };
     course_name.onmouseout = function() {
-        if ( (course_string.indexOf("XX") == -1) && (course_string.indexOf("Gen Ed") == -1) && (course_string.indexOf("Tech") == -1) && (EDITABLE == 0) ) {
+        if ( (course_string.indexOf("XX") == -1) && (course_string.indexOf("Gen Ed") == -1) && (course_string.indexOf("Elective") == -1) && (EDITABLE == 0) ) {
             document.body.style.cursor = 'auto';
         }
     };
     course_name.onclick = function() {
-        if ( (course_string.indexOf("XX") == -1) && (course_string.indexOf("Gen Ed") == -1) && (course_string.indexOf("Tech") == -1) && (EDITABLE == 0) ) {
+        if ( (course_string.indexOf("XX") == -1) && (course_string.indexOf("Gen Ed") == -1) && (course_string.indexOf("Elective") == -1) && (EDITABLE == 0) ) {
             course_name.setAttribute('style', 'color: #4B0082; text-decoration: underline');
             window.open(URL, '_blank');
             return false;
