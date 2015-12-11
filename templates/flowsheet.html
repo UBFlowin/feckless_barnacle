@@ -10,7 +10,7 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-xs-9">
-                            <h2> B.S. Computer Engineering </h2>
+                            <h2 id="degree_text"> </h2>
                             <div class="col-xs-4">
                                 <div class="col-xs-12">
                                     <div class="col-xs-9 progress progress-striped active" style="background-color: slategray; padding:0px;">
@@ -229,6 +229,43 @@
                             handle_index += 1;
                             x = x + 1;
                         }
+                        var user_degree = dat.classes[0].DEGREE;
+                        switch(user_degree){
+                            case 'CE':
+                                user_degree = 'Chemical Engineering';
+                                break;
+                            case 'ASE':
+                                user_degree = 'Aerospace Engineering';
+                                break;
+                            case 'CEN':
+                                user_degree = 'Computer Engineering';
+                                break;
+                            case 'CSE':
+                                user_degree = 'Chemical Engineering';
+                                break;
+                            case 'CIE':
+                                user_degree = 'Civil Engineering';
+                                break;
+                            case 'EE':
+                                user_degree = 'Electrical Engineering';
+                                break;
+                            case 'ENV':
+                                user_degree = 'Environmental Engineering';
+                                break;
+                            case 'ME':
+                                user_degree = 'Mechanical Engineering';
+                                break;
+                            case 'BE':
+                                user_degree = 'Biomedical Engineering';
+                                break;
+                            case 'IE':
+                                user_degree = 'Industrial Engineering';
+                                break;
+                            default:
+                                break;
+                        }
+                        var degree_text = document.getElementById('degree_text');
+                        degree_text.innerHTML = user_degree;
                     }
                     window.setTimeout(populate_semesters,400);
                     window.setTimeout(addCourseAttributes,500);
