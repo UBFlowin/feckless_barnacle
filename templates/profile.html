@@ -355,8 +355,6 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a href="flowsheet">Submit Cart</a>
-                                        </li>
                                         <li><a href="profile">Empty Cart</a>
                                         </li>
                                     </ul>
@@ -390,14 +388,9 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a href="flowsheet">View Current Semester</a>
+                                        <li><a href="flowsheet">View Degree Progress</a>
                                         </li>
                                     </ul>
-                                    <a href="javascript:window.print()">
-                                        <button type="button" class="btn btn-default btn-xs">
-                                        Print
-                                        </button>
-                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -409,7 +402,6 @@
                                         <table class="table table-bordered table-hover" style="padding:1px;">
                                             <thead>
                                                 <tr style="background-color:#e6e6e7">
-                                                    <!--changes here!!!-->
 
                                                     <th style="width:50px; text-align:center"></th>
                                                     <th style="width:50px; text-align:center"><img src="static/mon.png" alt="Mon" height=auto width=50px></th>
@@ -733,11 +725,6 @@
     <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap-sb-admin-2-1.0.7/dist/js/sb-admin-2.js') }}"></script>
     <script type ='text/javascript'>
 
-        function writeToNewWindow() {
-            newWindow = window.open("cart", "_blank");
-            newWindow.document.write(document.getElementByClassName("ProjectedWeeklySchedule").innerHTML);
-        }
-
         var g_Color = "#8FC8FF";
         var g_Border_Color = "Black";
 
@@ -994,13 +981,6 @@
 
         var SEL_LL = new Linked_List();
         SEL_LL.add_node("head","node");
-//        var truth = SEL_LL.find_node("class1", "rec1");
-//        var class_exists = SEL_LL.find_node_by_class("class2");
-//        var rec_exists = SEL_LL.find_node_by_rec("rec1");
-//        SEL_LL.add_node("class2", "rec2");
-//        SEL_LL.remove_node_by_rec("rec2");
-//        SEL_LL.switch_node_rec_handle("class1", "rec9");
-
 
         /*********************************************************
         *       Courses Class
@@ -1279,14 +1259,6 @@
 
                     while (Table1.id_table[paint_index] != paint_times[w + 1]) {
                         this.set_cell_value(this.id_table[paint_index],class_handle.ID);
-//                        this.set_cell_color(this.id_table[paint_index], g_Color);
-//                        this.set_side_borders_color(this.id_table[paint_index], g_Border_Color);
-//                        this.set_bottom_border_color(this.id_table[paint_index], g_Color);
-
-                        /* For Melanie to do gradients */
-                       // var elem = document.getElementById(this.id_table[paint_index]);
-
-
 
                         /* This is where an image would go */
                         elem = document.getElementById(Table1.id_table[paint_index]);
@@ -1376,15 +1348,6 @@
                             }
                             /* Unnecessary?*/
                             else{
-                                //this.set_cell_value(this.id_table[clear_index], ' ');
-//                                this.set_cell_color(this.id_table[clear_index], g_Color);
-//                                this.set_cell_border_color(this.id_table[clear_index], g_Color);
-//                                this.set_side_borders_color(this.id_table[clear_index], g_Color);
-//                                if (first_cell_of_block == 1) {
-//                                    this.changeText(this.id_table[clear_index], ' ');
-//                                    this.changeText(this.id_table[clear_index + 1], ' ');
-//                                    first_cell_of_block = 0;
-//                                }
                                 conflict_reset = 0;
                             }
                         }
@@ -1413,12 +1376,6 @@
                 Table1.paint_cells(node.rec_handle);
             }
         };
-
-//        var Selected_Class = function(){
-//            this.SELECTED_CLASS_HANDLES = [];
-//              this.NUM_SELECTED_CLASSES = 0;
-//        };
-
 
         /*********************************************************
         *       New Instances
