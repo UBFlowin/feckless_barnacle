@@ -642,7 +642,8 @@ def degree_info_user(user_id):
                  'SEM_INDEX': degree_course.SEM_INDEX,
                  'TITLE': degree_course.TITLE,
                  'TAKEN':taken,
-                 'DEG_CRSE_INDEX':degree_course_index
+                 'DEG_CRSE_INDEX':degree_course_index,
+                 'DEGREE':degree
                  }
             json_results.append(d)
     return jsonify(classes=json_results)
