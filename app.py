@@ -680,40 +680,6 @@ def flowsheet():
     return render_template("flowsheet.html")
 
 
-'''-----------------------------------------------
-      ROUTE: All Professors
------------------------------------------------'''
-@app.route('/professor', methods=['GET'])
-@login_required
-def getProfessors():
-    if request.method == 'GET':
-        results = Professor.query.limit(10).offset(0).all()
-
-    json_results = []
-    for result in results:
-        d = {'ID': result.ID,
-             'FIRST_NAME': result.FIRST_NAME,
-             'LAST_NAME': result.LAST_NAME,
-             'DEPARTMENT': result.DEPARTMENT}
-        json_results.append(d)
-    return jsonify(professors=json_results)
-
-
-'''-----------------------------------------------
-      ROUTE: Single Professor
------------------------------------------------'''
-@app.route('/professor/<int:professor_id>', methods=['GET'])
-@login_required
-def getProfessor(professor_id):
-    if request.method == 'GET':
-        result = Professor.query.filter_by(ID=professor_id).first()
-        if result is None:
-            return "false"
-
-        d = {'ID': result.ID,
-             'FIRST_NAME': result.FIRST_NAME}
-    return jsonify(professor=d)
-
 
 '''-----------------------------------------------
       ROUTE: All Classes
