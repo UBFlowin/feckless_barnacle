@@ -14,7 +14,8 @@ def get_url(base_url, path):
         data[i] = data[i].encode('ascii', 'ignore').decode('ascii')
         data[i] = re.sub('\s', '', data[i])
         data[i] = re.sub('">(.*)$', '', data[i])
-        data[i] = re.sub('^(.*)"h', 'h', data[i])
+        # data[i] = re.sub('^(.*)"h', 'h', data[i])
+        data[i] = re.sub('^(.*)"', '', data[i])
     return data
 
 
