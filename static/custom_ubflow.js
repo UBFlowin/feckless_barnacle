@@ -553,7 +553,7 @@ function unshade(id){
 function create_new_course_block(sem_index, num){
     var course = document.createElement('semester'+String(sem_index));
     var a = document.createElement('course');
-    a.setAttribute('style', 'min-height: 90px; min-width: 95px; padding: 10px 2px; ' +
+    a.setAttribute('style', 'min-height: 80px; min-width: 95px; padding: 10px 2px; ' +
             'border-top-left-radius: 8px;border-top-right-radius: 8px;' +
             'border-bottom-left-radius: 8px;border-bottom-right-radius: 8px;' +
             'border-color: #334455; word-wrap: break-word;' );
@@ -609,7 +609,7 @@ function create_new_course_block(sem_index, num){
     var course_name = document.createElement('course_text' + String(num));
     var course_string = String(DEGREE_HANDLES[num].get_ubclass());
     var URL = 'http://undergrad-catalog.buffalo.edu/coursedescriptions/index.php?frm_abbr=' + course_string.slice(0, (course_string.length - 3)) + '&frm_num=' + course_string.slice(-3);
-    if ( (course_string.indexOf("XX") == -1) && (course_string.indexOf("Gen Ed") == -1) && (course_string.indexOf("Tech") == -1) ) {
+    if ( (course_string.indexOf("XX") == -1) && (course_string.indexOf("Gen Ed") == -1) && (course_string.indexOf("Tech") == -1) && (course_string.indexOf("Elective") == -1)) {
         course_name.setAttribute('style', 'color: blue; text-decoration: underline');
     }
     course_name.onmouseover = function() {
