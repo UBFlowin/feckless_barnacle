@@ -40,10 +40,10 @@ for modified_links in modified_links:
         degree = 'CSE'
     if degree == 'CEN':
         pass
-    #print degree
+
     sheet_url = base_url + modified_links
     sheet = get_flowsheet_info(sheet_url)
-    #print sheet
+
     sem_index = 0
     gen_ed_counter = 0
     for semester in sheet:
